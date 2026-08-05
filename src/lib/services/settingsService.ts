@@ -101,6 +101,23 @@ export class SettingsService {
       aiApiKey: '', // Never return API key
       aiModel: all.aiModel || 'gpt-4o',
       aiSystemPrompt: all.aiSystemPrompt || '',
+
+      // Favicon & tracking
+      siteFavicon: all.siteFavicon || '',
+      gaTrackingId: all.gaTrackingId || '',
+
+      // Watermark configuration
+      watermarkEnabled: all.watermarkEnabled || 'false',
+      watermarkType: all.watermarkType || 'text',
+      watermarkText: all.watermarkText || 'TSIANFAN',
+      watermarkImage: all.watermarkImage || '',
+      watermarkPosition: all.watermarkPosition || 'southeast',
+      watermarkOpacity: all.watermarkOpacity || '50',
+      watermarkSize: all.watermarkSize || '30',
+
+      // Copy protection & locale
+      copyProtectionEnabled: all.copyProtectionEnabled || 'false',
+      enabledLocales: all.enabledLocales || 'en,fr,de,it,es',
     };
   }
 
@@ -118,6 +135,10 @@ export class SettingsService {
       'linkedinUrl', 'facebookUrl', 'youtubeUrl', 'instagramUrl', 'xUrl',
       'smtpHost', 'smtpPort', 'smtpUsername', 'smtpPassword', 'smtpFromEmail',
       'aiProvider', 'aiApiKey', 'aiModel', 'aiSystemPrompt',
+      'siteFavicon', 'gaTrackingId',
+      'watermarkEnabled', 'watermarkType', 'watermarkText', 'watermarkImage',
+      'watermarkPosition', 'watermarkOpacity', 'watermarkSize',
+      'copyProtectionEnabled', 'enabledLocales',
     ];
 
     for (const key of allowedKeys) {

@@ -288,9 +288,101 @@ model TrackingEvent {
   searchData String?
   duration   Int?
   country    String?
+  referrer       String?
+  deviceType     String?
+  sourceCategory String?
   createdAt  DateTime @default(now())
 
   @@index([sessionId])
   @@index([customerId])
   @@index([eventType])
+}
+
+// ==================== Incremental Models (UEESHOP Features) ====================
+// NOTE: These models are documented here for reference only. Because `prisma
+// generate` is blocked in the current sandbox, actual CRUD operations use
+// `prisma.$queryRawUnsafe` / `prisma.$executeRawUnsafe`. DDL lives in
+// scripts/migrate-additional-tables.sql.
+
+/// Inquiry form field configuration (P0-05). fieldName maps to Inquiry model fields.
+/// fieldType: text | email | number | tel | textarea | select
+model InquiryFormField {
+  id          Int      @id @default(autoincrement())
+  fieldName   String   @unique
+  fieldLabel  String
+  fieldType   String   @default("text")
+  isRequired  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Downloadable resource (P1-02). Backend CRUD only.
+/// category: catalog | specification | manual | certificate | other
+model Download {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  filePath    String
+  fileName    String
+  fileType    String
+  fileSize    Int
+  category    String   @default("other")
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Friend link (P1-03). Backend CRUD only.
+model FriendLink {
+  id         Int      @id @default(autoincrement())
+  name       String
+  url        String
+  logo       String?
+  sortOrder  Int      @default(0)
+  isVisible  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+/// 301 redirect rule (P1-05). Backend CRUD only.
+model Redirect {
+  id         Int      @id @default(autoincrement())
+  sourceUrl  String   @unique
+  targetUrl  String
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+/// Unified media library (P2-02). All uploaded images auto-register.
+/// category: product | banner | general | favicon | watermark | other
+model MediaLibrary {
+  id         Int      @id @default(autoincrement())
+  filename   String
+  url        String
+  alt        String?
+  category   String   @default("general")
+  fileSize   Int
+  mimeType   String
+  width      Int?
+  height     Int?
+  uploadedAt DateTime @default(now())
+}
+
+/// B2B platform listing record (P2-05).
+/// platformName: alibaba | made-in-china | global-sources | custom
+/// status: draft | published | updated | archived
+model B2BListing {
+  id               Int      @id @default(autoincrement())
+  productId        Int
+  platformName     String
+  listingUrl       String?
+  generatedContent String?
+  exportFormat     String?
+  status           String   @default("draft")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

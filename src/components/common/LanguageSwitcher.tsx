@@ -2,18 +2,33 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import useSWR from 'swr';
 import { Globe, ChevronDown } from 'lucide-react';
 import { LOCALES, LOCALE_NAMES, LOCALE_COOKIE, type Locale } from '@/lib/i18n/config';
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 /**
  * Language switcher dropdown component.
  * Updates the locale cookie and navigates to the localized URL.
+ * Filters displayed locales based on the enabledLocales setting from /api/public-settings.
  */
 export function LanguageSwitcher({ currentLocale }: { currentLocale: Locale }) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Fetch enabled locales from public settings
+  const { data: settingsData } = useSWR('/api/public-settings', fetcher);
+  const enabledLocalesStr: string = settingsData?.data?.enabledLocales || 'en,fr,de,it,es';
+  const enabledLocales = enabledLocalesStr
+    .split(',')
+    .map((l) => l.trim())
+    .filter((l) => LOCALES.includes(l as Locale)) as Locale[];
+
+  // Fallback to all locales if none enabled
+  const displayLocales = enabledLocales.length > 0 ? enabledLocales : LOCALES;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -57,7 +72,7 @@ export function LanguageSwitcher({ currentLocale }: { currentLocale: Locale }) {
 
       {open && (
         <div className="absolute right-0 top-full z-50 mt-1 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
-          {LOCALES.map((locale) => (
+          {displayLocales.map((locale) => (
             <button
               key={locale}
               onClick={() => switchLocale(locale)}

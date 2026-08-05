@@ -32,11 +32,17 @@ export const NAV_ITEMS: NavItem[] = [
 export const ADMIN_NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/admin/dashboard' },
   { label: 'Products', href: '/admin/products' },
+  { label: 'Categories', href: '/admin/categories' },
   { label: 'Inquiries', href: '/admin/inquiries' },
   { label: 'Customers', href: '/admin/customers' },
   { label: 'Projects', href: '/admin/projects' },
   { label: 'Content', href: '/admin/content' },
   { label: 'FAQs', href: '/admin/faqs' },
+  { label: 'Downloads', href: '/admin/downloads' },
+  { label: 'Friend Links', href: '/admin/friend-links' },
+  { label: 'Redirects', href: '/admin/redirects' },
+  { label: 'Media Library', href: '/admin/media-library' },
+  { label: 'B2B Listings', href: '/admin/b2b-listings' },
   { label: 'Settings', href: '/admin/settings' },
 ];
 

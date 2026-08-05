@@ -1,0 +1,160 @@
+classDiagram
+    class Series {
+        +Int id
+        +String name
+        +String nameCn
+        +String slug
+        +String prefix
+        +String description
+        +String image
+        +Int parentId
+        +Int sortOrder
+        +DateTime createdAt
+        +DateTime updatedAt
+    }
+    class Product {
+        +Int id
+        +String sku
+        +Int seriesId
+        +String name
+        +String description
+        +String standSize
+        +String panelSize
+        +String panelThickness
+        +String weight
+        +String material
+        +String features
+        +Boolean isFeatured
+        +Boolean isPublished
+        +Int sortOrder
+    }
+    class InquiryFormField {
+        +Int id
+        +String fieldName
+        +String fieldLabel
+        +String fieldType
+        +Boolean isRequired
+        +Boolean isActive
+        +Int sortOrder
+    }
+    class Download {
+        +Int id
+        +String title
+        +String description
+        +String filePath
+        +String fileName
+        +String fileType
+        +Int fileSize
+        +String category
+        +Int sortOrder
+        +Boolean isPublished
+    }
+    class FriendLink {
+        +Int id
+        +String name
+        +String url
+        +String logo
+        +Int sortOrder
+        +Boolean isVisible
+    }
+    class Redirect {
+        +Int id
+        +String sourceUrl
+        +String targetUrl
+        +Boolean isActive
+    }
+    class MediaLibrary {
+        +Int id
+        +String filename
+        +String url
+        +String alt
+        +String category
+        +Int fileSize
+        +String mimeType
+        +Int width
+        +Int height
+        +DateTime uploadedAt
+    }
+    class B2BListing {
+        +Int id
+        +Int productId
+        +String platformName
+        +String listingUrl
+        +String generatedContent
+        +String exportFormat
+        +String status
+    }
+    class TrackingEvent {
+        +Int id
+        +String sessionId
+        +String eventType
+        +String pageUrl
+        +String country
+        +String referrer
+        +String deviceType
+        +String sourceCategory
+        +DateTime createdAt
+    }
+    class SiteSetting {
+        +Int id
+        +String key
+        +String value
+    }
+    class FormFieldService {
+        +getAll() InquiryFormField[]
+        +getActiveFields() InquiryFormField[]
+        +updateFields(fields) void
+    }
+    class DownloadService {
+        +getAll(params) PaginatedResponse
+        +create(data) Download
+        +update(id, data) Download
+        +delete(id) void
+    }
+    class WatermarkService {
+        +getSettings() WatermarkConfig
+        +applyWatermark(buffer, config) Buffer
+    }
+    class TrackingService {
+        +trackEvent(data) void
+        +getDashboardStats() DashboardStats
+        +getHourlyStats(timeRange) HourlyData[]
+        +getTrafficSources(timeRange) SourceData[]
+        +getDeviceDistribution(timeRange) DeviceData[]
+    }
+    class CategoryService {
+        +getTree() CategoryNode[]
+        +create(data) Series
+        +update(id, data) Series
+        +delete(id) void
+    }
+    class MediaLibraryService {
+        +getAll(params) PaginatedResponse
+        +register(data) MediaLibrary
+        +getUsageLocations(url) UsageLocation[]
+        +delete(id) void
+    }
+    class B2BListingService {
+        +getAll(params) B2BListing[]
+        +generateContent(productId, platform) B2BListing
+        +update(id, data) B2BListing
+        +delete(id) void
+    }
+    class SettingsService {
+        +getSiteSettings() SiteSettings
+        +updateSiteSettings(data) void
+        +get(key) string
+        +set(key, value) void
+    }
+
+    Series <|-- Product : seriesId
+    Series <|-- Series : parentId
+    Product <|-- B2BListing : productId
+    FormFieldService --> InquiryFormField
+    DownloadService --> Download
+    WatermarkService --> SiteSetting
+    TrackingService --> TrackingEvent
+    CategoryService --> Series
+    MediaLibraryService --> MediaLibrary
+    B2BListingService --> B2BListing
+    SettingsService --> SiteSetting

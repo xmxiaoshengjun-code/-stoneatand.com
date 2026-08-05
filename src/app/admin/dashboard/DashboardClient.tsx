@@ -1,14 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import useSWR from 'swr';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDateTime } from '@/lib/utils';
+import { HourlyTrafficChart } from '@/components/admin/charts/HourlyTrafficChart';
+import { CountryBarChart } from '@/components/admin/charts/CountryBarChart';
+import { TrafficSourcePie } from '@/components/admin/charts/TrafficSourcePie';
 import Link from 'next/link';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+type TimeRange = 'today' | 'yesterday' | '7d' | '30d';
+
+const TIME_RANGE_LABELS: Record<TimeRange, string> = {
+  today: 'Today',
+  yesterday: 'Yesterday',
+  '7d': 'Last 7 Days',
+  '30d': 'Last 30 Days',
+};
 
 interface TrackingStats {
   todayUV: number;
@@ -17,6 +31,10 @@ interface TrackingStats {
   topPages: Array<{ url: string; pv: number }>;
   topCountries: Array<{ country: string; count: number }>;
   trend: Array<{ date: string; uv: number; pv: number }>;
+  hourlyTrend?: Array<{ hour: string; pv: number }>;
+  trafficSources?: Array<{ source: string; count: number }>;
+  deviceDistribution?: Array<{ device: string; count: number }>;
+  topCountriesTop10?: Array<{ country: string; count: number }>;
 }
 
 const COUNTRY_FLAGS: Record<string, string> = {
@@ -42,8 +60,12 @@ function formatDateShort(dateStr: string): string {
 }
 
 export function DashboardClient() {
+  const [timeRange, setTimeRange] = useState<TimeRange>('7d');
   const { data: statsData, isLoading: statsLoading } = useSWR('/api/admin/stats', fetcher);
-  const { data: trackingData, isLoading: trackingLoading } = useSWR('/api/admin/tracking/stats', fetcher);
+  const { data: trackingData, isLoading: trackingLoading } = useSWR(
+    `/api/admin/tracking/stats?timeRange=${timeRange}`,
+    fetcher
+  );
 
   if (statsLoading || trackingLoading) {
     return (
@@ -86,7 +108,21 @@ export function DashboardClient() {
     <div className="space-y-8">
       {/* Tracking Stats Section */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Visitor Analytics</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-700">Visitor Analytics</h2>
+          <div className="flex gap-1">
+            {(['today', 'yesterday', '7d', '30d'] as TimeRange[]).map((tr) => (
+              <Button
+                key={tr}
+                variant={timeRange === tr ? 'brand' : 'outline'}
+                size="sm"
+                onClick={() => setTimeRange(tr)}
+              >
+                {TIME_RANGE_LABELS[tr]}
+              </Button>
+            ))}
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {trackingCards.map((stat) => (
             <Card key={stat.label}>
@@ -142,6 +178,42 @@ export function DashboardClient() {
                 <span className="text-gray-600">Unique Visitors (UV)</span>
               </div>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Chart Section: Hourly Traffic + Traffic Sources + Device Distribution */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {tracking?.hourlyTrend && tracking.hourlyTrend.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Hourly Traffic ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <HourlyTrafficChart data={tracking.hourlyTrend} />
+            </CardContent>
+          </Card>
+        )}
+        {tracking?.trafficSources && tracking.trafficSources.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Traffic Sources ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TrafficSourcePie data={tracking.trafficSources} />
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Top Countries Bar Chart (Top 10) */}
+      {tracking?.topCountriesTop10 && tracking.topCountriesTop10.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Top 10 Countries ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CountryBarChart data={tracking.topCountriesTop10} />
           </CardContent>
         </Card>
       )}

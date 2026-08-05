@@ -33,17 +33,44 @@ export function Analytics() {
     sessionIdRef.current = sid;
   }, []);
 
+  // --- Helper: detect device type ---
+  const getDeviceType = (): string => {
+    if (typeof window === 'undefined') return 'desktop';
+    const ua = navigator.userAgent;
+    if (/iPad|Tablet/i.test(ua)) return 'tablet';
+    if (/Mobile|Android|iPhone/i.test(ua)) return 'mobile';
+    return 'desktop';
+  };
+
+  // --- Helper: classify traffic source from referrer ---
+  const getSourceCategory = (referrer: string): string => {
+    if (!referrer) return 'direct';
+    const searchEngines = ['google.com', 'bing.com', 'yahoo.com', 'baidu.com', 'yandex.com'];
+    const socialMedia = ['facebook.com', 'twitter.com', 'x.com', 'linkedin.com', 'youtube.com', 'instagram.com', 'pinterest.com'];
+    const lower = referrer.toLowerCase();
+    if (searchEngines.some((s) => lower.includes(s))) return 'search';
+    if (socialMedia.some((s) => lower.includes(s))) return 'social';
+    return 'referral';
+  };
+
   // --- Helper: send a tracking event ---
   const trackEvent = useRef((eventType: string, data?: Record<string, unknown>) => {
     if (typeof window === 'undefined') return;
     const sessionId = sessionIdRef.current;
     if (!sessionId) return;
 
+    const referrer = document.referrer || '';
+    const deviceType = getDeviceType();
+    const sourceCategory = getSourceCategory(referrer);
+
     const payload = JSON.stringify({
       sessionId,
       eventType,
       pageUrl: window.location.pathname,
       country: undefined,
+      referrer: referrer || undefined,
+      deviceType,
+      sourceCategory,
       ...data,
     });
 

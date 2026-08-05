@@ -3,10 +3,13 @@ import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { successResponse, errorResponse } from '@/types/api';
 import { requireAdmin } from '@/lib/auth';
+import { watermarkService } from '@/lib/services/watermarkService';
+import { mediaLibraryService } from '@/lib/services/mediaLibraryService';
 
 /**
  * POST /api/admin/upload - Handles image file uploads.
  * Saves to /public/images/products/ with unique filename.
+ * Applies watermark if enabled in settings, then registers to MediaLibrary.
  */
 export async function POST(request: NextRequest) {
   if (!(await requireAdmin(request))) {
@@ -33,7 +36,10 @@ export async function POST(request: NextRequest) {
     }
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    let buffer: Buffer = Buffer.from(bytes);
+
+    // Apply watermark if enabled
+    buffer = Buffer.from(await watermarkService.applyWatermark(buffer));
 
     // Generate unique filename
     const ext = path.extname(file.name) || `.${file.type.split('/')[1]}`;
@@ -47,7 +53,37 @@ export async function POST(request: NextRequest) {
 
     const url = `/images/products/${filename}`;
 
-    return NextResponse.json(successResponse({ url, filename }, 'File uploaded'), { status: 201 });
+    // Register to MediaLibrary
+    let mediaId: number | undefined;
+    try {
+      let width: number | undefined;
+      let height: number | undefined;
+      try {
+        const Jimp = (await import('jimp')).default;
+        const img = await Jimp.read(buffer);
+        width = img.bitmap.width;
+        height = img.bitmap.height;
+      } catch {
+        // jimp not available; skip dimensions
+      }
+      const media = await mediaLibraryService.register({
+        filename,
+        url,
+        category: 'product',
+        fileSize: buffer.length,
+        mimeType: file.type,
+        width,
+        height,
+      });
+      mediaId = media.id;
+    } catch (regError) {
+      console.error('MediaLibrary registration failed (non-fatal):', regError);
+    }
+
+    return NextResponse.json(
+      successResponse({ url, filename, mediaId }, 'File uploaded'),
+      { status: 201 }
+    );
   } catch (error) {
     console.error('POST /api/admin/upload error:', error);
     return NextResponse.json(errorResponse(500, 'Failed to upload file'), { status: 500 });

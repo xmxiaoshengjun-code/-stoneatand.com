@@ -1,0 +1,129 @@
+%% Product Image Upload + Watermark Flow
+sequenceDiagram
+    participant Admin as Admin UI
+    participant Upload as /api/admin/upload
+    participant Auth as requireAdmin
+    participant WM as WatermarkService
+    participant Settings as SettingsService
+    participant ML as MediaLibraryService
+    participant FS as FileSystem
+
+    Admin->>Upload: POST FormData (image file)
+    Upload->>Auth: requireAdmin(request)
+    Auth-->>Upload: true
+
+    Upload->>Upload: Validate file type (JPEG/PNG/WebP/GIF)
+    Upload->>Upload: Validate file size (≤5MB)
+
+    Upload->>Settings: get('watermarkEnabled')
+    Settings-->>Upload: 'true'
+
+    alt Watermark enabled AND image type
+        Upload->>WM: applyWatermark(buffer)
+        WM->>Settings: getWatermarkSettings()
+        Settings-->>WM: { type, text, image, position, opacity, size }
+
+        alt type = 'text'
+            WM->>WM: Create text SVG overlay
+            WM->>WM: sharp(buffer).composite([{ input: svg, gravity: position, blend: 'over' }])
+        else type = 'image'
+            WM->>WM: sharp(watermarkImage).resize(size%)
+            WM->>WM: sharp(buffer).composite([{ input: wm, gravity: position }])
+        end
+
+        WM-->>Upload: watermarkedBuffer
+    end
+
+    Upload->>FS: writeFile(buffer, /public/images/products/{filename})
+    Upload->>ML: register({ filename, url, mimeType, fileSize })
+    ML->>ML: INSERT INTO MediaLibrary (...)
+    ML-->>Upload: { id: mediaId }
+
+    Upload-->>Admin: { code: 201, data: { url, filename, mediaId } }
+
+%% ---
+%% Inquiry Form Config + Render Flow
+%% ---
+sequenceDiagram
+    participant Admin as Admin Settings Panel
+    participant API as /api/admin/inquiry-form-fields
+    participant FFS as FormFieldService
+    participant DB as SQLite
+
+    Admin->>API: GET /api/admin/inquiry-form-fields
+    API->>API: requireAdmin(request)
+    API->>FFS: getAll()
+    FFS->>DB: SELECT * FROM InquiryFormField ORDER BY sortOrder
+    DB-->>FFS: [7 rows]
+    FFS-->>API: InquiryFormField[]
+    API-->>Admin: { code: 200, data: { items: [...] } }
+
+    Admin->>Admin: Display field list with toggles
+
+    Admin->>API: PUT /api/admin/inquiry-form-fields
+    API->>API: requireAdmin(request)
+    API->>FFS: updateFields([{ id, isActive, sortOrder }])
+    loop For each field
+        FFS->>DB: UPDATE InquiryFormField SET isActive=?, sortOrder=? WHERE id=?
+    end
+    FFS-->>API: updated fields
+    API-->>Admin: { code: 200, data: { items: [...] } }
+
+    Note over Admin: Configuration saved. No redeploy needed.
+
+    participant User as Website Visitor
+    participant Form as InquiryForm Component
+    participant PubAPI as /api/inquiry-form-fields (Public)
+    participant InquiryAPI as /api/inquiries
+
+    User->>Form: Opens inquiry form page
+    Form->>PubAPI: GET /api/inquiry-form-fields
+    PubAPI->>FFS: getActiveFields()
+    FFS->>DB: SELECT fieldName, fieldLabel, fieldType, isRequired FROM InquiryFormField WHERE isActive=1 ORDER BY sortOrder
+    DB-->>FFS: [active fields]
+    FFS-->>PubAPI: field configs
+    PubAPI-->>Form: { items: [...] }
+
+    Form->>Form: Show/hide fields based on isActive
+    Form->>Form: Set required attributes based on isRequired
+
+    User->>Form: Fills form and submits
+    Form->>InquiryAPI: POST /api/inquiries (formData)
+    InquiryAPI->>DB: INSERT INTO Inquiry (...)
+    InquiryAPI-->>Form: { code: 201, data: { inquiryNo } }
+    Form-->>User: Success message
+
+%% ---
+%% Dashboard Chart Data Flow
+%% ---
+sequenceDiagram
+    participant Dash as DashboardClient
+    participant StatsAPI as /api/admin/tracking/stats
+    participant TS as TrackingService
+    participant DB as SQLite
+
+    Dash->>Dash: User selects timeRange (today/yesterday/7d/30d)
+    Dash->>StatsAPI: GET /api/admin/tracking/stats?timeRange=7d
+    StatsAPI->>StatsAPI: requireAdmin(request)
+    StatsAPI->>TS: getDashboardStats(timeRange='7d')
+
+    par Hourly Trend
+        TS->>DB: SELECT strftime('%H', createdAt) as hour, COUNT(*) as pv FROM TrackingEvent WHERE createdAt >= ? GROUP BY hour
+        DB-->>TS: 24 rows
+    and Traffic Sources
+        TS->>DB: SELECT sourceCategory, COUNT(*) FROM TrackingEvent WHERE createdAt >= ? AND sourceCategory IS NOT NULL GROUP BY sourceCategory
+        DB-->>TS: 4 rows (search/social/direct/referral)
+    and Device Distribution
+        TS->>DB: SELECT deviceType, COUNT(*) FROM TrackingEvent WHERE createdAt >= ? AND deviceType IS NOT NULL GROUP BY deviceType
+        DB-->>TS: 3 rows (desktop/mobile/tablet)
+    and Top Countries (Top 10)
+        TS->>DB: SELECT country, COUNT(*) as count FROM TrackingEvent WHERE createdAt >= ? AND country IS NOT NULL GROUP BY country ORDER BY count DESC LIMIT 10
+        DB-->>TS: 10 rows
+    end
+
+    TS-->>StatsAPI: { hourlyTrend, trafficSources, deviceDistribution, topCountriesTop10, ... }
+    StatsAPI-->>Dash: { code: 200, data: {...} }
+
+    Dash->>Dash: Render HourlyTrafficChart (Recharts LineChart)
+    Dash->>Dash: Render CountryBarChart (Recharts BarChart)
+    Dash->>Dash: Render TrafficSourcePie (Recharts PieChart)

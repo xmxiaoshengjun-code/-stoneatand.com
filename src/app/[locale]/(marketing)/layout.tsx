@@ -6,6 +6,7 @@ import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { ChatWidget } from '@/components/chat/ChatWidget';
 import { CookieConsent } from '@/components/common/CookieConsent';
 import { Analytics } from '@/components/common/Analytics';
+import { CopyProtection } from '@/components/common/CopyProtection';
 
 /**
  * Marketing layout metadata: canonical and hreflang tags for SEO/GEO.
@@ -39,6 +40,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       <ChatWidget />
       <CookieConsent />
       <Analytics />
+      <CopyProtection />
     </>
   );
 }

@@ -34,6 +34,17 @@ interface SiteSettings {
   aiApiKey: string;
   aiModel: string;
   aiSystemPrompt: string;
+  siteFavicon: string;
+  gaTrackingId: string;
+  watermarkEnabled: string;
+  watermarkType: string;
+  watermarkText: string;
+  watermarkImage: string;
+  watermarkPosition: string;
+  watermarkOpacity: string;
+  watermarkSize: string;
+  copyProtectionEnabled: string;
+  enabledLocales: string;
 }
 
 const DEFAULT_AI_PROMPT = `You are the AI assistant for Tsianfan (Xiamen) Industry & Trade Co., Ltd., a professional manufacturer of tile display racks, sample boards, and showroom display systems. We have 7 product series and 55 SKUs, exporting 80% to Europe and North America. Help customers with product information, specifications, and inquiries. Encourage visitors to submit inquiries for detailed quotes. Keep responses concise and professional.`;
@@ -273,6 +284,117 @@ export function SettingsPanel() {
             <Badge variant={settings.aiProvider === 'openai' ? 'default' : 'secondary'}>
               {settings.aiProvider === 'openai' ? `OpenAI (${settings.aiModel})` : 'Rule-based (FAQ)'}
             </Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Favicon & Analytics Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Favicon & Analytics</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Favicon URL</Label>
+              <Input value={settings.siteFavicon} onChange={(e) => update('siteFavicon', e.target.value)} placeholder="/images/favicon/favicon.ico" />
+              <p className="mt-1 text-xs text-gray-400">Path to favicon image file.</p>
+            </div>
+            <div>
+              <Label>Google Analytics Tracking ID</Label>
+              <Input value={settings.gaTrackingId} onChange={(e) => update('gaTrackingId', e.target.value)} placeholder="G-XXXXXXXXXX" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Watermark Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Image Watermark</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="watermark-enabled"
+              checked={settings.watermarkEnabled === 'true'}
+              onChange={(e) => update('watermarkEnabled', e.target.checked ? 'true' : 'false')}
+            />
+            <label htmlFor="watermark-enabled" className="text-sm font-medium">Enable watermark on image upload</label>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Watermark Type</Label>
+              <select
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+                value={settings.watermarkType}
+                onChange={(e) => update('watermarkType', e.target.value)}
+              >
+                <option value="text">Text</option>
+                <option value="image">Image</option>
+              </select>
+            </div>
+            <div>
+              <Label>Position</Label>
+              <select
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+                value={settings.watermarkPosition}
+                onChange={(e) => update('watermarkPosition', e.target.value)}
+              >
+                <option value="northwest">Top Left</option>
+                <option value="north">Top Center</option>
+                <option value="northeast">Top Right</option>
+                <option value="west">Middle Left</option>
+                <option value="center">Center</option>
+                <option value="east">Middle Right</option>
+                <option value="southwest">Bottom Left</option>
+                <option value="south">Bottom Center</option>
+                <option value="southeast">Bottom Right</option>
+              </select>
+            </div>
+            {settings.watermarkType === 'text' ? (
+              <div>
+                <Label>Watermark Text</Label>
+                <Input value={settings.watermarkText} onChange={(e) => update('watermarkText', e.target.value)} placeholder="TSIANFAN" />
+              </div>
+            ) : (
+              <div>
+                <Label>Watermark Image URL</Label>
+                <Input value={settings.watermarkImage} onChange={(e) => update('watermarkImage', e.target.value)} placeholder="/images/watermark/logo.png" />
+              </div>
+            )}
+            <div>
+              <Label>Opacity (0-100)</Label>
+              <Input type="number" value={settings.watermarkOpacity} onChange={(e) => update('watermarkOpacity', e.target.value)} min="0" max="100" />
+            </div>
+            <div>
+              <Label>Size (% of image width)</Label>
+              <Input type="number" value={settings.watermarkSize} onChange={(e) => update('watermarkSize', e.target.value)} min="5" max="100" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Copy Protection & Locale Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Copy Protection & Languages</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="copy-protection-enabled"
+              checked={settings.copyProtectionEnabled === 'true'}
+              onChange={(e) => update('copyProtectionEnabled', e.target.checked ? 'true' : 'false')}
+            />
+            <label htmlFor="copy-protection-enabled" className="text-sm font-medium">Enable copy protection (disable right-click and text selection)</label>
+          </div>
+          <div>
+            <Label>Enabled Locales (comma-separated)</Label>
+            <Input value={settings.enabledLocales} onChange={(e) => update('enabledLocales', e.target.value)} placeholder="en,fr,de,it,es" />
+            <p className="mt-1 text-xs text-gray-400">Controls which languages appear in the language switcher.</p>
           </div>
         </CardContent>
       </Card>

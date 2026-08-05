@@ -1,15 +1,33 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import useSWR from 'swr';
 import { SERIES_INFO } from '@/lib/constants/series';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, X } from 'lucide-react';
 
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+interface CategoryNode {
+  id: number;
+  name: string;
+  slug: string;
+  prefix: string;
+  parentId: number | null;
+  children: CategoryNode[];
+}
+
 export function FilterPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Fetch category tree for hierarchical display
+  const { data: catData } = useSWR('/api/admin/categories', fetcher, {
+    onError: () => {},
+  });
+  const categoryTree: CategoryNode[] = catData?.data?.tree ?? [];
 
   const currentSeries = searchParams.get('series') || '';
   const currentThickness = searchParams.get('panelThickness') || '';
@@ -32,6 +50,9 @@ export function FilterPanel() {
 
   const hasFilters = currentSeries || currentThickness || currentKeyword;
 
+  // Build flat list of all series slugs from SERIES_INFO for fallback
+  const allSeriesSlugs = SERIES_INFO.map((s) => s.slug);
+
   return (
     <div className="space-y-4 rounded-lg border bg-white p-4">
       <div className="flex items-center justify-between">
@@ -47,22 +68,58 @@ export function FilterPanel() {
         )}
       </div>
 
-      {/* Series filter */}
+      {/* Series filter with hierarchical display */}
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-gray-700">Series</label>
+        <label className="mb-1.5 block text-sm font-medium text-gray-700">Category</label>
         <Select value={currentSeries} onValueChange={(v) => updateFilter('series', v === 'all' ? '' : v)}>
           <SelectTrigger>
-            <SelectValue placeholder="All series" />
+            <SelectValue placeholder="All categories" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All series</SelectItem>
-            {SERIES_INFO.map((s) => (
-              <SelectItem key={s.slug} value={s.slug}>
-                {s.name} ({s.prefix})
-              </SelectItem>
-            ))}
+            <SelectItem value="all">All categories</SelectItem>
+            {categoryTree.length > 0 ? (
+              categoryTree.map((node) => (
+                <SelectItem key={node.id} value={node.slug}>
+                  {node.name} ({node.prefix})
+                </SelectItem>
+              ))
+            ) : (
+              allSeriesSlugs.map((slug) => {
+                const info = SERIES_INFO.find((s) => s.slug === slug);
+                return (
+                  <SelectItem key={slug} value={slug}>
+                    {info?.name || slug} ({info?.prefix || ''})
+                  </SelectItem>
+                );
+              })
+            )}
           </SelectContent>
         </Select>
+        {/* Display child categories as indented options if tree has children */}
+        {categoryTree.length > 0 && categoryTree.some((n) => n.children.length > 0) && (
+          <div className="mt-2 space-y-1">
+            {categoryTree
+              .filter((n) => n.children.length > 0)
+              .map((parent) => (
+                <div key={parent.id}>
+                  <p className="text-xs font-medium text-gray-500">{parent.name}</p>
+                  <div className="ml-3 space-y-0.5">
+                    {parent.children.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => updateFilter('series', child.slug)}
+                        className={`block w-full text-left text-xs hover:text-brand-400 ${
+                          currentSeries === child.slug ? 'font-medium text-brand-400' : 'text-gray-600'
+                        }`}
+                      >
+                        └ {child.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
       </div>
 
       {/* Thickness filter */}

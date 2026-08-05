@@ -4,19 +4,34 @@ import { LOCALES, isLocale, LOCALE_NAMES, type Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { I18nProvider } from '@/lib/i18n/I18nProvider';
 import { LangSetter } from '@/components/common/LangSetter';
+import { settingsService } from '@/lib/services/settingsService';
 
-export const metadata: Metadata = {
-  alternates: {
-    languages: {
-      'en': '/en',
-      'fr': '/fr',
-      'de': '/de',
-      'it': '/it',
-      'es': '/es',
-      'x-default': '/en',
-    },
-  },
-};
+/**
+ * Generates dynamic metadata including favicon and hreflang alternates.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const favicon = await settingsService.get('siteFavicon');
+    const icons = favicon
+      ? { icon: favicon, shortcut: favicon, apple: favicon }
+      : undefined;
+    return {
+      icons,
+      alternates: {
+        languages: {
+          'en': '/en',
+          'fr': '/fr',
+          'de': '/de',
+          'it': '/it',
+          'es': '/es',
+          'x-default': '/en',
+        },
+      },
+    };
+  } catch {
+    return {};
+  }
+}
 
 export function generateStaticParams() {  return LOCALES.map((locale) => ({ locale }));
 }

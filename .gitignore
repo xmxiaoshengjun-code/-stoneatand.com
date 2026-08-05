@@ -70,6 +70,7 @@ scripts/fix-assets.py
 
 # npm cache and temp files
 /npm-cache/
+/npm-cache-tmp/
 /build_output*.txt
 /check_ts.txt
 /db_verify.txt
@@ -86,3 +87,13 @@ tsc_result*.txt
 prisma_gen_output*.txt
 test-write.txt
 prisma/test-write.txt
+
+# manual package installation temp (sandbox workaround)
+/pkg-tmp/
+/npm-cache-tmp/
+/.next-dev-bak/
+/cookies.txt
+/cookies2.txt
+/typescript.tgz
+*.tgz
+/dev-server.log

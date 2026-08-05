@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/types/api';
 
 /**
  * POST /api/tracking - Records a visitor behavior tracking event.
+ * Accepts referrer, deviceType, and sourceCategory in addition to existing fields.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -18,6 +19,9 @@ export async function POST(request: NextRequest) {
       searchData: body.searchData || null,
       duration: body.duration || null,
       country: body.country || null,
+      referrer: body.referrer || null,
+      deviceType: body.deviceType || null,
+      sourceCategory: body.sourceCategory || null,
     });
 
     return NextResponse.json(successResponse(null, 'Event tracked'), { status: 201 });

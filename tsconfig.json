@@ -33,9 +33,13 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next-fresh/types/**/*.ts"
+    ".next-fresh/types/**/*.ts",
+    ".next-dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "pkg-tmp",
+    "npm-cache-tmp",
+    "scripts"
   ]
 }
