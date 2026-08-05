@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "products": "Productos",
+    "about": "Nosotros",
+    "projects": "Proyectos",
+    "contact": "Contacto",
+    "faq": "Preguntas frecuentes",
+    "specFinder": "Buscador de especificaciones",
+    "compare": "Comparar",
+    "getQuote": "Solicitar cotización"
+  },
+  "common": {
+    "learnMore": "Saber más",
+    "viewAll": "Ver todo",
+    "browseAll": "Explorar todo",
+    "requestQuote": "Solicitar cotización",
+    "browseProducts": "Explorar productos",
+    "sendInquiry": "Enviar consulta",
+    "loading": "Cargando...",
+    "search": "Buscar",
+    "noResults": "No se encontraron resultados",
+    "backToHome": "Volver al inicio",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página",
+    "of": "de",
+    "share": "Compartir",
+    "copyLink": "Copiar enlace",
+    "copied": "¡Copiado!",
+    "followUs": "Síguenos",
+    "allRightsReserved": "Todos los derechos reservados",
+    "quickLinks": "Enlaces rápidos",
+    "productsMenu": "Productos",
+    "contactUs": "Contáctenos"
+  },
+  "hero": {
+    "badge": "Soluciones de exposición premium para baldosas desde 2008",
+    "title": "Exhibidores que",
+    "titleHighlight": "venden más baldosas",
+    "subtitle": "Soportes profesionales para baldosas, piedra, tarima y mosaico. 55 modelos en 7 series, diseñados para showrooms que ganan clientes.",
+    "ctaPrimary": "Explorar productos",
+    "ctaSecondary": "Solicitar cotización",
+    "trust1": "18+ años de experiencia",
+    "trust2": "55 modelos de exhibidores",
+    "trust3": "80+ países atendidos"
+  },
+  "about": {
+    "heroBadge": "Fundada en 2008 · Xiamen, China",
+    "heroTitle": "Sobre",
+    "heroTitleHighlight": "TSIANFAN",
+    "heroSubtitle": "La empresa de referencia en China para expositores de materiales de construcción — el primer proveedor especializado en diseño, I+D, producción y venta de expositores para piedra, baldosas y tarima.",
+    "storyEyebrow": "Nuestra historia",
+    "storyTitle": "18 años de excelencia en expositores",
+    "storyP1": "TSIANFAN (Xiamen) Industry & Trade Co., Ltd. se encuentra en Xiamen, la primera zona económica especial desarrollada en China. Fundada en 2008, es la empresa de referencia de los expositores para materiales de construcción en China y el primer proveedor especializado en diseño, I+D, producción y venta de expositores para piedra, baldosas y tarima.",
+    "storyP2": "El 80% de los productos de la empresa se venden a empresas de marca reconocidas en Europa y Estados Unidos. Nuestro negocio abarca Estados Unidos, Reino Unido, Canadá, Francia, Italia, Alemania y otros países desarrollados. Hemos ganado el apoyo y la confianza de numerosos socios, entre ellos TCE, NEOLITH, COLOR QUARTZ, CAESARSTONE, CERALSIO, VICOSTONE, VIATERA, COSMOS, SOCI y más de 100 marcas reconocidas.",
+    "storyP3": "Contamos con equipos completos de producción de hierro y madera, equipos profesionales de automatización a gran escala y una línea de recubrimiento en polvo. Desde el diseño preliminar, el desarrollo de procesos y la producción de moldes hasta el envío y el servicio postventa, proporcionamos soluciones integrales profesionales.",
+    "cultureEyebrow": "Cultura empresarial",
+    "cultureTitle": "Valores que nos impulsan",
+    "cultureSubtitle": "\"Orientado a las personas, búsqueda de la excelencia, creación de valor para la sociedad.\"",
+    "timelineEyebrow": "Nuestra trayectoria",
+    "timelineTitle": "Historia de la empresa",
+    "timelineSubtitle": "Avanzar con un solo corazón y una sola mente hacia el objetivo es una fe insaciable y el espíritu de perfección.",
+    "teamsEyebrow": "Nuestra gente",
+    "teamsTitle": "Equipos profesionales",
+    "teamsSubtitle": "Adhiriendo a la filosofía \"práctico, conveniente, honesto, innovador\" para servir a clientes de todo el mundo.",
+    "manufacturingEyebrow": "Fabricación",
+    "manufacturingTitle": "Capacidades de producción",
+    "manufacturingSubtitle": "Un taller de producción de más de 10.000 m² con equipos completos de fabricación de hierro y madera, automatización a gran escala y una línea de recubrimiento en polvo propia.",
+    "certEyebrow": "Garantía de calidad",
+    "certTitle": "Certificaciones y patentes",
+    "certSubtitle": "Sistemas de gestión de calidad certificados y credenciales reconocidas en la industria.",
+    "partnersEyebrow": "Confían en nosotros",
+    "partnersTitle": "Marcas asociadas",
+    "partnersSubtitle": "El 80% de nuestros productos se exporta a empresas de marca reconocidas en Europa y América. Nuestros clientes incluyen más de 100 marcas reconocidas en todo el mundo.",
+    "ctaTitle": "¿Listo para mejorar su showroom?",
+    "ctaSubtitle": "Desde el concepto hasta la instalación, TSIANFAN ofrece soluciones de exposición integrales y profesionales, adaptadas a su marca. Contáctenos hoy."
+  },
+  "culture": {
+    "Vision": "Crear la primera marca mundial de expositores.",
+    "Mission": "Hacer la exhibición más simple, los productos más bellos.",
+    "Business Philosophy": "Innovación, cliente primero, alta eficiencia y ahorro energético, beneficio mutuo y ganar-ganar.",
+    "Service View": "Saber mejor que el cliente lo que el cliente más necesita.",
+    "Enterprise Spirit": "Cada esfuerzo tendrá éxito; cada esfuerzo aporta percepciones y ganancias diferentes.",
+    "Team Vision": "El equipo crece junto para lograr el sueño de cada uno.",
+    "Purpose": "Orientado a las personas, búsqueda de la excelencia, creación de valor para la sociedad.",
+    "Core Values": "Trabajo en equipo, gratitud y compartir, integridad, calidad primero."
+  },
+  "teams": {
+    "Production Team": "Los productos de calidad son la marca de nuestro profesionalismo. Nuestro equipo dedicado — incluidos ingenieros senior — garantiza que cada producto cumpla con los más altos estándares mediante procesos de producción optimizados.",
+    "Design Team": "Excelencia en el diseño de expositores, destacando la estrategia de marca y las tendencias comerciales. Un equipo independiente y fuerte de diseño e I+D que transforma la visión del cliente en soluciones de exposición profesionales.",
+    "Sales Team": "Profesionales de proyectos senior con experiencia en grandes proyectos nacionales e internacionales. Ejecución rápida, trabajo en equipo eficiente, servicio global 24 horas, enfocado en el desarrollo del mercado final."
+  },
+  "cta": {
+    "title": "¿Listo para mejorar su showroom?",
+    "subtitle": "Reciba una cotización personalizada en 24 horas. Nuestros expertos le ayudarán a encontrar la solución de exposición perfecta para sus baldosas.",
+    "findRack": "Encuentre su expositor"
+  },
+  "series": {
+    "eyebrow": "Por categoría",
+    "title": "Soluciones de exposición por serie",
+    "description": "Seis series principales que cubren todos los formatos de baldosas, desde expositores de pared hasta expositores de pie.",
+    "browseAll": "Explorar las 7 series"
+  },
+  "footer": {
+    "tagline": "Fabricante profesional de expositores para baldosas, piedra y tarima. 55 modelos en 7 series, sirviendo a 80+ países en todo el mundo.",
+    "address": "Dirección",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Horario comercial",
+    "company": "Empresa",
+    "resources": "Recursos"
+  },
+  "featured": {
+    "eyebrow": "Expositores destacados",
+    "title": "Expositores más vendidos",
+    "description": "Productos reales de nuestro catálogo, listos para enviar. Cada expositor está diseñado para un rendimiento en showroom y durabilidad a largo plazo.",
+    "viewDetails": "Ver detalles",
+    "browseAll": "Explorar los {count} productos"
+  }
+}

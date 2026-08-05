@@ -1,0 +1,44 @@
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { LOCALES, isLocale, LOCALE_NAMES, type Locale } from '@/lib/i18n/config';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { I18nProvider } from '@/lib/i18n/I18nProvider';
+import { LangSetter } from '@/components/common/LangSetter';
+
+export const metadata: Metadata = {
+  alternates: {
+    languages: {
+      'en': '/en',
+      'fr': '/fr',
+      'de': '/de',
+      'it': '/it',
+      'es': '/es',
+      'x-default': '/en',
+    },
+  },
+};
+
+export function generateStaticParams() {  return LOCALES.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) {
+  if (!isLocale(params.locale)) {
+    notFound();
+  }
+
+  const locale = params.locale as Locale;
+  const dict = await getDictionary(locale);
+
+  return (
+    <I18nProvider locale={locale} dict={dict}>
+      <LangSetter locale={locale} />
+      {children}
+    </I18nProvider>
+  );
+}

@@ -1,0 +1,30 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { inquiryService } from '@/lib/services/inquiryService';
+import { trackingService } from '@/lib/services/trackingService';
+import { successResponse, errorResponse } from '@/types/api';
+import { requireAdmin } from '@/lib/auth';
+
+/**
+ * GET /api/admin/stats - Dashboard statistics for the admin panel.
+ */
+export async function GET(request: NextRequest) {
+  if (!(await requireAdmin(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const [inquiryStats, trackingStats] = await Promise.all([
+      inquiryService.getDashboardStats(),
+      trackingService.getStats(30),
+    ]);
+
+    return NextResponse.json(
+      successResponse({
+        inquiries: inquiryStats,
+        tracking: trackingStats,
+      })
+    );
+  } catch (error) {
+    console.error('GET /api/admin/stats error:', error);
+    return NextResponse.json(errorResponse(500, 'Failed to fetch stats'), { status: 500 });
+  }
+}

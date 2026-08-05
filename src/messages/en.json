@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "projects": "Projects",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "specFinder": "Spec Finder",
+    "compare": "Compare",
+    "getQuote": "Get a Quote"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "browseAll": "Browse All",
+    "requestQuote": "Request a Quote",
+    "browseProducts": "Browse Products",
+    "sendInquiry": "Send Inquiry",
+    "loading": "Loading...",
+    "search": "Search",
+    "noResults": "No results found",
+    "backToHome": "Back to Home",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "share": "Share",
+    "copyLink": "Copy Link",
+    "copied": "Copied!",
+    "followUs": "Follow Us",
+    "allRightsReserved": "All Rights Reserved",
+    "quickLinks": "Quick Links",
+    "productsMenu": "Products",
+    "contactUs": "Contact Us"
+  },
+  "hero": {
+    "badge": "Premium Tile Display Solutions Since 2008",
+    "title": "Display Racks That",
+    "titleHighlight": "Sell More Tiles",
+    "subtitle": "Professional display stands for tile, stone, wood flooring and mosaic. 55 proven SKUs across 7 series, engineered for showrooms that win customers.",
+    "ctaPrimary": "Explore Products",
+    "ctaSecondary": "Request a Quote",
+    "trust1": "18+ Years Experience",
+    "trust2": "55 Display Rack SKUs",
+    "trust3": "80+ Countries Served"
+  },
+  "about": {
+    "heroBadge": "Established 2008 · Xiamen, China",
+    "heroTitle": "About",
+    "heroTitleHighlight": "TSIANFAN",
+    "heroSubtitle": "China's benchmark enterprise for building-materials display props — the first service provider focused on stone, tile, and wood-flooring display R&D, production, and sales.",
+    "storyEyebrow": "Our Story",
+    "storyTitle": "18 Years of Display-Rack Excellence",
+    "storyP1": "TSIANFAN (Xiamen) Industry & Trade Co., Ltd. is located in Xiamen, the earliest special economic zone developed in China. Founded in 2008, it is the benchmark enterprise of China's building-materials display props and the first service provider focusing on stone, tile, wood-flooring display design, R&D, production, and sales.",
+    "storyP2": "80% of the company's products are sold to well-known brand companies in Europe and the United States. Our business covers the US, UK, Canada, France, Italy, Germany, and other developed countries. We have won the support and trust of many partners including TCE, NEOLITH, COLOR QUARTZ, CAESARSTONE, CERALSIO, VICOSTONE, VIATERA, COSMOS, SOCI and 100+ well-known brands.",
+    "storyP3": "We have complete iron, wood production and manufacturing equipment, large-scale automation professional equipment, and a supporting powder coating line. From pre-structural design, process development, and mold production to shipment and after-sales service, we provide professional one-stop solutions.",
+    "cultureEyebrow": "Corporate Culture",
+    "cultureTitle": "Values That Drive Us Forward",
+    "cultureSubtitle": "\"People-oriented, the pursuit of excellence, creating value for society.\"",
+    "timelineEyebrow": "Our Journey",
+    "timelineTitle": "Enterprise History",
+    "timelineSubtitle": "To move forward with one heart and one mind toward the goal is an insatiable faith and the spirit of perfection.",
+    "teamsEyebrow": "Our People",
+    "teamsTitle": "Professional Teams",
+    "teamsSubtitle": "Adhering to \"practical, convenient, honest, innovative\" business philosophy to serve customers worldwide.",
+    "manufacturingEyebrow": "Manufacturing",
+    "manufacturingTitle": "Production Capabilities",
+    "manufacturingSubtitle": "A 10,000+ sqm production workshop with complete iron and wood manufacturing equipment, large-scale automation, and an in-house powder coating line.",
+    "certEyebrow": "Quality Assurance",
+    "certTitle": "Certifications & Patents",
+    "certSubtitle": "Certified quality systems and recognized industry credentials.",
+    "partnersEyebrow": "Trusted By",
+    "partnersTitle": "Partner Brands",
+    "partnersSubtitle": "80% of our products are exported to well-known brand companies in Europe and America. Our customers include 100+ well-known brands worldwide.",
+    "ctaTitle": "Ready to Elevate Your Showroom?",
+    "ctaSubtitle": "From concept to installation, TSIANFAN provides professional one-stop display solutions tailored to your brand. Get in touch today."
+  },
+  "culture": {
+    "Vision": "Create the world's first display-props brand.",
+    "Mission": "Make display simpler, make products more beautiful.",
+    "Business Philosophy": "Innovation, customer first, high efficiency, mutual benefit and win-win.",
+    "Service View": "Know better than the customer what the customer needs most.",
+    "Enterprise Spirit": "Every effort will have success; every effort brings different perceptions and gains.",
+    "Team Vision": "The team grows together to achieve everyone's dream.",
+    "Purpose": "People-oriented, the pursuit of excellence, creating value for society.",
+    "Core Values": "Teamwork, gratitude and sharing, integrity, quality first."
+  },
+  "teams": {
+    "Production Team": "Quality products are the hallmark of our professionalism. Our dedicated team — including senior engineers — ensures each product meets the highest standards through optimized production processes.",
+    "Design Team": "Showcase design excellence, highlighting brand strategy and leading business trends. An independent, strong design and R&D team that transforms client vision into professional display solutions.",
+    "Sales Team": "Senior project professionals with experience in large-scale domestic and international projects. Fast execution, efficient teamwork, 24-hour global service, focused on end-market development."
+  },
+  "cta": {
+    "title": "Ready to Elevate Your Showroom?",
+    "subtitle": "Get a personalized quote within 24 hours. Our experts will help you find the perfect display solution for your tiles.",
+    "findRack": "Find Your Rack"
+  },
+  "series": {
+    "eyebrow": "By Category",
+    "title": "Display Solutions by Series",
+    "description": "Six core series covering every tile format, from wall sliding racks to floor-standing displays.",
+    "browseAll": "Browse All 7 Series"
+  },
+  "footer": {
+    "tagline": "Professional manufacturer of tile, stone and flooring display stands. 55 SKUs across 7 series, serving 80+ countries worldwide.",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Business Hours",
+    "company": "Company",
+    "resources": "Resources"
+  },
+  "featured": {
+    "eyebrow": "Featured Displays",
+    "title": "Best-Selling Display Racks",
+    "description": "Real products from our catalog, ready to ship. Each rack is engineered for showroom performance and long-term durability.",
+    "viewDetails": "View Details",
+    "browseAll": "Browse All {count} Products"
+  }
+}

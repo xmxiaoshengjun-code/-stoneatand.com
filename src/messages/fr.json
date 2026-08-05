@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "products": "Produits",
+    "about": "À propos",
+    "projects": "Projets",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "specFinder": "Assistant technique",
+    "compare": "Comparer",
+    "getQuote": "Demander un devis"
+  },
+  "common": {
+    "learnMore": "En savoir plus",
+    "viewAll": "Voir tout",
+    "browseAll": "Parcourir tout",
+    "requestQuote": "Demander un devis",
+    "browseProducts": "Parcourir les produits",
+    "sendInquiry": "Envoyer une demande",
+    "loading": "Chargement...",
+    "search": "Rechercher",
+    "noResults": "Aucun résultat trouvé",
+    "backToHome": "Retour à l'accueil",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page",
+    "of": "sur",
+    "share": "Partager",
+    "copyLink": "Copier le lien",
+    "copied": "Copié !",
+    "followUs": "Suivez-nous",
+    "allRightsReserved": "Tous droits réservés",
+    "quickLinks": "Liens rapides",
+    "productsMenu": "Produits",
+    "contactUs": "Contactez-nous"
+  },
+  "hero": {
+    "badge": "Solutions d'affichage premium pour carreaux depuis 2008",
+    "title": "Des présentoirs qui",
+    "titleHighlight": "vendent plus de carreaux",
+    "subtitle": "Présentoirs professionnels pour carreaux, pierre, parquet et mosaïque. 55 références en 7 séries, conçus pour des showrooms qui convainquent.",
+    "ctaPrimary": "Explorer les produits",
+    "ctaSecondary": "Demander un devis",
+    "trust1": "18+ ans d'expérience",
+    "trust2": "55 modèles de présentoirs",
+    "trust3": "80+ pays desservis"
+  },
+  "about": {
+    "heroBadge": "Fondée en 2008 · Xiamen, Chine",
+    "heroTitle": "À propos de",
+    "heroTitleHighlight": "TSIANFAN",
+    "heroSubtitle": "L'entreprise de référence en Chine pour les présentoirs de matériaux de construction — le premier prestataire spécialisé dans la conception, la R&D, la production et la vente de présentoirs pour pierre, carreaux et parquet.",
+    "storyEyebrow": "Notre histoire",
+    "storyTitle": "18 ans d'excellence en présentoirs",
+    "storyP1": "TSIANFAN (Xiamen) Industry & Trade Co., Ltd. est située à Xiamen, la première zone économique spéciale développée en Chine. Fondée en 2008, c'est l'entreprise de référence des présentoirs pour matériaux de construction en Chine et le premier prestataire spécialisé dans la conception, la R&D, la production et la vente de présentoirs pour pierre, carreaux et parquet.",
+    "storyP2": "80% des produits de l'entreprise sont vendus à des marques de renom en Europe et aux États-Unis. Notre activité couvre les États-Unis, le Royaume-Uni, le Canada, la France, l'Italie, l'Allemagne et d'autres pays développés. Nous avons gagné la confiance de nombreux partenaires, dont TCE, NEOLITH, COLOR QUARTZ, CAESARSTONE, CERALSIO, VICOSTONE, VIATERA, COSMOS, SOCI et plus de 100 marques reconnues.",
+    "storyP3": "Nous disposons d'équipements complets de production de fer et de bois, d'équipements d'automatisation à grande échelle et d'une ligne de revêtement par poudrage. De la conception préliminaire au développement de procédés, en passant par la production de moules jusqu'à l'expédition et le service après-vente, nous offrons des solutions globales professionnelles.",
+    "cultureEyebrow": "Culture d'entreprise",
+    "cultureTitle": "Des valeurs qui nous font avancer",
+    "cultureSubtitle": "« Axé sur l'humain, recherche de l'excellence, création de valeur pour la société. »",
+    "timelineEyebrow": "Notre parcours",
+    "timelineTitle": "Histoire de l'entreprise",
+    "timelineSubtitle": "Avancer d'un seul cœur et d'un seul esprit vers l'objectif est une foi insatiable et l'esprit de la perfection.",
+    "teamsEyebrow": "Notre équipe",
+    "teamsTitle": "Équipes professionnelles",
+    "teamsSubtitle": "En adhérant à la philosophie « pratique, pratique, honnête, innovante » pour servir les clients du monde entier.",
+    "manufacturingEyebrow": "Fabrication",
+    "manufacturingTitle": "Capacités de production",
+    "manufacturingSubtitle": "Un atelier de production de plus de 10 000 m² avec équipements complets de fabrication de fer et de bois, automatisation à grande échelle et ligne de revêtement par poudrage intégrée.",
+    "certEyebrow": "Assurance qualité",
+    "certTitle": "Certifications et brevets",
+    "certSubtitle": "Systèmes de management de la qualité certifiés et credentials reconnus par l'industrie.",
+    "partnersEyebrow": "Ils nous font confiance",
+    "partnersTitle": "Marques partenaires",
+    "partnersSubtitle": "80% de nos produits sont exportés vers des marques de renom en Europe et en Amérique. Nos clients incluent plus de 100 marques reconnues dans le monde entier.",
+    "ctaTitle": "Prêt à valoriser votre showroom ?",
+    "ctaSubtitle": "Du concept à l'installation, TSIANFAN offre des solutions d'affichage globales et professionnelles, adaptées à votre marque. Contactez-nous dès aujourd'hui."
+  },
+  "culture": {
+    "Vision": "Créer la première marque mondiale de présentoirs.",
+    "Mission": "Simplifier l'affichage, sublimer les produits.",
+    "Business Philosophy": "Innovation, client d'abord, efficacité et économie d'énergie, bénéfice mutuel et gagnant-gagnant.",
+    "Service View": "Mieux connaître que le client ce dont le client a le plus besoin.",
+    "Enterprise Spirit": "Chaque effort porte ses fruits ; chaque effort apporte perceptions et gains différents.",
+    "Team Vision": "L'équipe grandit ensemble pour réaliser le rêve de chacun.",
+    "Purpose": "Axé sur l'humain, recherche de l'excellence, création de valeur pour la société.",
+    "Core Values": "Esprit d'équipe, gratitude et partage, intégrité, qualité d'abord."
+  },
+  "teams": {
+    "Production Team": "Des produits de qualité sont la marque de notre professionnalisme. Notre équipe dédiée — comprenant des ingénieurs seniors — garantit que chaque produit répond aux normes les plus élevées grâce à des processus de production optimisés.",
+    "Design Team": "L'excellence en conception de présentoirs, mettant en valeur la stratégie de marque et les tendances commerciales. Une équipe de conception et de R&D indépendante et forte qui transforme la vision du client en solutions d'affichage professionnelles.",
+    "Sales Team": "Des professionnels de projet seniors avec expérience dans de grands projets nationaux et internationaux. Exécution rapide, travail d'équipe efficace, service mondial 24h/24, axé sur le développement du marché final."
+  },
+  "cta": {
+    "title": "Prêt à valoriser votre showroom ?",
+    "subtitle": "Recevez un devis personnalisé sous 24 heures. Nos experts vous aideront à trouver la solution d'affichage idéale pour vos carreaux.",
+    "findRack": "Trouver votre présentoir"
+  },
+  "series": {
+    "eyebrow": "Par catégorie",
+    "title": "Solutions d'affichage par série",
+    "description": "Six séries principales couvrant tous les formats de carreaux, des présentoirs muraux aux présentoirs au sol.",
+    "browseAll": "Parcourir les 7 séries"
+  },
+  "footer": {
+    "tagline": "Fabricant professionnel de présentoirs pour carreaux, pierre et parquet. 55 références en 7 séries, au service de 80+ pays dans le monde.",
+    "address": "Adresse",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Heures d'ouverture",
+    "company": "Entreprise",
+    "resources": "Ressources"
+  },
+  "featured": {
+    "eyebrow": "Affichage en vedette",
+    "title": "Etagères d’affichage les plus vendues",
+    "description": "Des produits réels de notre catalogue, prêts à expédier. Chaque étagère est conçue pour des performances d’exposition et une durabilité à long terme.",
+    "viewDetails": "Voir les détails",
+    "browseAll": "Parcourir les {count} produits"
+  }
+}

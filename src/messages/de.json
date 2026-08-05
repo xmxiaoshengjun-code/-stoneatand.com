@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "products": "Produkte",
+    "about": "Über uns",
+    "projects": "Projekte",
+    "contact": "Kontakt",
+    "faq": "FAQ",
+    "specFinder": "Spezifikationsfinder",
+    "compare": "Vergleichen",
+    "getQuote": "Angebot anfordern"
+  },
+  "common": {
+    "learnMore": "Mehr erfahren",
+    "viewAll": "Alle ansehen",
+    "browseAll": "Alle durchsuchen",
+    "requestQuote": "Angebot anfordern",
+    "browseProducts": "Produkte durchsuchen",
+    "sendInquiry": "Anfrage senden",
+    "loading": "Wird geladen...",
+    "search": "Suchen",
+    "noResults": "Keine Ergebnisse gefunden",
+    "backToHome": "Zurück zur Startseite",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "page": "Seite",
+    "of": "von",
+    "share": "Teilen",
+    "copyLink": "Link kopieren",
+    "copied": "Kopiert!",
+    "followUs": "Folgen Sie uns",
+    "allRightsReserved": "Alle Rechte vorbehalten",
+    "quickLinks": "Schnelllinks",
+    "productsMenu": "Produkte",
+    "contactUs": "Kontakt"
+  },
+  "hero": {
+    "badge": "Premium Fliesen-Präsentationssysteme seit 2008",
+    "title": "Präsentationssysteme, die",
+    "titleHighlight": "mehr Fliesen verkaufen",
+    "subtitle": "Professionelle Präsentationsständer für Fliesen, Stein, Holzboden und Mosaik. 55 bewährte Artikel in 7 Serien, entwickelt für Showrooms, die Kunden überzeugen.",
+    "ctaPrimary": "Produkte entdecken",
+    "ctaSecondary": "Angebot anfordern",
+    "trust1": "18+ Jahre Erfahrung",
+    "trust2": "55 Präsentationsständer-Modelle",
+    "trust3": "80+ Länder betreut"
+  },
+  "about": {
+    "heroBadge": "Gegründet 2008 · Xiamen, China",
+    "heroTitle": "Über",
+    "heroTitleHighlight": "TSIANFAN",
+    "heroSubtitle": "Chinas Benchmark-Unternehmen für Präsentationssysteme für Baumaterialien — der erste Dienstleister mit Schwerpunkt auf Design, F&E, Produktion und Vertrieb von Stein-, Fliesen- und Holzboden-Präsentationssystemen.",
+    "storyEyebrow": "Unsere Geschichte",
+    "storyTitle": "18 Jahre Exzellenz bei Präsentationssystemen",
+    "storyP1": "TSIANFAN (Xiamen) Industry & Trade Co., Ltd. hat ihren Sitz in Xiamen, der ersten Sonderwirtschaftszone Chinas. Das 2008 gegründete Unternehmen ist Chinas Benchmark für Präsentationssysteme für Baumaterialien und der erste Dienstleister, der sich auf Design, F&E, Produktion und Vertrieb von Stein-, Fliesen- und Holzboden-Präsentationssystemen konzentriert.",
+    "storyP2": "80% der Produkte des Unternehmens werden an renommierte Markenunternehmen in Europa und den USA verkauft. Unser Geschäft umfasst die USA, Großbritannien, Kanada, Frankreich, Italien, Deutschland und andere entwickelte Länder. Wir haben das Vertrauen zahlreicher Partner gewonnen, darunter TCE, NEOLITH, COLOR QUARTZ, CAESARSTONE, CERALSIO, VICOSTONE, VIATERA, COSMOS, SOCI und über 100 bekannte Marken.",
+    "storyP3": "Wir verfügen über vollständige Eisen- und Holzproduktionsanlagen, groß angelegte Automatisierungsgeräte und eine Pulverbeschichtungsanlage. Von der Vorstrukturplanung über Prozessentwicklung und Formenbau bis hin zu Versand und Kundendienst bieten wir professionelle Komplettlösungen.",
+    "cultureEyebrow": "Unternehmenskultur",
+    "cultureTitle": "Werte, die uns vorantreiben",
+    "cultureSubtitle": "„Menschenorientiert, Streben nach Exzellenz, Wertschaffung für die Gesellschaft.“",
+    "timelineEyebrow": "Unser Weg",
+    "timelineTitle": "Unternehmensgeschichte",
+    "timelineSubtitle": "Mit einem Herzen und einem Verstand auf das Ziel zuzugehen, ist ein unstillbarer Glaube und der Geist der Perfektion.",
+    "teamsEyebrow": "Unsere Mitarbeiter",
+    "teamsTitle": "Professionelle Teams",
+    "teamsSubtitle": "Der Geschäftsphilosophie „praktisch, bequem, ehrlich, innovativ“ folgend, um Kunden weltweit zu dienen.",
+    "manufacturingEyebrow": "Fertigung",
+    "manufacturingTitle": "Produktionskapazitäten",
+    "manufacturingSubtitle": "Eine Produktionswerkstatt von über 10.000 m² mit vollständigen Eisen- und Holzproduktionsanlagen, groß angelegter Automatisierung und einer hauseigenen Pulverbeschichtungsanlage.",
+    "certEyebrow": "Qualitätssicherung",
+    "certTitle": "Zertifikate und Patente",
+    "certSubtitle": "Zertifizierte Qualitätsmanagementsysteme und anerkannte Branchen-Zertifizierungen.",
+    "partnersEyebrow": "Vertrauen von",
+    "partnersTitle": "Partnermarken",
+    "partnersSubtitle": "80% unserer Produkte werden an renommierte Markenunternehmen in Europa und Amerika exportiert. Unsere Kunden umfassen über 100 bekannte Marken weltweit.",
+    "ctaTitle": "Bereit, Ihren Showroom aufzuwerten?",
+    "ctaSubtitle": "Vom Konzept bis zur Installation bietet TSIANFAN professionelle Komplettlösungen für Präsentationssysteme, die auf Ihre Marke zugeschnitten sind. Kontaktieren Sie uns noch heute."
+  },
+  "culture": {
+    "Vision": "Die weltweit erste Marke für Präsentationssysteme schaffen.",
+    "Mission": "Präsentation einfacher, Produkte schöner machen.",
+    "Business Philosophy": "Innovation, Kunde zuerst, hocheffizient und energiesparend, beidseitiger Nutzen und Win-Win.",
+    "Service View": "Besser als der Kunde wissen, was der Kunde am meisten braucht.",
+    "Enterprise Spirit": "Jede Anstrengung führt zum Erfolg; jede Anstrengung bringt unterschiedliche Erkenntnisse und Gewinne.",
+    "Team Vision": "Das Team wächst zusammen, um den Traum jedes Einzelnen zu verwirklichen.",
+    "Purpose": "Menschenorientiert, Streben nach Exzellenz, Wertschaffung für die Gesellschaft.",
+    "Core Values": "Teamwork, Dankbarkeit und Teilen, Integrität, Qualität zuerst."
+  },
+  "teams": {
+    "Production Team": "Qualitätsprodukte sind das Zeichen unseres Professionalismus. Unser engagiertes Team — einschließlich leitender Ingenieure — stellt sicher, dass jedes Produkt durch optimierte Produktionsprozesse die höchsten Standards erfüllt.",
+    "Design Team": "Exzellenz in der Präsentationsgestaltung, Hervorhebung der Markenstrategie und führende Geschäftstrends. Ein unabhängiges, starkes Design- und F&E-Team, das die Vision des Kunden in professionelle Präsentationslösungen umsetzt.",
+    "Sales Team": "Erfahrene Projektprofis mit Erfahrung in großen nationalen und internationalen Projekten. Schnelle Ausführung, effiziente Teamarbeit, 24-Stunden-Service weltweit, fokussiert auf Endmarktentwicklung."
+  },
+  "cta": {
+    "title": "Bereit, Ihren Showroom aufzuwerten?",
+    "subtitle": "Erhalten Sie innerhalb von 24 Stunden ein persönliches Angebot. Unsere Experten helfen Ihnen, die perfekte Präsentationslösung für Ihre Fliesen zu finden.",
+    "findRack": "Präsentationsständer finden"
+  },
+  "series": {
+    "eyebrow": "Nach Kategorie",
+    "title": "Präsentationslösungen nach Serie",
+    "description": "Sechs Hauptserien, die jedes Fliesenformat abdecken, von Wandgleitständern bis hin zu Bodenständern.",
+    "browseAll": "Alle 7 Serien durchsuchen"
+  },
+  "footer": {
+    "tagline": "Professioneller Hersteller von Präsentationsständern für Fliesen, Stein und Holzboden. 55 Modelle in 7 Serien, für 80+ Länder weltweit.",
+    "address": "Adresse",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Geschäftszeiten",
+    "company": "Unternehmen",
+    "resources": "Ressourcen"
+  },
+  "featured": {
+    "eyebrow": "Empfohlene Präsentationen",
+    "title": "Bestverkaufende Präsentationsständer",
+    "description": "Echte Produkte aus unserem Katalog, versandfertig. Jeder Ständer ist für Showroom-Leistung und langfristige Haltbarkeit konstruiert.",
+    "viewDetails": "Details ansehen",
+    "browseAll": "Alle {count} Produkte durchsuchen"
+  }
+}

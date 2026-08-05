@@ -1,0 +1,80 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files (included for team sharing - dev config only)
+# .env
+# .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# prisma
+/prisma/migrations/dev/
+
+# database (include seed data for team sharing)
+*.db-journal
+# Keep the main seed database
+# *.db
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode
+.idea
+
+# uploaded images - include for team sharing
+/public/datasheets/*
+!/public/datasheets/.gitkeep
+
+# temp build artifacts (do not commit)
+/static-site/
+/_next_old_*/
+/.next_backup_*/
+/src/app/_api_backup_for_export/
+/src/app/_api_export_empty/
+/src/app/api.disabled/
+*.bak
+*.bak2
+*.disabled
+
+# npm cache and temp files
+/npm-cache/
+/build_output*.txt
+/check_ts.txt
+/db_verify.txt
+/dev_test*.txt
+/install_log.txt
+/dev.db
+*.log
+
+# temp output files
+npm-install-log*.txt
+npm-output*.txt
+tsc_output*.txt
+tsc_result*.txt
+prisma_gen_output*.txt
+test-write.txt
+prisma/test-write.txt

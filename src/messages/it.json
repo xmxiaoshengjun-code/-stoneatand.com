@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Prodotti",
+    "about": "Chi siamo",
+    "projects": "Progetti",
+    "contact": "Contatti",
+    "faq": "FAQ",
+    "specFinder": "Ricerca specifiche",
+    "compare": "Confronta",
+    "getQuote": "Richiedi preventivo"
+  },
+  "common": {
+    "learnMore": "Scopri di più",
+    "viewAll": "Vedi tutto",
+    "browseAll": "Sfoglia tutto",
+    "requestQuote": "Richiedi preventivo",
+    "browseProducts": "Sfoglia prodotti",
+    "sendInquiry": "Invia richiesta",
+    "loading": "Caricamento...",
+    "search": "Cerca",
+    "noResults": "Nessun risultato trovato",
+    "backToHome": "Torna alla home",
+    "previous": "Precedente",
+    "next": "Successivo",
+    "page": "Pagina",
+    "of": "di",
+    "share": "Condividi",
+    "copyLink": "Copia link",
+    "copied": "Copiato!",
+    "followUs": "Seguici",
+    "allRightsReserved": "Tutti i diritti riservati",
+    "quickLinks": "Link rapidi",
+    "productsMenu": "Prodotti",
+    "contactUs": "Contattaci"
+  },
+  "hero": {
+    "badge": "Sistemi di esposizione premium per piastrelle dal 2008",
+    "title": "Espositori che",
+    "titleHighlight": "vendono più piastrelle",
+    "subtitle": "Supporti professionali per piastrelle, pietra, pavimenti in legno e mosaico. 55 modelli in 7 serie, progettati per showroom che conquistano i clienti.",
+    "ctaPrimary": "Esplora prodotti",
+    "ctaSecondary": "Richiedi preventivo",
+    "trust1": "18+ anni di esperienza",
+    "trust2": "55 modelli di espositori",
+    "trust3": "80+ paesi serviti"
+  },
+  "about": {
+    "heroBadge": "Fondata nel 2008 · Xiamen, Cina",
+    "heroTitle": "Chi siamo",
+    "heroTitleHighlight": "TSIANFAN",
+    "heroSubtitle": "L'azienda di riferimento in Cina per espositori di materiali da costruzione — il primo fornitore specializzato in design, R&S, produzione e vendita di espositori per pietra, piastrelle e pavimenti in legno.",
+    "storyEyebrow": "La nostra storia",
+    "storyTitle": "18 anni di eccellenza negli espositori",
+    "storyP1": "TSIANFAN (Xiamen) Industry & Trade Co., Ltd. si trova a Xiamen, la prima zona economica speciale sviluppata in Cina. Fondata nel 2008, è l'azienda di riferimento per gli espositori di materiali da costruzione in Cina e il primo fornitore specializzato in design, R&S, produzione e vendita di espositori per pietra, piastrelle e pavimenti in legno.",
+    "storyP2": "80% dei prodotti dell'azienda è venduto a marchi di rilievo in Europa e negli Stati Uniti. La nostra attività copre Stati Uniti, Regno Unito, Canada, Francia, Italia, Germania e altri paesi sviluppati. Abbiamo guadagnato la fiducia di numerosi partner, tra cui TCE, NEOLITH, COLOR QUARTZ, CAESARSTONE, CERALSIO, VICOSTONE, VIATERA, COSMOS, SOCI e oltre 100 marchi rinomati.",
+    "storyP3": "Disponiamo di attrezzature complete per la produzione di ferro e legno, impianti di automazione su larga scala e una linea di verniciatura a polvere. Dalla progettazione preliminare, allo sviluppo dei processi e alla produzione di stampi, fino alla spedizione e all'assistenza post-vendita, offriamo soluzioni complete professionali.",
+    "cultureEyebrow": "Cultura aziendale",
+    "cultureTitle": "Valori che ci guidano",
+    "cultureSubtitle": "\"Orientati alle persone, ricerca dell'eccellenza, creazione di valore per la società.\"",
+    "timelineEyebrow": "Il nostro percorso",
+    "timelineTitle": "Storia dell'azienda",
+    "timelineSubtitle": "Avanzare con un solo cuore e una sola mente verso l'obiettivo è una fede insaziabile e lo spirito della perfezione.",
+    "teamsEyebrow": "Le nostre persone",
+    "teamsTitle": "Team professionali",
+    "teamsSubtitle": "Adriendo alla filosofia aziendale \"pratico, conveniente, onesto, innovativo\" per servire i clienti in tutto il mondo.",
+    "manufacturingEyebrow": "Produzione",
+    "manufacturingTitle": "Capacità produttive",
+    "manufacturingSubtitle": "Un'officina di produzione di oltre 10.000 m² con attrezzature complete per la lavorazione di ferro e legno, automazione su larga scala e una linea di verniciatura a polvere interna.",
+    "certEyebrow": "Garanzia di qualità",
+    "certTitle": "Certificazioni e brevetti",
+    "certSubtitle": "Sistemi di gestione della qualità certificati e credenziali riconosciute dal settore.",
+    "partnersEyebrow": "Scelti da",
+    "partnersTitle": "Marchi partner",
+    "partnersSubtitle": "80% dei nostri prodotti è esportato verso marchi di rilievo in Europa e America. I nostri clienti includono oltre 100 marchi rinomati in tutto il mondo.",
+    "ctaTitle": "Pronti a valorizzare il vostro showroom?",
+    "ctaSubtitle": "Dal concept all'installazione, TSIANFAN offre soluzioni di esposizione complete e professionali, su misura per il vostro marchio. Contattateci oggi."
+  },
+  "culture": {
+    "Vision": "Creare il primo marchio mondiale di espositori.",
+    "Mission": "Rendere l'esposizione più semplice, i prodotti più belli.",
+    "Business Philosophy": "Innovazione, cliente primo, alta efficienza e risparmio energetico, beneficio reciproco e win-win.",
+    "Service View": "Conoscere meglio del cliente ciò di cui il cliente ha più bisogno.",
+    "Enterprise Spirit": "Ogni sforzo avrà successo; ogni sforzo porta percezioni e guadagni diversi.",
+    "Team Vision": "Il team cresce insieme per realizzare il sogno di ciascuno.",
+    "Purpose": "Orientati alle persone, ricerca dell'eccellenza, creazione di valore per la società.",
+    "Core Values": "Lavoro di squadra, gratitudine e condivisione, integrità, qualità prima."
+  },
+  "teams": {
+    "Production Team": "Prodotti di qualità sono il segno del nostro professionismo. Il nostro team dedicato — inclusi ingegneri senior — garantisce che ogni prodotto soddisfi i più alti standard attraverso processi di produzione ottimizzati.",
+    "Design Team": "Eccellenza nella progettazione di espositori, evidenziando la strategia del marchio e le tendenze commerciali. Un team indipendente e forte di design e R&S che trasforma la visione del cliente in soluzioni di esposizione professionali.",
+    "Sales Team": "Professionisti di progetto senior con esperienza in grandi progetti nazionali e internazionali. Esecuzione rapida, lavoro di squadra efficiente, servizio globale 24 ore, focalizzato sullo sviluppo del mercato finale."
+  },
+  "cta": {
+    "title": "Pronti a valorizzare il vostro showroom?",
+    "subtitle": "Ricevete un preventivo personalizzato entro 24 ore. I nostri esperti vi aiuteranno a trovare la soluzione di esposizione perfetta per le vostre piastrelle.",
+    "findRack": "Trova il tuo espositore"
+  },
+  "series": {
+    "eyebrow": "Per categoria",
+    "title": "Soluzioni di esposizione per serie",
+    "description": "Sei serie principali che coprono ogni formato di piastrella, dagli espositori a scorrimento murale agli espositori a pavimento.",
+    "browseAll": "Sfoglia tutte le 7 serie"
+  },
+  "footer": {
+    "tagline": "Produttore professionale di espositori per piastrelle, pietra e pavimenti in legno. 55 modelli in 7 serie, al servizio di 80+ paesi in tutto il mondo.",
+    "address": "Indirizzo",
+    "email": "Email",
+    "phone": "Telefono",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Orari di lavoro",
+    "company": "Azienda",
+    "resources": "Risorse"
+  },
+  "featured": {
+    "eyebrow": "Espositori in evidenza",
+    "title": "Espositori più venduti",
+    "description": "Prodotti reali dal nostro catalogo, pronti per la spedizione. Ogni espositore è progettato per prestazioni in showroom e durata nel tempo.",
+    "viewDetails": "Vedi dettagli",
+    "browseAll": "Sfoglia tutti i {count} prodotti"
+  }
+}
