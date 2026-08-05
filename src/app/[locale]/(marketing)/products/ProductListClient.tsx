@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 import { useProducts } from '@/hooks/useProducts';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { FilterPanel } from '@/components/product/FilterPanel';
@@ -10,23 +10,39 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function ProductListClient() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const params = {
     series: searchParams.get('series') || undefined,
     panelSize: searchParams.get('panelSize') || undefined,
     panelThickness: searchParams.get('panelThickness') || undefined,
     keyword: searchParams.get('keyword') || undefined,
-    page: Number(searchParams.get('page')) || 1,
+    page: parseInt(searchParams.get('page') || '1', 10) || 1,
     pageSize: 12,
     sort: searchParams.get('sort') || 'sortOrder',
   };
 
   const { products, total, totalPages, isLoading } = useProducts(params);
 
-  const updatePage = (page: number) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('page', String(page));
-    window.location.href = url.toString();
+  // Clamp current page to valid range [1, totalPages] to prevent
+  // out-of-bounds page values from showing Prev/Next incorrectly.
+  const currentPage =
+    totalPages > 0 ? Math.min(Math.max(params.page, 1), totalPages) : Math.max(params.page, 1);
+
+  /**
+   * Builds a URL for the given page number, preserving all existing
+   * search params (series, panelSize, etc.) and only updating `page`.
+   * Page 1 omits the `page` param for a clean URL.
+   */
+  const buildPageUrl = (page: number): string => {
+    const urlParams = new URLSearchParams(searchParams.toString());
+    if (page <= 1) {
+      urlParams.delete('page');
+    } else {
+      urlParams.set('page', String(page));
+    }
+    const qs = urlParams.toString();
+    return qs ? `${pathname}?${qs}` : pathname;
   };
 
   return (
@@ -64,9 +80,9 @@ export function ProductListClient() {
           <div className="mt-8">
             <Pagination>
               <PaginationContent>
-                {params.page > 1 && (
+                {currentPage > 1 && (
                   <PaginationItem>
-                    <PaginationPrevious onClick={() => updatePage(params.page - 1)} />
+                    <PaginationPrevious href={buildPageUrl(currentPage - 1)} />
                   </PaginationItem>
                 )}
                 {Array.from({ length: totalPages }).map((_, i) => {
@@ -74,13 +90,13 @@ export function ProductListClient() {
                   if (
                     page === 1 ||
                     page === totalPages ||
-                    (page >= params.page - 1 && page <= params.page + 1)
+                    (page >= currentPage - 1 && page <= currentPage + 1)
                   ) {
                     return (
                       <PaginationItem key={page}>
                         <PaginationLink
-                          isActive={page === params.page}
-                          onClick={() => updatePage(page)}
+                          isActive={page === currentPage}
+                          href={buildPageUrl(page)}
                         >
                           {page}
                         </PaginationLink>
@@ -89,9 +105,9 @@ export function ProductListClient() {
                   }
                   return null;
                 })}
-                {params.page < totalPages && (
+                {currentPage < totalPages && (
                   <PaginationItem>
-                    <PaginationNext onClick={() => updatePage(params.page + 1)} />
+                    <PaginationNext href={buildPageUrl(currentPage + 1)} />
                   </PaginationItem>
                 )}
               </PaginationContent>
