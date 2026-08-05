@@ -60,6 +60,13 @@ next-env.d.ts
 *.bak2
 *.disabled
 
+# temp deployment scripts (one-time use, no value for team)
+scripts/fix-routes.py
+scripts/restore-routes.py
+scripts/mirror-site.py
+scripts/post-process-static.py
+scripts/fix-assets.py
+
 # npm cache and temp files
 /npm-cache/
 /build_output*.txt
