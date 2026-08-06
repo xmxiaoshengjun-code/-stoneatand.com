@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { categoryService } from '@/lib/services/categoryService';
 import { parseDimensionRange, parseThickness } from '@/lib/utils';
 import type { Prisma } from '@prisma/client';
 import type { Product, ProductListResponse, ProductFilterParams, SpecFinderResult, SpecFinderParams } from '@/types/product';
@@ -28,7 +29,34 @@ export class ProductService {
     };
 
     if (series) {
-      where.series = { slug: series };
+      // Look up the series by slug to determine if it's a parent or leaf.
+      const seriesRows = await prisma.$queryRawUnsafe<
+        Array<{ id: bigint; parentId: number | null }>
+      >('SELECT id, parentId FROM Series WHERE slug = ?', series);
+
+      if (seriesRows.length > 0) {
+        const sid = Number(seriesRows[0].id);
+
+        // Check if this series has children (i.e., it's a parent category).
+        const childRows = await prisma.$queryRawUnsafe<Array<{ id: bigint }>>(
+          'SELECT id FROM Series WHERE parentId = ?',
+          sid
+        );
+
+        if (childRows.length > 0) {
+          // Parent category — get all descendant IDs (including self) and filter by seriesId.
+          const allIds = await categoryService.getDescendantIds(sid);
+          where.seriesId = { in: allIds };
+          // Remove any stale series relation filter to avoid conflict.
+          delete where.series;
+        } else {
+          // Leaf series — filter by slug relation.
+          where.series = { slug: series };
+        }
+      } else {
+        // Slug not found — fall back to exact slug match (returns 0 results).
+        where.series = { slug: series };
+      }
     }
     if (panelSize) {
       where.panelSize = { contains: panelSize };

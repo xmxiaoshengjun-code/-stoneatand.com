@@ -19,11 +19,27 @@ export function ProductForm({ productId }: { productId?: number }) {
   const [seriesList, setSeriesList] = useState<Array<{ id: number; name: string }>>([]);
 
   useEffect(() => {
-    // Fetch series
-    fetch('/api/products?pageSize=100')
+    // Fetch series tree from categories API (includes parent + leaf series)
+    fetch('/api/admin/categories')
       .then((r) => r.json())
-      .then(() => {
-        // We'll use SERIES_INFO constants for series mapping
+      .then((data) => {
+        const tree = data?.data?.tree ?? [];
+        if (tree.length > 0) {
+          // Build flat list: parents first, then their children
+          const flat: Array<{ id: number; name: string }> = [];
+          for (const parent of tree) {
+            flat.push({ id: parent.id, name: parent.name });
+            for (const child of parent.children ?? []) {
+              flat.push({ id: child.id, name: `  └ ${child.name}` });
+            }
+          }
+          setSeriesList(flat);
+        } else {
+          // Fallback to SERIES_INFO constants
+          setSeriesList(SERIES_INFO.map((s, i) => ({ id: i + 1, name: s.name })));
+        }
+      })
+      .catch(() => {
         setSeriesList(SERIES_INFO.map((s, i) => ({ id: i + 1, name: s.name })));
       });
 

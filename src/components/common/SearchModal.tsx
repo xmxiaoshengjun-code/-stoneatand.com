@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { SERIES_INFO } from '@/lib/constants/series';
+import { PARENT_CATEGORIES } from '@/lib/constants/series';
 
 export function SearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [query, setQuery] = useState('');
@@ -64,19 +64,19 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
         </form>
         <div className="mt-4">
           <p className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
-            Browse by Series
+            Browse by Category
           </p>
           <div className="flex flex-wrap gap-2">
-            {SERIES_INFO.map((s) => (
+            {PARENT_CATEGORIES.map((cat) => (
               <button
-                key={s.slug}
+                key={cat.slug}
                 onClick={() => {
-                  router.push(`/products?series=${s.slug}`);
+                  router.push(`/products?series=${cat.slug}`);
                   onClose();
                 }}
                 className="rounded-md border px-3 py-1.5 text-sm text-gray-700 hover:border-brand-400 hover:text-brand-400"
               >
-                {s.name}
+                {cat.name}
               </button>
             ))}
           </div>

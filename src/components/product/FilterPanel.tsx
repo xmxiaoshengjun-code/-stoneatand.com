@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import useSWR from 'swr';
-import { SERIES_INFO } from '@/lib/constants/series';
+import { SERIES_INFO, PARENT_CATEGORIES } from '@/lib/constants/series';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -50,8 +50,14 @@ export function FilterPanel() {
 
   const hasFilters = currentSeries || currentThickness || currentKeyword;
 
-  // Build flat list of all series slugs from SERIES_INFO for fallback
-  const allSeriesSlugs = SERIES_INFO.map((s) => s.slug);
+  // Build flat list of all parent category slugs for fallback
+  const allParentSlugs = PARENT_CATEGORIES.map((c) => c.slug);
+
+  // Group leaf series by parent for fallback display
+  const seriesByParent = PARENT_CATEGORIES.map((parent) => ({
+    parent,
+    children: SERIES_INFO.filter((s) => s.parentSlug === parent.slug),
+  }));
 
   return (
     <div className="space-y-4 rounded-lg border bg-white p-4">
@@ -84,11 +90,11 @@ export function FilterPanel() {
                 </SelectItem>
               ))
             ) : (
-              allSeriesSlugs.map((slug) => {
-                const info = SERIES_INFO.find((s) => s.slug === slug);
+              allParentSlugs.map((slug) => {
+                const cat = PARENT_CATEGORIES.find((c) => c.slug === slug);
                 return (
                   <SelectItem key={slug} value={slug}>
-                    {info?.name || slug} ({info?.prefix || ''})
+                    {cat?.name || slug}
                   </SelectItem>
                 );
               })
@@ -96,7 +102,7 @@ export function FilterPanel() {
           </SelectContent>
         </Select>
         {/* Display child categories as indented options if tree has children */}
-        {categoryTree.length > 0 && categoryTree.some((n) => n.children.length > 0) && (
+        {categoryTree.length > 0 && categoryTree.some((n) => n.children.length > 0) ? (
           <div className="mt-2 space-y-1">
             {categoryTree
               .filter((n) => n.children.length > 0)
@@ -118,6 +124,29 @@ export function FilterPanel() {
                   </div>
                 </div>
               ))}
+          </div>
+        ) : (
+          <div className="mt-2 space-y-1">
+            {seriesByParent.map(({ parent, children }) => (
+              <div key={parent.slug}>
+                <p className="text-xs font-medium text-gray-500">{parent.name}</p>
+                {children.length > 0 && (
+                  <div className="ml-3 space-y-0.5">
+                    {children.map((child) => (
+                      <button
+                        key={child.slug}
+                        onClick={() => updateFilter('series', child.slug)}
+                        className={`block w-full text-left text-xs hover:text-brand-400 ${
+                          currentSeries === child.slug ? 'font-medium text-brand-400' : 'text-gray-600'
+                        }`}
+                      >
+                        └ {child.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
