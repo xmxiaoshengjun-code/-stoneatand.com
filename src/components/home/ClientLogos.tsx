@@ -22,7 +22,7 @@ export function ClientLogos() {
           {markets.map((name) => (
             <div
               key={name}
-              className="text-base font-semibold tracking-tight text-gray-400 transition-colors hover:text-gray-700"
+              className="text-base font-medium tracking-tight text-gray-400 transition-colors hover:text-gray-700"
             >
               {name}
             </div>

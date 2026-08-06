@@ -40,16 +40,16 @@ export function SeriesNavigation() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center bg-brand-50 text-4xl font-bold text-brand-300">
+                  <div className="flex h-full items-center justify-center bg-brand-50 text-4xl font-semibold text-brand-300">
                     {series.prefix}
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 w-full p-5 text-white">
-                  <div className="mb-2 inline-flex h-7 items-center justify-center rounded bg-brand-400 px-2.5 text-xs font-bold">
+                  <div className="mb-2 inline-flex h-7 items-center justify-center rounded bg-brand-400 px-2.5 text-xs font-semibold">
                     {series.prefix}
                   </div>
-                  <h3 className="text-xl font-semibold tracking-tight">{series.name}</h3>
+                  <h3 className="text-xl font-medium tracking-[-0.01em]">{series.name}</h3>
                   <p className="mt-1 line-clamp-1 text-sm text-white/80">{series.shortDescription}</p>
                 </div>
               </div>

@@ -27,7 +27,7 @@ export function CoreAdvantages() {
               />
             </div>
             <div className="absolute -bottom-6 -right-6 hidden rounded-xl border border-white/20 bg-gray-900 p-5 text-white shadow-xl md:block">
-              <div className="text-3xl font-bold text-brand-400">18+</div>
+              <div className="text-3xl font-semibold text-brand-400">18+</div>
               <div className="text-sm text-gray-300">Years of expertise</div>
             </div>
           </div>
@@ -49,10 +49,10 @@ export function CoreAdvantages() {
                     <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 transition-colors group-hover:bg-brand-400">
                       <Icon className="h-6 w-6 text-brand-400 transition-colors group-hover:text-white" />
                     </div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 sm:text-lg">
+                    <h3 className="mb-2 text-base font-medium text-gray-900 sm:text-lg">
                       {adv.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-gray-600">
+                    <p className="text-sm leading-relaxed text-gray-500">
                       {adv.description}
                     </p>
                   </div>

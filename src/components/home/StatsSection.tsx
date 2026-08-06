@@ -18,8 +18,8 @@ export function StatsSection() {
 
       <div className="container-custom relative z-10">
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">Numbers That Speak</h2>
-          <p className="mt-3 text-base text-white/70 sm:text-lg">
+          <h2 className="text-2xl font-semibold tracking-[-0.01em] sm:text-3xl md:text-4xl">Numbers That Speak</h2>
+          <p className="mt-3 text-base text-white/65 sm:text-lg">
             Built on nearly two decades of display-rack manufacturing and global exports.
           </p>
         </div>
@@ -27,10 +27,10 @@ export function StatsSection() {
         <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-5">
           {COMPANY_STATS.map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="text-3xl font-bold text-brand-300 sm:text-4xl md:text-5xl">
+              <div className="text-3xl font-semibold text-brand-300 sm:text-4xl md:text-5xl">
                 {stat.value}
               </div>
-              <div className="mt-2 text-sm font-medium text-white/80">
+              <div className="mt-2 text-sm font-normal text-white/75">
                 {stat.label}
               </div>
             </div>

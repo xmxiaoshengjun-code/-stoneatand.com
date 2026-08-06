@@ -92,6 +92,8 @@ prisma/test-write.txt
 /pkg-tmp/
 /npm-cache-tmp/
 /.next-dev-bak/
+/.next-old/
+/en-test.html
 /cookies.txt
 /cookies2.txt
 /typescript.tgz

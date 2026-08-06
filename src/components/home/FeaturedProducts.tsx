@@ -27,7 +27,7 @@ function FeaturedProductCard({ product, locale, dict }: { product: Product; loca
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-5xl font-bold text-gray-300">
+          <div className="flex h-full items-center justify-center text-5xl font-semibold text-gray-300">
             {product.sku.slice(0, 2)}
           </div>
         )}
@@ -36,10 +36,10 @@ function FeaturedProductCard({ product, locale, dict }: { product: Product; loca
         </div>
       </div>
       <div className="p-4">
-        <div className="mb-1 text-xs font-medium uppercase tracking-wider text-brand-400">
+        <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.15em] text-brand-400">
           {seriesName}
         </div>
-        <h3 className="mb-1 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-brand-400">
+        <h3 className="mb-1 line-clamp-2 text-sm font-medium text-gray-900 group-hover:text-brand-400">
           {product.name}
         </h3>
         <p className="text-xs font-mono text-gray-500">{product.sku}</p>

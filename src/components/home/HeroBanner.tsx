@@ -29,17 +29,17 @@ export function HeroBanner() {
 
       {/* Content */}
       <div className="container-custom relative z-10 px-4 pt-20 pb-28 text-center text-white sm:px-6 lg:px-8">
-        <p className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
+        <p className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-normal backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-brand-400" />
           {t('hero.badge')}
         </p>
 
-        <h1 className="mx-auto max-w-4xl text-balance text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="mx-auto max-w-4xl text-balance text-3xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-5xl md:text-6xl lg:text-7xl">
           {t('hero.title')}
-          <span className="block text-brand-300">{t('hero.titleHighlight')}</span>
+          <span className="block font-medium text-brand-300">{t('hero.titleHighlight')}</span>
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-balance text-base text-white/80 sm:text-lg md:text-xl">
+        <p className="mx-auto mt-5 max-w-2xl text-balance text-base text-white/75 sm:text-lg md:text-xl">
           {t('hero.subtitle')}
         </p>
 

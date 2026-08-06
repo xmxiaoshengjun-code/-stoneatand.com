@@ -88,7 +88,7 @@ export default async function AboutPage({
             <span className="h-2 w-2 rounded-full bg-brand-400" />
             Established 2008 · Xiamen, China
           </p>
-          <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
+          <h1 className="mx-auto max-w-3xl text-4xl font-semibold leading-[1.15] tracking-[-0.02em] md:text-5xl lg:text-6xl">
             About <span className="text-brand-400">TSIANFAN</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
@@ -133,7 +133,7 @@ export default async function AboutPage({
               <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
                 {t.storyEyebrow || 'Our Story'}
               </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
                 {t.storyTitle || '18 Years of Display-Rack Excellence'}
               </h2>
               <div className="mt-6 space-y-4 text-base leading-relaxed text-gray-600">
@@ -175,7 +175,7 @@ export default async function AboutPage({
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
               {t.cultureEyebrow || 'Corporate Culture'}
             </p>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
               {t.cultureTitle || 'Values That Drive Us Forward'}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -214,7 +214,7 @@ export default async function AboutPage({
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
               {t.timelineEyebrow || 'Our Journey'}
             </p>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
               {t.timelineTitle || 'Enterprise History'}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -274,7 +274,7 @@ export default async function AboutPage({
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
               {t.teamsEyebrow || 'Our People'}
             </p>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
               {t.teamsTitle || 'Professional Teams'}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -310,7 +310,7 @@ export default async function AboutPage({
               <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
                 {t.manufacturingEyebrow || 'Manufacturing'}
               </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
                 {t.manufacturingTitle || 'Production Capabilities'}
               </h2>
               <p className="mt-4 text-lg text-gray-600">
@@ -366,7 +366,7 @@ export default async function AboutPage({
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
               {t.certEyebrow || 'Quality Assurance'}
             </p>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
               {t.certTitle || 'Certifications & Patents'}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -395,7 +395,7 @@ export default async function AboutPage({
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-brand-400">
               {t.partnersEyebrow || 'Trusted By'}
             </p>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.01em] text-gray-900 md:text-4xl">
               {t.partnersTitle || 'Partner Brands'}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -432,7 +432,7 @@ export default async function AboutPage({
           <div className="absolute inset-0 bg-gray-900/80" />
         </div>
         <div className="container-custom relative z-10 text-center">
-          <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+          <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-[-0.01em] md:text-4xl lg:text-5xl">
             {t.ctaTitle || 'Ready to Elevate Your Showroom?'}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">

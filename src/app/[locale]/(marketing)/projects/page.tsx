@@ -45,15 +45,15 @@ export default async function ProjectsPage({
             <Link key={project.id} href={lh(`/projects/${project.slug}`)}>
               <Card className="h-full hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 hover:text-brand-400">
+                  <h3 className="mb-2 text-base font-medium text-gray-900 hover:text-brand-400">
                     {project.title}
                   </h3>
                   {project.description && (
-                    <p className="mb-4 text-sm text-gray-600 line-clamp-2">
+                    <p className="mb-4 text-sm text-gray-500 line-clamp-2 leading-relaxed">
                       {project.description}
                     </p>
                   )}
-                  <div className="space-y-1 text-xs text-gray-500">
+                  <div className="space-y-1 text-xs text-gray-400">
                     {project.location && (
                       <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3" />

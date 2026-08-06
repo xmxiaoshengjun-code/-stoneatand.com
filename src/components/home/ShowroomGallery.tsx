@@ -39,7 +39,7 @@ export function ShowroomGallery() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 w-full p-6 text-white">
-                <p className="text-lg font-semibold tracking-tight">{img.caption}</p>
+                <p className="text-lg font-medium tracking-[-0.01em]">{img.caption}</p>
               </div>
             </div>
           ))}
