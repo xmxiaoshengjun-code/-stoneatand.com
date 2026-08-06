@@ -17,8 +17,8 @@ export const SITE_CONFIG = {
 
 export const COMPANY_STATS = [
   { label: 'Years of Experience', value: '18+' },
-  { label: 'SKU Models', value: '55' },
-  { label: 'Product Series', value: '7' },
+  { label: 'SKU Models', value: '172' },
+  { label: 'Product Series', value: '17' },
   { label: 'Countries Served', value: '80+' },
   { label: 'Export to Europe & America', value: '80%' },
 ];
@@ -31,7 +31,7 @@ export const CORE_ADVANTAGES = [
     icon: 'award',
   },
   {
-    title: '55 SKUs Across 7 Series',
+    title: '172 SKUs Across 17 Series',
     description:
       'Comprehensive product range covering every tile display need, from wall sliding racks to floor-standing displays, sample boxes and mosaic panels.',
     icon: 'package',
@@ -231,6 +231,10 @@ export const ORGANIZATION_JSONLD = {
   url: SITE_CONFIG.url,
   email: SITE_CONFIG.email,
   telephone: SITE_CONFIG.phone,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${SITE_CONFIG.url}/images/logo-tsianfan.svg`,
+  },
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Room 2B, No. 27, Xiangxing 1st Road, Huli District',
@@ -240,4 +244,9 @@ export const ORGANIZATION_JSONLD = {
   },
   description: SITE_CONFIG.description,
   foundingDate: '2008',
+  sameAs: [
+    'https://www.linkedin.com/company/tsianfan',
+    'https://www.facebook.com/tsianfan',
+    'https://www.youtube.com/@tsianfan',
+  ],
 };

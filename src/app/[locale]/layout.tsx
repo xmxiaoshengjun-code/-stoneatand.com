@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { LOCALES, isLocale, LOCALE_NAMES, type Locale } from '@/lib/i18n/config';
+import { LOCALES, isLocale, buildAbsoluteAlternates, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { I18nProvider } from '@/lib/i18n/I18nProvider';
 import { LangSetter } from '@/components/common/LangSetter';
 import { settingsService } from '@/lib/services/settingsService';
+import { SITE_CONFIG } from '@/lib/constants/seo';
 
 /**
  * Generates dynamic metadata including favicon and hreflang alternates.
@@ -18,14 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       icons,
       alternates: {
-        languages: {
-          'en': '/en',
-          'fr': '/fr',
-          'de': '/de',
-          'it': '/it',
-          'es': '/es',
-          'x-default': '/en',
-        },
+        canonical: `${SITE_CONFIG.url}/en`,
+        ...buildAbsoluteAlternates('/'),
       },
     };
   } catch {

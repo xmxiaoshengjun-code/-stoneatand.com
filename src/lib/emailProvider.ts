@@ -77,7 +77,7 @@ export class EmailProvider {
       html: `
         <h2>Thank you for your inquiry, ${customerName}!</h2>
         <p>We have received your inquiry (<strong>${inquiryNo}</strong>) and our sales team will contact you within 24 hours.</p>
-        <p>Best regards,<br>Qianfan Team</p>
+        <p>Best regards,<br>TSIANFAN Team</p>
       `,
     });
   }

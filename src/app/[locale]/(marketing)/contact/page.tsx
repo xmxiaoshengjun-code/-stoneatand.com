@@ -1,16 +1,20 @@
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { InquiryForm } from '@/components/inquiry/InquiryForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants/seo';
-import { isLocale, localizePath, buildAlternates, type Locale } from '@/lib/i18n/config';
+import { isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
 
 export function generateMetadata(): Metadata {
   return {
     title: 'Contact Us',
-    description: 'Contact Qianfan for tile display rack inquiries, custom solutions, and partnership opportunities.',
-    alternates: buildAlternates('/contact'),
+    description: 'Contact TSIANFAN for tile display rack inquiries, custom solutions, and partnership opportunities. 18+ years experience, 80+ countries served.',
+    alternates: {
+      canonical: buildCanonical('/contact'),
+      ...buildAbsoluteAlternates('/contact'),
+    },
   };
 }
 
@@ -22,15 +26,16 @@ export default function ContactPage({
   const locale: Locale = isLocale(params.locale) ? params.locale : 'en';
   const lh = (href: string) => localizePath(href, locale);
 
+  const breadcrumbItems = [
+    { label: 'Home', href: lh('/') },
+    { label: 'Contact' },
+  ];
+
   return (
     <main className="min-h-screen bg-gray-50">
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <div className="container-custom py-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: lh('/') },
-            { label: 'Contact' },
-          ]}
-        />
+        <Breadcrumb items={breadcrumbItems} />
         <h1 className="mb-2 text-3xl font-bold text-gray-900">Contact Us</h1>
         <p className="mb-8 text-gray-600">
           Ready to elevate your tile showroom? Get in touch with our team.

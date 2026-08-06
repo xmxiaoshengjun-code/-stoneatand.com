@@ -7,21 +7,15 @@ import { ChatWidget } from '@/components/chat/ChatWidget';
 import { CookieConsent } from '@/components/common/CookieConsent';
 import { Analytics } from '@/components/common/Analytics';
 import { CopyProtection } from '@/components/common/CopyProtection';
+import { buildAbsoluteAlternates, buildCanonical } from '@/lib/i18n/config';
 
 /**
  * Marketing layout metadata: canonical and hreflang tags for SEO/GEO.
  */
 export const metadata: Metadata = {
   alternates: {
-    canonical: '/',
-    languages: {
-      'en': '/en',
-      'fr': '/fr',
-      'de': '/de',
-      'it': '/it',
-      'es': '/es',
-      'x-default': '/en',
-    },
+    canonical: buildCanonical('/'),
+    ...buildAbsoluteAlternates('/'),
   },
 };
 

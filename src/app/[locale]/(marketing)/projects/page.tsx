@@ -1,18 +1,22 @@
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { SectionTitle } from '@/components/common/SectionTitle';
 import { projectService } from '@/lib/services/projectService';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatDate } from '@/lib/utils';
 import { Calendar, MapPin } from 'lucide-react';
-import { isLocale, localizePath, buildAlternates, type Locale } from '@/lib/i18n/config';
+import { isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
 
 export function generateMetadata(): Metadata {
   return {
     title: 'Projects',
-    description: 'Explore our completed tile display installation projects worldwide.',
-    alternates: buildAlternates('/projects'),
+    description: 'Explore our completed tile display installation projects worldwide. Real-world case studies showcasing TSIANFAN display solutions.',
+    alternates: {
+      canonical: buildCanonical('/projects'),
+      ...buildAbsoluteAlternates('/projects'),
+    },
   };
 }
 
@@ -25,15 +29,16 @@ export default async function ProjectsPage({
   const lh = (href: string) => localizePath(href, locale);
   const projects = await projectService.getProjects(20);
 
+  const breadcrumbItems = [
+    { label: 'Home', href: lh('/') },
+    { label: 'Projects' },
+  ];
+
   return (
     <main className="min-h-screen bg-gray-50">
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <div className="container-custom py-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', href: lh('/') },
-            { label: 'Projects' },
-          ]}
-        />
+        <Breadcrumb items={breadcrumbItems} />
         <SectionTitle
           eyebrow="Case Studies"
           title="Our Projects"

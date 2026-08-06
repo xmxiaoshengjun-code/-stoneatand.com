@@ -99,3 +99,6 @@ prisma/test-write.txt
 /typescript.tgz
 *.tgz
 /dev-server.log
+.next-seo/
+.next-seo2/
+scripts/resize-og.py

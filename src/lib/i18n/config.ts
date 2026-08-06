@@ -2,6 +2,8 @@
  * Internationalization configuration.
  */
 
+import { SITE_CONFIG } from '@/lib/constants/seo';
+
 export const LOCALES = ['en', 'fr', 'de', 'it', 'es'] as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -87,4 +89,30 @@ export function buildAlternates(pathWithoutLocale: string) {
   }
   languages['x-default'] = localizePath(pathWithoutLocale, DEFAULT_LOCALE);
   return { languages };
+}
+
+/**
+ * Generate hreflang alternates metadata with absolute URLs for a given path (without locale prefix).
+ * Returns an object suitable for spreading into a Next.js Metadata `alternates` field.
+ * Example: buildAbsoluteAlternates('/products') →
+ *   { languages: { en: 'https://www.tsianfan.com/en/products', fr: 'https://www.tsianfan.com/fr/products', ..., 'x-default': 'https://www.tsianfan.com/en/products' } }
+ */
+export function buildAbsoluteAlternates(pathWithoutLocale: string) {
+  const languages: Record<string, string> = {};
+  const suffix = pathWithoutLocale === '/' ? '' : pathWithoutLocale;
+  for (const loc of LOCALES) {
+    languages[loc] = `${SITE_CONFIG.url}/${loc}${suffix}`;
+  }
+  languages['x-default'] = `${SITE_CONFIG.url}/en${suffix}`;
+  return { languages };
+}
+
+/**
+ * Generate a canonical URL with absolute path for a given locale and path.
+ * Example: buildCanonical('/products', 'fr') → 'https://www.tsianfan.com/fr/products'
+ *          buildCanonical('/', 'en') → 'https://www.tsianfan.com/en'
+ */
+export function buildCanonical(pathWithoutLocale: string, locale: Locale = DEFAULT_LOCALE) {
+  const suffix = pathWithoutLocale === '/' ? '' : pathWithoutLocale;
+  return `${SITE_CONFIG.url}/${locale}${suffix}`;
 }

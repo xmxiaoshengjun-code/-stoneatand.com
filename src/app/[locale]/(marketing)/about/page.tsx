@@ -7,6 +7,7 @@ import {
   Building2, Wrench, Layers, Sparkles, DollarSign,
 } from 'lucide-react';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { StatsSection } from '@/components/home/StatsSection';
 import { CoreAdvantages } from '@/components/home/CoreAdvantages';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ import {
   PARTNER_BRANDS,
   SITE_CONFIG,
 } from '@/lib/constants/seo';
-import { isLocale, localizePath, type Locale } from '@/lib/i18n/config';
+import { isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 
 export const metadata: Metadata = {
@@ -27,15 +28,8 @@ export const metadata: Metadata = {
   description:
     "Founded in 2008, TSIANFAN is China's benchmark enterprise for tile, stone and wood-flooring display racks. 18+ years of manufacturing excellence, serving 80+ countries with OEM/ODM custom solutions.",
   alternates: {
-    canonical: '/about',
-    languages: {
-      en: '/en/about',
-      fr: '/fr/about',
-      de: '/de/about',
-      it: '/it/about',
-      es: '/es/about',
-      'x-default': '/en/about',
-    },
+    canonical: buildCanonical('/about'),
+    ...buildAbsoluteAlternates('/about'),
   },
 };
 
@@ -70,6 +64,12 @@ export default async function AboutPage({
   const tc = dict.common || {};
   return (
     <main className="min-h-screen bg-white">
+      <BreadcrumbJsonLd
+        items={[
+          { label: 'Home', href: lh('/') },
+          { label: 'About' },
+        ]}
+      />
       {/* ── Hero ── */}
       <section className="relative flex min-h-[420px] items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

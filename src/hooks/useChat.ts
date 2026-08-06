@@ -26,7 +26,7 @@ export function useChat(): UseChatReturn {
       id: 0,
       sessionId: 0,
       role: 'ASSISTANT',
-      content: "Hello! I'm Qianfan's AI assistant. How can I help you today? Ask about our products, find a rack for your tiles, or request a quote.",
+      content: "Hello! I'm TSIANFAN's AI assistant. How can I help you today? Ask about our products, find a rack for your tiles, or request a quote.",
       metadata: null,
       createdAt: new Date().toISOString(),
     },

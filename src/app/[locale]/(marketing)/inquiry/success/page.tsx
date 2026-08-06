@@ -7,6 +7,10 @@ import { isLocale, localizePath, type Locale } from '@/lib/i18n/config';
 export const metadata: Metadata = {
   title: 'Inquiry Submitted',
   description: 'Thank you for your inquiry. We will respond within 24 hours.',
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function InquirySuccessPage({

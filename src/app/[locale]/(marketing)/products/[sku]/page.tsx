@@ -8,33 +8,43 @@ import { RelatedProducts } from '@/components/product/RelatedProducts';
 import { InquiryButton } from '@/components/inquiry/InquiryButton';
 import { CompareButton } from '@/components/product/CompareButton';
 import { ProductJsonLd } from '@/components/seo/ProductJsonLd';
+import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { Badge } from '@/components/ui/badge';
 import { productService } from '@/lib/services/productService';
 import { SITE_CONFIG } from '@/lib/constants/seo';
-import { LOCALES, isLocale, localizePath, type Locale } from '@/lib/i18n/config';
+import { LOCALES, isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
 
 interface PageProps {
   params: { sku: string; locale: string };
 }
 
+// Localized CTA suffixes for product description
+const PRODUCT_CTA: Record<Locale, string> = {
+  en: 'Request a quote from TSIANFAN, 18+ years display rack manufacturer. OEM/ODM custom solutions.',
+  fr: "Demandez un devis à TSIANFAN, fabricant de présentoirs avec plus de 18 ans d'expérience. Solutions OEM/ODM sur mesure.",
+  de: 'Fordern Sie ein Angebot von TSIANFAN an, Display-Rack-Hersteller mit über 18 Jahren Erfahrung. OEM/ODM-Kundlösungen.',
+  it: 'Richiedi un preventivo a TSIANFAN, produttore di espositori con oltre 18 anni di esperienza. Soluzioni OEM/ODM personalizzate.',
+  es: 'Solicite una cotización a TSIANFAN, fabricante de expositores con más de 18 años de experiencia. Soluciones OEM/ODM personalizadas.',
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const product = await productService.getProductBySku(params.sku);
   if (!product) return { title: 'Product Not Found' };
 
+  const locale: Locale = isLocale(params.locale) ? params.locale : 'en';
   const slug = product.sku.toLowerCase();
-  const languages: Record<string, string> = {};
-  for (const loc of LOCALES) {
-    languages[loc] = localizePath(`/products/${slug}`, loc);
-  }
-  languages['x-default'] = `/en/products/${slug}`;
+  const path = `/products/${slug}`;
+  const cta = PRODUCT_CTA[locale];
+
+  const description = `${product.name} (${product.sku}) - ${product.series?.name || 'Display Rack'} display rack. ${product.description || product.features || ''} ${cta}`;
 
   return {
     title: `${product.name} (${product.sku})`,
-    description: product.description || `Tile display rack ${product.sku} - ${product.features}`,
+    description,
     alternates: {
-      canonical: localizePath(`/products/${slug}`, isLocale(params.locale) ? params.locale : 'en'),
-      languages,
+      canonical: buildCanonical(path, locale),
+      ...buildAbsoluteAlternates(path),
     },
   };
 }
@@ -60,19 +70,26 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const related = await productService.getRelatedProducts(product.id, product.seriesId, 4);
   const shareUrl = `${SITE_CONFIG.url}${lh('/products')}/${product.sku.toLowerCase()}`;
 
+  // Build image URLs for JSON-LD
+  const productImages = (product.images || []).map(
+    (img) => (img.url.startsWith('http') ? img.url : `${SITE_CONFIG.url}${img.url}`)
+  );
+
+  // Breadcrumb items (shared between visual and JSON-LD)
+  const breadcrumbItems = [
+    { label: 'Home', href: lh('/') },
+    { label: 'Products', href: lh('/products') },
+    { label: product.series?.name || '', href: lh(`/products?series=${product.series?.slug}`) },
+    { label: product.sku },
+  ];
+
   return (
     <>
-      <ProductJsonLd product={product} />
+      <ProductJsonLd product={product} images={productImages} priceRange="$$" />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <main className="min-h-screen bg-gray-50">
         <div className="container-custom py-8">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: lh('/') },
-              { label: 'Products', href: lh('/products') },
-              { label: product.series?.name || '', href: lh(`/products?series=${product.series?.slug}`) },
-              { label: product.sku },
-            ]}
-          />
+          <Breadcrumb items={breadcrumbItems} />
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Gallery */}

@@ -49,7 +49,7 @@ export function ChatWidget() {
                 Q
               </div>
               <div>
-                <p className="text-sm font-semibold">Qianfan Assistant</p>
+                <p className="text-sm font-semibold">TSIANFAN Assistant</p>
                 <p className="text-xs text-gray-400">Online · Usually replies instantly</p>
               </div>
             </div>

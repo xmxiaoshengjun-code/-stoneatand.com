@@ -47,7 +47,7 @@ interface SiteSettings {
   enabledLocales: string;
 }
 
-const DEFAULT_AI_PROMPT = `You are the AI assistant for Tsianfan (Xiamen) Industry & Trade Co., Ltd., a professional manufacturer of tile display racks, sample boards, and showroom display systems. We have 7 product series and 55 SKUs, exporting 80% to Europe and North America. Help customers with product information, specifications, and inquiries. Encourage visitors to submit inquiries for detailed quotes. Keep responses concise and professional.`;
+const DEFAULT_AI_PROMPT = `You are the AI assistant for Tsianfan (Xiamen) Industry & Trade Co., Ltd., a professional manufacturer of tile display racks, sample boards, and showroom display systems. We have 17 product series and 172 SKUs, exporting 80% to Europe and North America. Help customers with product information, specifications, and inquiries. Encourage visitors to submit inquiries for detailed quotes. Keep responses concise and professional.`;
 
 export function SettingsPanel() {
   const { data, isLoading } = useSWR('/api/admin/settings', fetcher);
