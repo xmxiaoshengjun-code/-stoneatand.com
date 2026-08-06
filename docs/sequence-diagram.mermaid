@@ -1,129 +1,103 @@
-%% Product Image Upload + Watermark Flow
+%% Sequence Diagrams: Product Listing UX Optimization
+%% Source: docs/ARCH-ProductListing-UX.md
+
+%% === 1. Parent Category View Rendering ===
 sequenceDiagram
-    participant Admin as Admin UI
-    participant Upload as /api/admin/upload
-    participant Auth as requireAdmin
-    participant WM as WatermarkService
-    participant Settings as SettingsService
-    participant ML as MediaLibraryService
-    participant FS as FileSystem
+    participant User
+    participant Browser
+    participant ProductsPage as products/page.tsx (Server)
+    participant ProductListClient as ProductListClient.tsx (Client)
+    participant ParentCategoryView as ParentCategoryView.tsx
+    participant SeriesConst as series.ts (Constants)
 
-    Admin->>Upload: POST FormData (image file)
-    Upload->>Auth: requireAdmin(request)
-    Auth-->>Upload: true
+    User->>Browser: Click nav "Tile Displays Rack"
+    Browser->>ProductsPage: GET /en/products?series=tile-displays-rack
+    ProductsPage->>ProductsPage: Render breadcrumb "Home > Products > Tile Displays Rack"
+    ProductsPage->>ProductListClient: Render <ProductListClient /> (Suspense)
 
-    Upload->>Upload: Validate file type (JPEG/PNG/WebP/GIF)
-    Upload->>Upload: Validate file size (≤5MB)
+    ProductListClient->>ProductListClient: useSearchParams() → series='tile-displays-rack'
+    ProductListClient->>SeriesConst: isParentSlug('tile-displays-rack')
+    SeriesConst-->>ProductListClient: true
 
-    Upload->>Settings: get('watermarkEnabled')
-    Settings-->>Upload: 'true'
+    ProductListClient->>ParentCategoryView: Render <ParentCategoryView parentSlug="tile-displays-rack" />
+    ParentCategoryView->>SeriesConst: getParentCategory('tile-displays-rack')
+    SeriesConst-->>ParentCategoryView: ParentCategory { name, description, heroImage }
 
-    alt Watermark enabled AND image type
-        Upload->>WM: applyWatermark(buffer)
-        WM->>Settings: getWatermarkSettings()
-        Settings-->>WM: { type, text, image, position, opacity, size }
+    ParentCategoryView->>SeriesConst: getChildSeries('tile-displays-rack')
+    SeriesConst-->>ParentCategoryView: SeriesInfo[] (7 sub-series)
 
-        alt type = 'text'
-            WM->>WM: Create text SVG overlay
-            WM->>WM: sharp(buffer).composite([{ input: svg, gravity: position, blend: 'over' }])
-        else type = 'image'
-            WM->>WM: sharp(watermarkImage).resize(size%)
-            WM->>WM: sharp(buffer).composite([{ input: wm, gravity: position }])
-        end
+    ParentCategoryView->>Browser: Render card grid
+    Browser->>User: Show category title + description + 7 sub-series cards
 
-        WM-->>Upload: watermarkedBuffer
+    User->>Browser: Click "Wall Sliding Rack" card
+    Browser->>Browser: router.push('?series=wall-sliding-rack')
+    Note over Browser: ProductListClient re-renders<br/>isParentSlug=false → show product list
+
+%% === 2. Spec-Finder Search (After Fix) ===
+sequenceDiagram
+    participant User
+    participant SpecClient as SpecFinderClient.tsx
+    participant API as /api/products/spec-finder
+    participant SpecService as specFinderService.ts
+    participant ProdService as productService.ts
+    participant Utils as utils.ts (parseDimensionRange)
+    participant DB as SQLite DB
+
+    User->>SpecClient: Enter width=600, height=1200, thickness=12
+    User->>SpecClient: Click "Find Matching Racks"
+
+    SpecClient->>API: POST { tileWidth: 600, tileHeight: 1200, tileThickness: 12 }
+    API->>API: specFinderSchema.safeParse(body)
+    API->>SpecService: findMatches({ tileWidth: 600, tileHeight: 1200, tileThickness: 12 })
+    SpecService->>ProdService: findProductsBySpec(params)
+    ProdService->>DB: prisma.product.findMany({ isPublished: true })
+    DB-->>ProdService: 172 products (with panelSize, panelThickness)
+
+    loop For each product
+        ProdService->>Utils: parseDimensionRange('60x60cm - 120x240cm')
+        Utils->>Utils: Detect 'cm' → multiply values × 10
+        Utils-->>ProdService: { minW: 600, maxW: 1200, minH: 600, maxH: 2400 }
+
+        ProdService->>ProdService: tileW=600 >= 600 && 600 <= 1200 && tileH=1200 >= 600 && 1200 <= 2400
+        Note over ProdService: ✅ Match success!<br/>push matchReason
     end
 
-    Upload->>FS: writeFile(buffer, /public/images/products/{filename})
-    Upload->>ML: register({ filename, url, mimeType, fileSize })
-    ML->>ML: INSERT INTO MediaLibrary (...)
-    ML-->>Upload: { id: mediaId }
+    ProdService-->>SpecService: SpecFinderResult[] (matched products)
+    SpecService-->>API: results
+    API-->>SpecClient: { code: 200, data: [...] }
+    SpecClient->>User: Render result card grid
 
-    Upload-->>Admin: { code: 201, data: { url, filename, mediaId } }
-
-%% ---
-%% Inquiry Form Config + Render Flow
-%% ---
+%% === 3. Old Slug Redirect ===
 sequenceDiagram
-    participant Admin as Admin Settings Panel
-    participant API as /api/admin/inquiry-form-fields
-    participant FFS as FormFieldService
-    participant DB as SQLite
+    participant Crawler as Search Engine Crawler
+    participant NextServer as Next.js Server
+    participant Redirects as next.config.mjs redirects()
 
-    Admin->>API: GET /api/admin/inquiry-form-fields
-    API->>API: requireAdmin(request)
-    API->>FFS: getAll()
-    FFS->>DB: SELECT * FROM InquiryFormField ORDER BY sortOrder
-    DB-->>FFS: [7 rows]
-    FFS-->>API: InquiryFormField[]
-    API-->>Admin: { code: 200, data: { items: [...] } }
+    Crawler->>NextServer: GET /en/products?series=tile-display
+    NextServer->>Redirects: Match { source: '/:locale/products', has: [{ query: { series: 'tile-display' } }] }
+    Redirects-->>Crawler: HTTP 301 → /en/products?series=tile-displays-rack
+    Crawler->>NextServer: GET /en/products?series=tile-displays-rack
+    NextServer-->>Crawler: 200 OK (Parent Category View)
 
-    Admin->>Admin: Display field list with toggles
-
-    Admin->>API: PUT /api/admin/inquiry-form-fields
-    API->>API: requireAdmin(request)
-    API->>FFS: updateFields([{ id, isActive, sortOrder }])
-    loop For each field
-        FFS->>DB: UPDATE InquiryFormField SET isActive=?, sortOrder=? WHERE id=?
-    end
-    FFS-->>API: updated fields
-    API-->>Admin: { code: 200, data: { items: [...] } }
-
-    Note over Admin: Configuration saved. No redeploy needed.
-
-    participant User as Website Visitor
-    participant Form as InquiryForm Component
-    participant PubAPI as /api/inquiry-form-fields (Public)
-    participant InquiryAPI as /api/inquiries
-
-    User->>Form: Opens inquiry form page
-    Form->>PubAPI: GET /api/inquiry-form-fields
-    PubAPI->>FFS: getActiveFields()
-    FFS->>DB: SELECT fieldName, fieldLabel, fieldType, isRequired FROM InquiryFormField WHERE isActive=1 ORDER BY sortOrder
-    DB-->>FFS: [active fields]
-    FFS-->>PubAPI: field configs
-    PubAPI-->>Form: { items: [...] }
-
-    Form->>Form: Show/hide fields based on isActive
-    Form->>Form: Set required attributes based on isRequired
-
-    User->>Form: Fills form and submits
-    Form->>InquiryAPI: POST /api/inquiries (formData)
-    InquiryAPI->>DB: INSERT INTO Inquiry (...)
-    InquiryAPI-->>Form: { code: 201, data: { inquiryNo } }
-    Form-->>User: Success message
-
-%% ---
-%% Dashboard Chart Data Flow
-%% ---
+%% === 4. Projects Page Rendering (After Redesign) ===
 sequenceDiagram
-    participant Dash as DashboardClient
-    participant StatsAPI as /api/admin/tracking/stats
-    participant TS as TrackingService
-    participant DB as SQLite
+    participant User
+    participant Browser
+    participant ProjectsPage as projects/page.tsx (Server)
+    participant ProjService as projectService.ts
+    participant DB as SQLite DB
 
-    Dash->>Dash: User selects timeRange (today/yesterday/7d/30d)
-    Dash->>StatsAPI: GET /api/admin/tracking/stats?timeRange=7d
-    StatsAPI->>StatsAPI: requireAdmin(request)
-    StatsAPI->>TS: getDashboardStats(timeRange='7d')
+    User->>Browser: Visit /en/projects
+    Browser->>ProjectsPage: GET /en/projects
+    ProjectsPage->>ProjService: getProjects(20)
+    ProjService->>DB: prisma.project.findMany({ isPublished: true })
+    DB-->>ProjService: Project[] (8 records, with images field)
 
-    par Hourly Trend
-        TS->>DB: SELECT strftime('%H', createdAt) as hour, COUNT(*) as pv FROM TrackingEvent WHERE createdAt >= ? GROUP BY hour
-        DB-->>TS: 24 rows
-    and Traffic Sources
-        TS->>DB: SELECT sourceCategory, COUNT(*) FROM TrackingEvent WHERE createdAt >= ? AND sourceCategory IS NOT NULL GROUP BY sourceCategory
-        DB-->>TS: 4 rows (search/social/direct/referral)
-    and Device Distribution
-        TS->>DB: SELECT deviceType, COUNT(*) FROM TrackingEvent WHERE createdAt >= ? AND deviceType IS NOT NULL GROUP BY deviceType
-        DB-->>TS: 3 rows (desktop/mobile/tablet)
-    and Top Countries (Top 10)
-        TS->>DB: SELECT country, COUNT(*) as count FROM TrackingEvent WHERE createdAt >= ? AND country IS NOT NULL GROUP BY country ORDER BY count DESC LIMIT 10
-        DB-->>TS: 10 rows
+    loop Each project
+        ProjService->>ProjService: parseProjectImages(project.images)
+        Note over ProjService: '[]' → []<br/>'/images/projects/xxx.jpg' → ['/images/projects/xxx.jpg']
     end
 
-    TS-->>StatsAPI: { hourlyTrend, trafficSources, deviceDistribution, topCountriesTop10, ... }
-    StatsAPI-->>Dash: { code: 200, data: {...} }
-
-    Dash->>Dash: Render HourlyTrafficChart (Recharts LineChart)
-    Dash->>Dash: Render CountryBarChart (Recharts BarChart)
-    Dash->>Dash: Render TrafficSourcePie (Recharts PieChart)
+    ProjService-->>ProjectsPage: ProjectWithImages[]
+    ProjectsPage->>Browser: Render hero section + <ProjectCard> grid
+    Browser->>User: Show hero background + title + 8 project cards with images

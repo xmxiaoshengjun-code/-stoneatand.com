@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { specFinderService } from '@/lib/services/specFinderService';
 import { useTracking } from '@/hooks/useTracking';
@@ -24,6 +24,7 @@ export function SpecFinderClient() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<SpecFinderResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedPreset, setSelectedPreset] = useState<string>('');
 
   const [width, setWidth] = useState('');
@@ -50,6 +51,7 @@ export function SpecFinderClient() {
 
     setLoading(true);
     setHasSearched(true);
+    setError(null);
     trackSpecFinder(w, h, Number(thickness) || undefined);
 
     try {
@@ -65,9 +67,13 @@ export function SpecFinderClient() {
       const data = await res.json();
       if (data.code === 200) {
         setResults(data.data || []);
+      } else {
+        setResults([]);
+        setError(data.message || 'Search failed. Please try again.');
       }
-    } catch {
+    } catch (err) {
       setResults([]);
+      setError('Unable to reach the server. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -146,7 +152,10 @@ export function SpecFinderClient() {
 
             <Button type="submit" variant="brand" size="lg" disabled={loading}>
               {loading ? (
-                'Searching...'
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Searching...
+                </>
               ) : (
                 <>
                   <Search className="mr-2 h-5 w-5" />
@@ -161,6 +170,15 @@ export function SpecFinderClient() {
       {/* Results */}
       {hasSearched && !loading && (
         <div>
+          {/* Error state */}
+          {error && (
+            <Card className="mb-4 border-red-200 bg-red-50">
+              <CardContent className="py-6 text-center text-red-600">
+                <p className="font-medium">{error}</p>
+              </CardContent>
+            </Card>
+          )}
+
           <h3 className="mb-4 text-lg font-semibold">
             {results.length > 0
               ? `Found ${results.length} matching product(s)`
@@ -169,8 +187,13 @@ export function SpecFinderClient() {
           {results.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center text-gray-500">
-                <p>No display racks match your specifications. Please try different dimensions</p>
-                <p className="mt-2 text-sm">or contact us at web@tsianfan.com for custom solutions.</p>
+                <p>No display racks match your specifications.</p>
+                <p className="mt-2 text-sm">
+                  Try adjusting your tile dimensions or thickness selection for more results.
+                </p>
+                <p className="mt-2 text-sm">
+                  or contact us at <a href="mailto:web@tsianfan.com" className="text-brand-600 underline">web@tsianfan.com</a> for custom solutions.
+                </p>
               </CardContent>
             </Card>
           ) : (

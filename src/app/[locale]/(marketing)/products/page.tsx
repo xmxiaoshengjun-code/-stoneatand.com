@@ -5,6 +5,7 @@ import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { CompareBar } from '@/components/product/CompareBar';
 import { ProductListClient } from './ProductListClient';
 import { isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
+import { isParentSlug, getParentCategory, SERIES_BY_SLUG } from '@/lib/constants/series';
 
 export function generateMetadata(): Metadata {
   return {
@@ -19,16 +20,45 @@ export function generateMetadata(): Metadata {
 
 export default function ProductsPage({
   params,
+  searchParams,
 }: {
   params: { locale: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const locale: Locale = isLocale(params.locale) ? params.locale : 'en';
   const lh = (href: string) => localizePath(href, locale);
 
-  const breadcrumbItems = [
+  // Determine the series from search params (may be a parent slug, a child
+  // series slug, or absent). This drives the dynamic page title and breadcrumb.
+  // 'other-display' is a legacy slug with no new parent equivalent — treat as
+  // no series so the page shows "All Products" without infinite redirects.
+  const rawSeries = typeof searchParams.series === 'string' ? searchParams.series : undefined;
+  const seriesParam = rawSeries === 'other-display' ? undefined : rawSeries;
+
+  let pageTitle = 'All Products';
+  let pageDescription = 'Browse our complete catalog of premium tile display racks.';
+  const breadcrumbItems: Array<{ label: string; href?: string }> = [
     { label: 'Home', href: lh('/') },
-    { label: 'Products' },
+    { label: 'Products', href: lh('/products') },
   ];
+
+  if (seriesParam) {
+    if (isParentSlug(seriesParam)) {
+      const parent = getParentCategory(seriesParam);
+      if (parent) {
+        pageTitle = parent.name;
+        pageDescription = parent.description;
+        breadcrumbItems.push({ label: parent.name });
+      }
+    } else {
+      const series = SERIES_BY_SLUG[seriesParam];
+      if (series) {
+        pageTitle = series.name;
+        pageDescription = series.description;
+        breadcrumbItems.push({ label: series.name });
+      }
+    }
+  }
 
   return (
     <>
@@ -36,9 +66,9 @@ export default function ProductsPage({
       <main className="min-h-screen bg-gray-50">
         <div className="container-custom py-8">
           <Breadcrumb items={breadcrumbItems} />
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">All Products</h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">{pageTitle}</h1>
           <p className="mb-8 text-gray-600">
-            Browse our complete catalog of premium tile display racks.
+            {pageDescription}
           </p>
           <Suspense
             fallback={
@@ -61,7 +91,7 @@ export default function ProductsPage({
               </div>
             }
           >
-            <ProductListClient />
+            <ProductListClient locale={locale} />
           </Suspense>
         </div>
       </main>

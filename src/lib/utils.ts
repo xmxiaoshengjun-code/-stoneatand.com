@@ -108,21 +108,29 @@ export function parseDimensionRange(rangeStr: string): {
   maxH: number;
 } | null {
   if (!rangeStr) return null;
+
+  // Detect if the range string uses centimeters (cm) rather than millimeters (mm).
+  // DB panelSize values are stored in cm (e.g., "60x60cm - 120x240cm"), but user
+  // input in the spec-finder is always in mm (e.g., 600x1200). We convert cm→mm
+  // by multiplying by 10 so comparisons are consistent.
+  const isCm = /cm/i.test(rangeStr);
+  const multiplier = isCm ? 10 : 1;
+
   // Match patterns like "600x600 ~ 1200x2800 mm" or "600×600-1200×2800mm"
   const match = rangeStr.match(/(\d+)\s*[x×]\s*(\d+)\s*[~\-–to]+\s*(\d+)\s*[x×]\s*(\d+)/i);
   if (match) {
     return {
-      minW: parseInt(match[1], 10),
-      minH: parseInt(match[2], 10),
-      maxW: parseInt(match[3], 10),
-      maxH: parseInt(match[4], 10),
+      minW: parseInt(match[1], 10) * multiplier,
+      minH: parseInt(match[2], 10) * multiplier,
+      maxW: parseInt(match[3], 10) * multiplier,
+      maxH: parseInt(match[4], 10) * multiplier,
     };
   }
   // Try single dimension like "600x600 mm"
   const singleMatch = rangeStr.match(/(\d+)\s*[x×]\s*(\d+)/i);
   if (singleMatch) {
-    const w = parseInt(singleMatch[1], 10);
-    const h = parseInt(singleMatch[2], 10);
+    const w = parseInt(singleMatch[1], 10) * multiplier;
+    const h = parseInt(singleMatch[2], 10) * multiplier;
     return { minW: w, maxW: w, minH: h, maxH: h };
   }
   return null;

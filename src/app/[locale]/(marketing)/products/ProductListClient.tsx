@@ -7,13 +7,20 @@ import { FilterPanel } from '@/components/product/FilterPanel';
 import { SortBar } from '@/components/product/SortBar';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import { isParentSlug } from '@/lib/constants/series';
+import { ParentCategoryView } from '@/components/product/ParentCategoryView';
+import { type Locale } from '@/lib/i18n/config';
 
-export function ProductListClient() {
+export function ProductListClient({ locale }: { locale: Locale }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const params = {
-    series: searchParams.get('series') || undefined,
+    // 'other-display' is a legacy slug with no new parent category equivalent.
+    // Treat it as no series filter so the full product list is shown.
+    series: (searchParams.get('series') && searchParams.get('series') !== 'other-display')
+      ? searchParams.get('series') || undefined
+      : undefined,
     panelSize: searchParams.get('panelSize') || undefined,
     panelThickness: searchParams.get('panelThickness') || undefined,
     keyword: searchParams.get('keyword') || undefined,
@@ -23,6 +30,12 @@ export function ProductListClient() {
   };
 
   const { products, total, totalPages, isLoading } = useProducts(params);
+
+  // If the series param matches a parent category slug (e.g. 'tile-displays-rack'),
+  // render the parent category landing view instead of the normal product list.
+  if (params.series && isParentSlug(params.series)) {
+    return <ParentCategoryView parentSlug={params.series} locale={locale} />;
+  }
 
   // Clamp current page to valid range [1, totalPages] to prevent
   // out-of-bounds page values from showing Prev/Next incorrectly.

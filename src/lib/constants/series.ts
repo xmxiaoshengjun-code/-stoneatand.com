@@ -330,3 +330,18 @@ export const SERIES_BY_PREFIX = SERIES_INFO.reduce(
 
 export const TOTAL_SKU_COUNT = 172;
 export const TOTAL_SERIES_COUNT = 17;
+
+/** Checks whether the given slug matches one of the PARENT_CATEGORIES slugs. */
+export function isParentSlug(slug: string): boolean {
+  return PARENT_CATEGORIES.some((p) => p.slug === slug);
+}
+
+/** Returns the ParentCategory object for the given slug, or undefined if not found. */
+export function getParentCategory(slug: string): ParentCategory | undefined {
+  return PARENT_CATEGORIES.find((p) => p.slug === slug);
+}
+
+/** Returns all child SeriesInfo entries whose parentSlug matches the given parent slug. */
+export function getChildSeries(parentSlug: string): SeriesInfo[] {
+  return SERIES_INFO.filter((s) => s.parentSlug === parentSlug);
+}

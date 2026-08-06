@@ -62,6 +62,42 @@ const nextConfig = {
         destination: '/admin/products',
         permanent: false,
       },
+      // Legacy slug 301 redirects — old series slugs → new parent category slugs
+      {
+        source: '/:locale/products',
+        has: [{ type: 'query', key: 'series', value: 'tile-display' }],
+        destination: '/:locale/products?series=tile-displays-rack',
+        permanent: true,
+      },
+      {
+        source: '/:locale/products',
+        has: [{ type: 'query', key: 'series', value: 'stone-display' }],
+        destination: '/:locale/products?series=stone-displays-rack',
+        permanent: true,
+      },
+      {
+        source: '/:locale/products',
+        has: [{ type: 'query', key: 'series', value: 'wood-flooring-display' }],
+        destination: '/:locale/products?series=wooden-flooring-display-rack',
+        permanent: true,
+      },
+      {
+        source: '/:locale/products',
+        has: [{ type: 'query', key: 'series', value: 'sample-cabinet' }],
+        destination: '/:locale/products?series=samples-box-books-display',
+        permanent: true,
+      },
+      {
+        source: '/:locale/products',
+        has: [{ type: 'query', key: 'series', value: 'mosaic-decor' }],
+        destination: '/:locale/products?series=mosaic-display-rack',
+        permanent: true,
+      },
+      // NOTE: 'other-display' does not have a redirect rule because its target
+      // is /:locale/products (no series param), and Next.js preserves the
+      // original query string on redirect — that would cause an infinite loop.
+      // Instead, ProductListClient and page.tsx handle 'other-display' as a
+      // no-op (treat it like no series param, showing all products).
     ];
   },
 };

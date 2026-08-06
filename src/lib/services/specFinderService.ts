@@ -7,10 +7,38 @@ import type { SpecFinderResult, SpecFinderParams } from '@/types/product';
 export class SpecFinderService {
   /**
    * Finds products matching the given tile specifications.
+   * Performs defensive validation on input parameters and logs
+   * the query details and result count for debugging.
    * Delegates to ProductService for the actual matching logic.
    */
   async findMatches(params: SpecFinderParams): Promise<SpecFinderResult[]> {
-    return productService.findProductsBySpec(params);
+    // Defensive validation — reject invalid dimensions early.
+    if (!params.tileWidth || params.tileWidth <= 0) {
+      console.warn('[SpecFinder] Rejected query: invalid tileWidth =', params.tileWidth);
+      return [];
+    }
+    if (!params.tileHeight || params.tileHeight <= 0) {
+      console.warn('[SpecFinder] Rejected query: invalid tileHeight =', params.tileHeight);
+      return [];
+    }
+    if (params.tileThickness !== undefined && params.tileThickness <= 0) {
+      console.warn('[SpecFinder] Rejected query: invalid tileThickness =', params.tileThickness);
+      return [];
+    }
+
+    console.warn(
+      '[SpecFinder] Searching with params:',
+      JSON.stringify(params)
+    );
+
+    const results = await productService.findProductsBySpec(params);
+
+    console.warn(
+      `[SpecFinder] Found ${results.length} matching product(s) for ${params.tileWidth}×${params.tileHeight}mm` +
+      (params.tileThickness ? ` @${params.tileThickness}mm` : '')
+    );
+
+    return results;
   }
 
   /**

@@ -1,13 +1,9 @@
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
-import { SectionTitle } from '@/components/common/SectionTitle';
 import { projectService } from '@/lib/services/projectService';
-import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
-import { formatDate } from '@/lib/utils';
-import { Calendar, MapPin } from 'lucide-react';
 import { isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
+import { ProjectCard } from '@/components/projects/ProjectCard';
 
 export function generateMetadata(): Metadata {
   return {
@@ -37,44 +33,26 @@ export default async function ProjectsPage({
   return (
     <main className="min-h-screen bg-gray-50">
       <BreadcrumbJsonLd items={breadcrumbItems} />
-      <div className="container-custom py-8">
-        <Breadcrumb items={breadcrumbItems} />
-        <SectionTitle
-          eyebrow="Case Studies"
-          title="Our Projects"
-          description="Real-world installations showcasing our display solutions across the globe."
-        />
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Hero section — gradient background with centered title and description */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-brand-600 to-brand-800">
+        <div className="container-custom relative z-10 py-16 text-center">
+          <p className="mb-2 text-sm font-medium uppercase tracking-widest text-white/70">
+            Case Studies
+          </p>
+          <h1 className="mb-4 text-4xl font-bold text-white">Our Projects</h1>
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/80">
+            Real-world installations showcasing our display solutions across the globe.
+          </p>
+        </div>
+      </section>
+
+      <div className="container-custom py-10">
+        <Breadcrumb items={breadcrumbItems} />
+
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <Link key={project.id} href={lh(`/projects/${project.slug}`)}>
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="mb-2 text-base font-medium text-gray-900 hover:text-brand-400">
-                    {project.title}
-                  </h3>
-                  {project.description && (
-                    <p className="mb-4 text-sm text-gray-500 line-clamp-2 leading-relaxed">
-                      {project.description}
-                    </p>
-                  )}
-                  <div className="space-y-1 text-xs text-gray-400">
-                    {project.location && (
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {project.location}
-                      </div>
-                    )}
-                    {project.projectDate && (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(project.projectDate)}
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+            <ProjectCard key={project.id} project={project} locale={locale} />
           ))}
         </div>
 
