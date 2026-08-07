@@ -197,7 +197,7 @@ export function sleep(ms: number): Promise<void> {
  * @param url - The image URL (local path or external URL).
  * @returns URL with `?v=<version>` appended for local paths.
  */
-const IMG_VERSION = '2';
+const IMG_VERSION = '3';
 export function imgUrl(url: string | null | undefined): string {
   if (!url) return '';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
