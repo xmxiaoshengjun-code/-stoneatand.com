@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33">
+  <g id="Grupo_194" data-name="Grupo 194" transform="translate(-0.093 0.414)">
+    <ellipse id="Elipse_35" data-name="Elipse 35" cx="16" cy="16.5" rx="16" ry="16.5" transform="translate(0.092 -0.414)" fill="#bebebe"/>
+    <g id="Grupo_193" data-name="Grupo 193" transform="translate(7.104 7.127)">
+      <path id="Trazado_25" data-name="Trazado 25" d="M123.829,444.636h3.784V456.8h-3.784Zm1.894-6.046a2.193,2.193,0,1,1-2.193,2.193,2.193,2.193,0,0,1,2.193-2.193h0" transform="translate(-123.53 -438.59)" fill="#fff"/>
+      <path id="Trazado_26" data-name="Trazado 26" d="M140.37,453.875h3.623v1.664h.069a3.972,3.972,0,0,1,3.577-1.963c3.834,0,4.535,2.519,4.535,5.793v6.674h-3.78v-5.915c0-1.411-.023-3.228-1.963-3.228s-2.27,1.533-2.27,3.124v6.019h-3.776Z" transform="translate(-133.914 -447.829)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
