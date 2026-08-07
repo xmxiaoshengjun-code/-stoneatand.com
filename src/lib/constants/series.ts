@@ -345,3 +345,41 @@ export function getParentCategory(slug: string): ParentCategory | undefined {
 export function getChildSeries(parentSlug: string): SeriesInfo[] {
   return SERIES_INFO.filter((s) => s.parentSlug === parentSlug);
 }
+
+/**
+ * Builds the product detail page URL path (without locale prefix).
+ * Format: /products/{series-slug}/{sku}
+ *
+ * If `seriesSlug` is provided (e.g. from a populated `product.series` relation),
+ * it is used directly. Otherwise the function falls back to looking up the
+ * series by the SKU prefix (e.g. "LD018-1" → prefix "LD" → "stone-display-rack").
+ * If no series can be determined, the old-style path `/products/{sku}` is
+ * returned — the old route will 301-redirect to the correct new URL.
+ *
+ * @param sku        The product SKU (case-insensitive; will be lowercased).
+ * @param seriesSlug Optional series slug from the product's series relation.
+ * @returns The product detail path, e.g. "/products/stone-display-rack/ld018-1".
+ */
+export function buildProductDetailPath(sku: string, seriesSlug?: string): string {
+  const skuLower = sku.toLowerCase();
+
+  let resolvedSlug = seriesSlug;
+
+  if (!resolvedSlug) {
+    // Fall back to prefix-based lookup
+    const upperSku = sku.toUpperCase();
+    for (const info of SERIES_INFO) {
+      if (upperSku.startsWith(info.prefix)) {
+        resolvedSlug = info.slug;
+        break;
+      }
+    }
+  }
+
+  if (!resolvedSlug) {
+    // Last resort: old-style path (will be 301-redirected by the old route)
+    return `/products/${skuLower}`;
+  }
+
+  return `/products/${resolvedSlug}/${skuLower}`;
+}

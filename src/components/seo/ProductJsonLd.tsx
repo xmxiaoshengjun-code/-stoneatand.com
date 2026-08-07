@@ -1,4 +1,5 @@
 import { SITE_CONFIG } from '@/lib/constants/seo';
+import { buildProductDetailPath } from '@/lib/constants/series';
 import type { Product } from '@/types/product';
 
 interface ProductJsonLdProps {
@@ -31,7 +32,7 @@ export function ProductJsonLd({ product, images = [], priceRange }: ProductJsonL
       name: SITE_CONFIG.name,
     },
     description: 'Contact for pricing - B2B custom manufacturing',
-    url: `${SITE_CONFIG.url}/en/products/${product.sku.toLowerCase()}`,
+    url: `${SITE_CONFIG.url}/en${buildProductDetailPath(product.sku, product.series?.slug)}`,
   };
 
   if (priceRange) {

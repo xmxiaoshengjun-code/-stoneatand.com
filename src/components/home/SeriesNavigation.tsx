@@ -27,7 +27,7 @@ export function SeriesNavigation() {
           {displayCategories.map((category) => (
             <Link
               key={category.slug}
-              href={lh(`/products?series=${category.slug}`)}
+              href={lh(`/products/${category.slug}`)}
               className="group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">

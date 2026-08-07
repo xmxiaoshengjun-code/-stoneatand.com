@@ -42,6 +42,13 @@
     "node_modules",
     "pkg-tmp",
     "npm-cache-tmp",
-    "scripts"
+    "scripts",
+    "_next_old_142138",
+    "_next_old_121217",
+    "_next_old_121306",
+    "_next_old_cache",
+    ".next_backup_0",
+    ".next-dev-bak",
+    ".next-old"
   ]
 }

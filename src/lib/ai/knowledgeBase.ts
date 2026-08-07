@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import type { ChatResponse } from '@/types/chat';
 import { parseDimensionRange, parseThickness } from '@/lib/utils';
+import { buildProductDetailPath } from '@/lib/constants/series';
 
 /**
  * Knowledge Base - provides product and FAQ data retrieval for the chat engine.
@@ -23,13 +24,13 @@ export class KnowledgeBase {
         ],
       },
       take: 5,
-      select: { sku: true, name: true },
+      select: { sku: true, name: true, series: { select: { slug: true } } },
     });
 
     return products.map((p) => ({
       sku: p.sku,
       name: p.name,
-      url: `/products/${p.sku.toLowerCase()}`,
+      url: buildProductDetailPath(p.sku, p.series?.slug),
     }));
   }
 
@@ -45,6 +46,7 @@ export class KnowledgeBase {
         panelSize: true,
         panelThickness: true,
         features: true,
+        series: { select: { slug: true } },
       },
     });
 
@@ -79,7 +81,7 @@ export class KnowledgeBase {
         matches.push({
           sku: product.sku,
           name: product.name,
-          url: `/products/${product.sku.toLowerCase()}`,
+          url: buildProductDetailPath(product.sku, product.series?.slug),
         });
       }
     }

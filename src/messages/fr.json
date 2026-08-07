@@ -118,5 +118,28 @@
     "description": "Des produits réels de notre catalogue, prêts à expédier. Chaque étagère est conçue pour des performances d’exposition et une durabilité à long terme.",
     "viewDetails": "Voir les détails",
     "browseAll": "Parcourir les {count} produits"
+  },
+  "filters": {
+    "title": "Filtres",
+    "clearAll": "Tout effacer",
+    "category": "Cat\u00e9gorie",
+    "allCategories": "Toutes les cat\u00e9gories",
+    "panelThickness": "\u00c9paisseur du panneau",
+    "allThicknesses": "Toutes les \u00e9paisseurs",
+    "search": "Rechercher",
+    "searchPlaceholder": "SKU, nom, mot-cl\u00e9...",
+    "sortBy": "Trier par :",
+    "sortDefault": "Par d\u00e9faut",
+    "sortSku": "SKU (A-Z)",
+    "sortName": "Nom (A-Z)",
+    "sortNewest": "Plus r\u00e9cents",
+    "sortFeatured": "En vedette"
+  },
+  "products": {
+    "loading": "Chargement...",
+    "productsFound": "produits trouv\u00e9s",
+    "categoriesTitle": "Cat\u00e9gories de produits",
+    "categoriesDescription": "Parcourez toutes les cat\u00e9gories de produits pour trouver la solution d'affichage parfaite pour vos carreaux, pierre, sols et plus encore.",
+    "viewCategory": "Voir {name}"
   }
 }

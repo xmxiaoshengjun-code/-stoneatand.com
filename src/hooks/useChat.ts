@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { ChatMessage } from '@/types/chat';
 import { useTracking } from '@/hooks/useTracking';
 
@@ -17,6 +17,9 @@ interface UseChatReturn {
  * Hook for managing AI chat widget state and message sending.
  * Generates a persistent session ID per browser session.
  * Tracks chat_start event on the first user message.
+ *
+ * NOTE: All browser-only side effects (sessionStorage access) are moved to
+ * useEffect to avoid hydration mismatches and render-time side effects.
  */
 export function useChat(): UseChatReturn {
   const { trackChatStart } = useTracking();
@@ -28,21 +31,26 @@ export function useChat(): UseChatReturn {
       role: 'ASSISTANT',
       content: "Hello! I'm TSIANFAN's AI assistant. How can I help you today? Ask about our products, find a rack for your tiles, or request a quote.",
       metadata: null,
-      createdAt: new Date().toISOString(),
+      createdAt: '2025-01-01T00:00:00.000Z',
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpenState] = useState(false);
 
-  const sessionIdRef = useRef<string>(
-    typeof window !== 'undefined'
-      ? sessionStorage.getItem('chat_session_id') || generateSessionId()
-      : ''
-  );
+  // Use empty string for SSR; populate in useEffect on the client
+  const sessionIdRef = useRef<string>('');
 
-  if (typeof window !== 'undefined' && !sessionStorage.getItem('chat_session_id')) {
-    sessionStorage.setItem('chat_session_id', sessionIdRef.current);
-  }
+  // Initialize session ID on the client only (avoid hydration mismatch)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const existing = sessionStorage.getItem('chat_session_id');
+    if (existing) {
+      sessionIdRef.current = existing;
+    } else {
+      sessionIdRef.current = generateSessionId();
+      sessionStorage.setItem('chat_session_id', sessionIdRef.current);
+    }
+  }, []);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return;

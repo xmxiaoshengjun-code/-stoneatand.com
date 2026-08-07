@@ -71,7 +71,7 @@ export function SearchModal({ open, onClose }: { open: boolean; onClose: () => v
               <button
                 key={cat.slug}
                 onClick={() => {
-                  router.push(`/products?series=${cat.slug}`);
+                  router.push(`/products/${cat.slug}`);
                   onClose();
                 }}
                 className="rounded-md border px-3 py-1.5 text-sm text-gray-700 hover:border-brand-400 hover:text-brand-400"

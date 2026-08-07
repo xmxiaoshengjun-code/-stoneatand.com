@@ -7,6 +7,7 @@ import { X } from 'lucide-react';
 import { useCompare } from '@/hooks/useCompare';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
+import { buildProductDetailPath } from '@/lib/constants/series';
 import type { Product } from '@/types/product';
 
 export function CompareTable({ products }: { products: Product[] }) {
@@ -50,7 +51,7 @@ export function CompareTable({ products }: { products: Product[] }) {
               <TableHead key={p.id} className="bg-gray-50">
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <Link href={lh(`/products/${p.sku.toLowerCase()}`)} className="font-mono text-brand-400 hover:underline">
+                    <Link href={lh(buildProductDetailPath(p.sku, p.series?.slug))} className="font-mono text-brand-400 hover:underline">
                       {p.sku}
                     </Link>
                     <button
@@ -84,7 +85,7 @@ export function CompareTable({ products }: { products: Product[] }) {
             {products.map((p) => (
               <TableCell key={p.id}>
                 <Button asChild size="sm" variant="brand">
-                  <Link href={lh(`/products/${p.sku.toLowerCase()}`)}>View Details</Link>
+                  <Link href={lh(buildProductDetailPath(p.sku, p.series?.slug))}>View Details</Link>
                 </Button>
               </TableCell>
             ))}

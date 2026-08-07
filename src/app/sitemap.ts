@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { LOCALES } from '@/lib/i18n/config';
+import { buildProductDetailPath } from '@/lib/constants/series';
 
 /**
  * Generates the sitemap.xml for SEO.
@@ -42,14 +43,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: buildAlternates(p.path),
   }));
 
-  // Fetch all published products
+  // Fetch all published products (include series slug for new URL format)
   const products = await prisma.product.findMany({
     where: { isPublished: true },
-    select: { sku: true, updatedAt: true },
+    select: { sku: true, updatedAt: true, series: { select: { slug: true } } },
   });
 
   const productPages: MetadataRoute.Sitemap = products.map((p) => {
-    const path = `/products/${p.sku.toLowerCase()}`;
+    const path = buildProductDetailPath(p.sku, p.series?.slug);
     return {
       url: `${baseUrl}/en${path}`,
       lastModified: p.updatedAt,
@@ -65,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const seriesPages: MetadataRoute.Sitemap = series.map((s) => {
-    const path = `/products?series=${s.slug}`;
+    const path = `/products/${s.slug}`;
     return {
       url: `${baseUrl}/en${path}`,
       lastModified: s.updatedAt,

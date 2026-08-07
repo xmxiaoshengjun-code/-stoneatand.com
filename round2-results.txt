@@ -1,0 +1,20 @@
+Cleanup: killed PIDs none
+Server process started, PID=36904
+Server ready after 2 retries
+TEST-2a: other-display status=200 (expect 200) -> PASS
+TEST-2b: other-display 'All Products'=4 (expect >0) -> PASS
+TEST-2c: other-display redirect=NO -> PASS
+TEST-3: tile-display -> 308 -> /en/products?series=tile-displays-rack -> PASS
+TEST-3: stone-display -> 308 -> /en/products?series=stone-displays-rack -> PASS
+TEST-3: wood-flooring-display -> 308 -> /en/products?series=wooden-flooring-display-rack -> PASS
+TEST-3: sample-cabinet -> 308 -> /en/products?series=samples-box-books-display -> PASS
+TEST-3: mosaic-decor -> 308 -> /en/products?series=mosaic-display-rack -> PASS
+TEST-4a: tile-displays-rack status=200 (expect 200) -> PASS
+TEST-4b: 'Tile Displays'=9 (expect >0) -> PASS
+TEST-5: spec-finder POST code=200 count=121 (expect >0) -> PASS
+TEST-6a: projects status=200 (expect 200) -> PASS
+TEST-6b: 'Case Studies'=2 (expect >0) -> PASS
+TEST-7: spec-finder GET code=200 thicknessOptions=5 -> PASS
+TEST-8: /en/products status=200 -> PASS
+TEST-8: /en/spec-finder status=200 -> PASS
+TEST-8: /en/projects status=200 -> PASS

@@ -6,6 +6,7 @@ import { SectionTitle } from '@/components/common/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { localizePath, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
+import { buildProductDetailPath } from '@/lib/constants/series';
 import type { Product } from '@/types/product';
 
 function FeaturedProductCard({ product, locale, dict }: { product: Product; locale: Locale; dict: any }) {
@@ -14,7 +15,7 @@ function FeaturedProductCard({ product, locale, dict }: { product: Product; loca
 
   return (
     <Link
-      href={localizePath(`/products/${product.sku.toLowerCase()}`, locale)}
+      href={localizePath(buildProductDetailPath(product.sku, product.series?.slug), locale)}
       className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition-all hover:shadow-xl"
     >
       <div className="relative aspect-square overflow-hidden bg-gray-100">

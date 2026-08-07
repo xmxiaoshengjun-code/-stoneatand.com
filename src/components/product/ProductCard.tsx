@@ -8,10 +8,11 @@ import type { Product } from '@/types/product';
 import { CompareButton } from '@/components/product/CompareButton';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
+import { buildProductDetailPath } from '@/lib/constants/series';
 
 export function ProductCard({ product }: { product: Product }) {
   const { locale } = useI18n();
-  const productHref = localizePath(`/products/${product.sku.toLowerCase()}`, locale);
+  const productHref = localizePath(buildProductDetailPath(product.sku, product.series?.slug), locale);
   const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
 
   return (

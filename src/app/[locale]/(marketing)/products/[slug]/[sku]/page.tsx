@@ -14,9 +14,10 @@ import { Badge } from '@/components/ui/badge';
 import { productService } from '@/lib/services/productService';
 import { SITE_CONFIG } from '@/lib/constants/seo';
 import { LOCALES, isLocale, localizePath, buildAbsoluteAlternates, buildCanonical, type Locale } from '@/lib/i18n/config';
+import { SERIES_BY_SLUG, buildProductDetailPath } from '@/lib/constants/series';
 
 interface PageProps {
-  params: { sku: string; locale: string };
+  params: { slug: string; sku: string; locale: string };
 }
 
 // Localized CTA suffixes for product description
@@ -29,12 +30,18 @@ const PRODUCT_CTA: Record<Locale, string> = {
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const series = SERIES_BY_SLUG[params.slug];
+  if (!series) return { title: 'Product Not Found' };
+
   const product = await productService.getProductBySku(params.sku);
   if (!product) return { title: 'Product Not Found' };
 
+  // Validate that the product's series matches the URL slug
+  if (product.series?.slug !== params.slug) return { title: 'Product Not Found' };
+
   const locale: Locale = isLocale(params.locale) ? params.locale : 'en';
-  const slug = product.sku.toLowerCase();
-  const path = `/products/${slug}`;
+  const skuLower = product.sku.toLowerCase();
+  const path = `/products/${params.slug}/${skuLower}`;
   const cta = PRODUCT_CTA[locale];
 
   const description = `${product.name} (${product.sku}) - ${product.series?.name || 'Display Rack'} display rack. ${product.description || product.features || ''} ${cta}`;
@@ -50,11 +57,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  const products = await productService.getProducts({ pageSize: 100 });
-  const params: { sku: string; locale: string }[] = [];
-  for (const product of products.items) {
+  // Fetch ALL products (not just the first 100) to ensure every product
+  // detail page is pre-rendered with the correct series-slug + sku combination.
+  const allEntries: Array<{ sku: string; slug: string }> = [];
+  let page = 1;
+  const pageSize = 50;
+  // Paginate through all products to avoid memory issues with a single large query
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const batch = await productService.getProducts({ page, pageSize, sort: 'sortOrder' });
+    if (!batch.items || batch.items.length === 0) break;
+    for (const product of batch.items) {
+      const seriesSlug = product.series?.slug;
+      if (!seriesSlug) continue; // Skip products without a series (should not happen)
+      allEntries.push({ sku: product.sku.toLowerCase(), slug: seriesSlug });
+    }
+    if (batch.items.length < pageSize) break;
+    page++;
+  }
+
+  const params: { locale: string; slug: string; sku: string }[] = [];
+  for (const entry of allEntries) {
     for (const locale of LOCALES) {
-      params.push({ sku: product.sku.toLowerCase(), locale });
+      params.push({ locale, slug: entry.slug, sku: entry.sku });
     }
   }
   return params;
@@ -64,22 +89,34 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const locale: Locale = isLocale(params.locale) ? params.locale : 'en';
   const lh = (href: string) => localizePath(href, locale);
 
+  // Validate slug is a known child series
+  const series = SERIES_BY_SLUG[params.slug];
+  if (!series) notFound();
+
   const product = await productService.getProductBySku(params.sku);
   if (!product) notFound();
 
-  const related = await productService.getRelatedProducts(product.id, product.seriesId, 4);
-  const shareUrl = `${SITE_CONFIG.url}${lh('/products')}/${product.sku.toLowerCase()}`;
+  // Validate that the product's series matches the URL slug (prevents URL spoofing)
+  if (product.series?.slug !== params.slug) notFound();
 
-  // Build image URLs for JSON-LD
-  const productImages = (product.images || []).map(
-    (img) => (img.url.startsWith('http') ? img.url : `${SITE_CONFIG.url}${img.url}`)
-  );
+  const related = await productService.getRelatedProducts(product.id, product.seriesId, 4);
+  const shareUrl = `${SITE_CONFIG.url}${lh(buildProductDetailPath(product.sku, product.series?.slug))}`;
+
+  // Build image URLs for JSON-LD (filter out invalid/empty urls defensively)
+  const productImages = (product.images || [])
+    .filter((img) => img.url)
+    .map((img) => (img.url.startsWith('http') ? img.url : `${SITE_CONFIG.url}${img.url}`));
 
   // Breadcrumb items (shared between visual and JSON-LD)
+  // Third item links to the child series product list page
+  const seriesName = product.series?.name || series.name;
+  const seriesSlug = product.series?.slug || series.slug;
   const breadcrumbItems = [
     { label: 'Home', href: lh('/') },
     { label: 'Products', href: lh('/products') },
-    { label: product.series?.name || '', href: lh(`/products?series=${product.series?.slug}`) },
+    ...(seriesName
+      ? [{ label: seriesName, href: lh(`/products/${seriesSlug}`) }]
+      : []),
     { label: product.sku },
   ];
 
@@ -93,7 +130,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Gallery */}
-            <ProductGallery images={product.images || []} />
+            <ProductGallery images={(product.images || []).filter((img) => img.url)} />
 
             {/* Info */}
             <div className="space-y-6">
@@ -124,7 +161,19 @@ export default async function ProductDetailPage({ params }: PageProps) {
               {product.features && (
                 <div className="rounded-lg border bg-brand-50 p-4">
                   <h3 className="mb-2 font-semibold text-brand-700">Key Features</h3>
-                  <p className="text-sm text-gray-700">{product.features}</p>
+                  {(() => {
+                    try {
+                      const features = JSON.parse(product.features);
+                      if (Array.isArray(features)) {
+                        return (
+                          <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700">
+                            {features.map((f: string, i: number) => <li key={i}>{f}</li>)}
+                          </ul>
+                        );
+                      }
+                    } catch { /* fall through to text */ }
+                    return <p className="text-sm text-gray-700">{product.features}</p>;
+                  })()}
                 </div>
               )}
 
@@ -173,7 +222,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
 
           {/* Related products */}
-          <RelatedProducts products={related} />
+          {related && related.length > 0 && <RelatedProducts products={related} />}
         </div>
       </main>
       <CompareBar />

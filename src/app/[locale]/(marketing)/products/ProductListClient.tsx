@@ -5,22 +5,33 @@ import { useProducts } from '@/hooks/useProducts';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { FilterPanel } from '@/components/product/FilterPanel';
 import { SortBar } from '@/components/product/SortBar';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
-import { isParentSlug } from '@/lib/constants/series';
-import { ParentCategoryView } from '@/components/product/ParentCategoryView';
+import { useI18n } from '@/lib/i18n/I18nProvider';
 import { type Locale } from '@/lib/i18n/config';
 
-export function ProductListClient({ locale }: { locale: Locale }) {
+/**
+ * Client component for the product listing page.
+ *
+ * Renders the left sidebar FilterPanel and the product grid with sorting
+ * and pagination. Parent category slugs are handled by page.tsx (server-side)
+ * which renders ParentCategoryView directly, so this component only receives
+ * child series slugs or no series at all.
+ */
+export function ProductListClient({ locale, series }: { locale: Locale; series: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const params = {
-    // 'other-display' is a legacy slug with no new parent category equivalent.
-    // Treat it as no series filter so the full product list is shown.
-    series: (searchParams.get('series') && searchParams.get('series') !== 'other-display')
-      ? searchParams.get('series') || undefined
-      : undefined,
+    series: series,
     panelSize: searchParams.get('panelSize') || undefined,
     panelThickness: searchParams.get('panelThickness') || undefined,
     keyword: searchParams.get('keyword') || undefined,
@@ -31,16 +42,12 @@ export function ProductListClient({ locale }: { locale: Locale }) {
 
   const { products, total, totalPages, isLoading } = useProducts(params);
 
-  // If the series param matches a parent category slug (e.g. 'tile-displays-rack'),
-  // render the parent category landing view instead of the normal product list.
-  if (params.series && isParentSlug(params.series)) {
-    return <ParentCategoryView parentSlug={params.series} locale={locale} />;
-  }
-
   // Clamp current page to valid range [1, totalPages] to prevent
   // out-of-bounds page values from showing Prev/Next incorrectly.
   const currentPage =
-    totalPages > 0 ? Math.min(Math.max(params.page, 1), totalPages) : Math.max(params.page, 1);
+    totalPages > 0
+      ? Math.min(Math.max(params.page, 1), totalPages)
+      : Math.max(params.page, 1);
 
   /**
    * Builds a URL for the given page number, preserving all existing
@@ -62,16 +69,18 @@ export function ProductListClient({ locale }: { locale: Locale }) {
     <div className="flex flex-col gap-6 lg:flex-row">
       {/* Sidebar filters */}
       <aside className="lg:w-64 lg:shrink-0">
-        <FilterPanel />
+        <FilterPanel series={series} />
       </aside>
 
       {/* Product grid */}
       <div className="flex-1">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm text-gray-600">
-            {isLoading ? 'Loading...' : `${total} products found`}
+            {isLoading
+              ? t('products.loading')
+              : `${total} ${t('products.productsFound')}`}
           </p>
-          <SortBar />
+          <SortBar series={series} />
         </div>
 
         {isLoading ? (
@@ -89,15 +98,15 @@ export function ProductListClient({ locale }: { locale: Locale }) {
         )}
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {totalPages > 1 ? (
           <div className="mt-8">
             <Pagination>
               <PaginationContent>
-                {currentPage > 1 && (
+                {currentPage > 1 ? (
                   <PaginationItem>
                     <PaginationPrevious href={buildPageUrl(currentPage - 1)} />
                   </PaginationItem>
-                )}
+                ) : null}
                 {Array.from({ length: totalPages }).map((_, i) => {
                   const page = i + 1;
                   if (
@@ -118,15 +127,15 @@ export function ProductListClient({ locale }: { locale: Locale }) {
                   }
                   return null;
                 })}
-                {currentPage < totalPages && (
+                {currentPage < totalPages ? (
                   <PaginationItem>
                     <PaginationNext href={buildPageUrl(currentPage + 1)} />
                   </PaginationItem>
-                )}
+                ) : null}
               </PaginationContent>
             </Pagination>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

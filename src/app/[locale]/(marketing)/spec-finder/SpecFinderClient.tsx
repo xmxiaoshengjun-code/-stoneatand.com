@@ -14,6 +14,7 @@ import { specFinderService } from '@/lib/services/specFinderService';
 import { useTracking } from '@/hooks/useTracking';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
+import { buildProductDetailPath } from '@/lib/constants/series';
 import type { SpecFinderResult } from '@/types/product';
 
 export function SpecFinderClient() {
@@ -219,7 +220,7 @@ export function SpecFinderClient() {
                       ))}
                     </ul>
                     <Button asChild variant="outline" size="sm" className="w-full">
-                      <Link href={lh(`/products/${result.product.sku.toLowerCase()}`)}>
+                      <Link href={lh(buildProductDetailPath(result.product.sku, result.product.series?.slug))}>
                         View Details
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>

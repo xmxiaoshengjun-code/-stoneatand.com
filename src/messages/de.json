@@ -118,5 +118,28 @@
     "description": "Echte Produkte aus unserem Katalog, versandfertig. Jeder Ständer ist für Showroom-Leistung und langfristige Haltbarkeit konstruiert.",
     "viewDetails": "Details ansehen",
     "browseAll": "Alle {count} Produkte durchsuchen"
+  },
+  "filters": {
+    "title": "Filter",
+    "clearAll": "Alle zur\u00fccksetzen",
+    "category": "Kategorie",
+    "allCategories": "Alle Kategorien",
+    "panelThickness": "Plattenst\u00e4rke",
+    "allThicknesses": "Alle St\u00e4rken",
+    "search": "Suche",
+    "searchPlaceholder": "SKU, Name, Stichwort...",
+    "sortBy": "Sortieren nach:",
+    "sortDefault": "Standard",
+    "sortSku": "SKU (A-Z)",
+    "sortName": "Name (A-Z)",
+    "sortNewest": "Neueste",
+    "sortFeatured": "Empfohlen"
+  },
+  "products": {
+    "loading": "Wird geladen...",
+    "productsFound": "Produkte gefunden",
+    "categoriesTitle": "Produktkategorien",
+    "categoriesDescription": "Durchsuchen Sie alle Produktkategorien, um die perfekte Präsentationslösung für Ihre Fliesen, Stein, Bodenbeläge und mehr zu finden.",
+    "viewCategory": "{name} ansehen"
   }
 }

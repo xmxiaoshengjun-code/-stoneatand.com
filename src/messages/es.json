@@ -118,5 +118,28 @@
     "description": "Productos reales de nuestro catálogo, listos para enviar. Cada expositor está diseñado para un rendimiento en showroom y durabilidad a largo plazo.",
     "viewDetails": "Ver detalles",
     "browseAll": "Explorar los {count} productos"
+  },
+  "filters": {
+    "title": "Filtros",
+    "clearAll": "Borrar todo",
+    "category": "Categor\u00eda",
+    "allCategories": "Todas las categor\u00edas",
+    "panelThickness": "Grosor del panel",
+    "allThicknesses": "Todos los grosores",
+    "search": "Buscar",
+    "searchPlaceholder": "SKU, nombre, palabra clave...",
+    "sortBy": "Ordenar por:",
+    "sortDefault": "Predeterminado",
+    "sortSku": "SKU (A-Z)",
+    "sortName": "Nombre (A-Z)",
+    "sortNewest": "M\u00e1s recientes",
+    "sortFeatured": "Destacados"
+  },
+  "products": {
+    "loading": "Cargando...",
+    "productsFound": "productos encontrados",
+    "categoriesTitle": "Categorías de productos",
+    "categoriesDescription": "Explore todas las categorías de productos para encontrar la solución de exhibición perfecta para sus azulejos, piedra, suelos y más.",
+    "viewCategory": "Ver {name}"
   }
 }

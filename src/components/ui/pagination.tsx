@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -28,10 +29,10 @@ PaginationItem.displayName = 'PaginationItem';
 
 type PaginationLinkProps = {
   isActive?: boolean;
-} & React.ComponentProps<'a'>;
+} & Omit<React.ComponentProps<'a'>, 'href'> & { href: string };
 
 const PaginationLink = ({ className, isActive, ...props }: PaginationLinkProps) => (
-  <a
+  <Link
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       'inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-sm transition-colors hover:bg-accent hover:text-accent-foreground',

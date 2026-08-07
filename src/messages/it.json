@@ -118,5 +118,28 @@
     "description": "Prodotti reali dal nostro catalogo, pronti per la spedizione. Ogni espositore è progettato per prestazioni in showroom e durata nel tempo.",
     "viewDetails": "Vedi dettagli",
     "browseAll": "Sfoglia tutti i {count} prodotti"
+  },
+  "filters": {
+    "title": "Filtri",
+    "clearAll": "Cancella tutto",
+    "category": "Categoria",
+    "allCategories": "Tutte le categorie",
+    "panelThickness": "Spessore pannello",
+    "allThicknesses": "Tutti gli spessori",
+    "search": "Cerca",
+    "searchPlaceholder": "SKU, nome, parola chiave...",
+    "sortBy": "Ordina per:",
+    "sortDefault": "Predefinito",
+    "sortSku": "SKU (A-Z)",
+    "sortName": "Nome (A-Z)",
+    "sortNewest": "Pi\u00f9 recenti",
+    "sortFeatured": "In evidenza"
+  },
+  "products": {
+    "loading": "Caricamento...",
+    "productsFound": "prodotti trovati",
+    "categoriesTitle": "Categorie di prodotti",
+    "categoriesDescription": "Sfoglia tutte le categorie di prodotti per trovare la soluzione di visualizzazione perfetta per piastrelle, pietra, pavimenti e altro ancora.",
+    "viewCategory": "Vedi {name}"
   }
 }

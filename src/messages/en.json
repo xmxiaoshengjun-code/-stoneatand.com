@@ -118,5 +118,28 @@
     "description": "Real products from our catalog, ready to ship. Each rack is engineered for showroom performance and long-term durability.",
     "viewDetails": "View Details",
     "browseAll": "Browse All {count} Products"
+  },
+  "filters": {
+    "title": "Filters",
+    "clearAll": "Clear all",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "panelThickness": "Panel Thickness",
+    "allThicknesses": "All Thicknesses",
+    "search": "Search",
+    "searchPlaceholder": "SKU, name, keyword...",
+    "sortBy": "Sort by:",
+    "sortDefault": "Default",
+    "sortSku": "SKU (A-Z)",
+    "sortName": "Name (A-Z)",
+    "sortNewest": "Newest",
+    "sortFeatured": "Featured"
+  },
+  "products": {
+    "loading": "Loading...",
+    "productsFound": "products found",
+    "categoriesTitle": "Product Categories",
+    "categoriesDescription": "Browse all product categories to find the perfect display solution for your tiles, stone, flooring, and more.",
+    "viewCategory": "View {name}"
   }
 }
