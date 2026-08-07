@@ -8,6 +8,7 @@ import { SectionTitle } from '@/components/common/SectionTitle';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
+import { imgUrl } from '@/lib/utils';
 
 export function SeriesNavigation() {
   const { locale, t } = useI18n();
@@ -33,7 +34,7 @@ export function SeriesNavigation() {
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                 {category.heroImage ? (
                   <Image
-                    src={category.heroImage}
+                    src={imgUrl(category.heroImage)}
                     alt={category.name}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"

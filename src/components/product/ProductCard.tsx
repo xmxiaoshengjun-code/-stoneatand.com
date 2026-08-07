@@ -9,6 +9,7 @@ import { CompareButton } from '@/components/product/CompareButton';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
 import { buildProductDetailPath } from '@/lib/constants/series';
+import { imgUrl } from '@/lib/utils';
 
 export function ProductCard({ product }: { product: Product }) {
   const { locale } = useI18n();
@@ -21,7 +22,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           {primaryImage ? (
             <Image
-              src={primaryImage.url}
+              src={imgUrl(primaryImage.url)}
               alt={primaryImage.alt || product.name}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"

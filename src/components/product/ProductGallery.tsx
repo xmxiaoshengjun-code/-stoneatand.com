@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, imgUrl } from '@/lib/utils';
 
 export function ProductGallery({ images }: { images: Array<{ url: string; alt: string | null }> }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -20,7 +20,7 @@ export function ProductGallery({ images }: { images: Array<{ url: string; alt: s
       {/* Main image */}
       <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
         <Image
-          src={images[activeIndex].url}
+          src={imgUrl(images[activeIndex].url)}
           alt={images[activeIndex].alt || 'Product image'}
           fill
           className="object-cover"
@@ -44,7 +44,7 @@ export function ProductGallery({ images }: { images: Array<{ url: string; alt: s
               )}
             >
               <Image
-                src={img.url}
+                src={imgUrl(img.url)}
                 alt={img.alt || `Thumbnail ${index + 1}`}
                 fill
                 className="object-cover"

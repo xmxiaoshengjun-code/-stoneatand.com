@@ -184,3 +184,24 @@ export function safeJsonParse<T>(jsonStr: string | null | undefined, fallback: T
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+/**
+ * Appends a cache-busting version parameter to local image URLs.
+ *
+ * When product images are replaced on disk (same filename, different content),
+ * browsers with `immutable` cache won't re-fetch. Adding `?v=<version>` changes
+ * the URL, forcing a fresh request. External URLs (http/https) are returned as-is.
+ *
+ * Bump IMG_VERSION when images are replaced site-wide.
+ *
+ * @param url - The image URL (local path or external URL).
+ * @returns URL with `?v=<version>` appended for local paths.
+ */
+const IMG_VERSION = '2';
+export function imgUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:')) return url;
+  const sep = url.includes('?') ? '&' : '?';
+  return `${url}${sep}v=${IMG_VERSION}`;
+}

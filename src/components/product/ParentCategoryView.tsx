@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, Package } from 'lucide-react';
 import { getParentCategory, getChildSeries } from '@/lib/constants/series';
 import { localizePath, type Locale } from '@/lib/i18n/config';
+import { imgUrl } from '@/lib/utils';
 
 /**
  * Props for the ParentCategoryView component.
@@ -77,7 +78,7 @@ export function ParentCategoryView({ parentSlug, locale }: ParentCategoryViewPro
               {child.heroImage ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
-                  src={child.heroImage}
+                  src={imgUrl(child.heroImage)}
                   alt={child.name}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"

@@ -8,6 +8,7 @@ import { localizePath, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { buildProductDetailPath } from '@/lib/constants/series';
 import type { Product } from '@/types/product';
+import { imgUrl } from '@/lib/utils';
 
 function FeaturedProductCard({ product, locale, dict }: { product: Product; locale: Locale; dict: any }) {
   const image = product.images?.[0];
@@ -21,7 +22,7 @@ function FeaturedProductCard({ product, locale, dict }: { product: Product; loca
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         {image ? (
           <Image
-            src={image.url}
+            src={imgUrl(image.url)}
             alt={image.alt || product.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"

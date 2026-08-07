@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, MapPin } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { formatDate, imgUrl } from '@/lib/utils';
 import { localizePath, type Locale } from '@/lib/i18n/config';
 import type { ProjectWithImages } from '@/lib/services/projectService';
 
@@ -42,7 +42,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           {heroImage ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
-              src={heroImage}
+              src={imgUrl(heroImage)}
               alt={project.title}
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
               loading="lazy"

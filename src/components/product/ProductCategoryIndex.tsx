@@ -3,6 +3,7 @@ import { ArrowRight, Package } from 'lucide-react';
 import { PARENT_CATEGORIES } from '@/lib/constants/series';
 import { localizePath, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
+import { imgUrl } from '@/lib/utils';
 
 /**
  * Props for the ProductCategoryIndex component.
@@ -75,7 +76,7 @@ export async function ProductCategoryIndex({
                 {category.heroImage ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
-                    src={category.heroImage}
+                    src={imgUrl(category.heroImage)}
                     alt={category.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
