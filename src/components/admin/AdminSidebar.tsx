@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ADMIN_NAV_ITEMS } from '@/lib/constants/nav';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
@@ -28,8 +29,14 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b border-gray-800 px-4">
         {!collapsed && (
-          <Link href="/admin/products" className="text-lg font-bold text-white tracking-wide">
-            TSIAN<span className="text-brand-400">FAN</span>
+          <Link href="/admin/products" className="flex items-center">
+            <Image
+              src="/images/logo-tsianfan.png"
+              alt="TSIANFAN"
+              width={685}
+              height={161}
+              className="h-8 w-auto"
+            />
           </Link>
         )}
         <button

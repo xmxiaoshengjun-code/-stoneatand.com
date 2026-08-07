@@ -33,7 +33,7 @@ export function Header() {
         <div className="container-custom flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href={lh('/')} className="flex items-center">
-            <Logo className="h-7 text-brand-400" />
+            <Logo className="h-10" priority />
           </Link>
 
           {/* Desktop Navigation */}

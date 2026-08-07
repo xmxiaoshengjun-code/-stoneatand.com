@@ -68,8 +68,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link href={lh('/')} className="flex items-center text-white">
-              <Logo className="h-7 text-brand-400" />
+            <Link href={lh('/')} className="flex items-center">
+              <Logo className="h-10" />
             </Link>
             <p className="text-sm leading-relaxed text-gray-400">
               {t('footer.tagline')}

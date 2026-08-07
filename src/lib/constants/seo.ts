@@ -233,7 +233,7 @@ export const ORGANIZATION_JSONLD = {
   telephone: SITE_CONFIG.phone,
   logo: {
     '@type': 'ImageObject',
-    url: `${SITE_CONFIG.url}/images/logo-tsianfan.svg`,
+    url: `${SITE_CONFIG.url}/images/logo-tsianfan.png`,
   },
   address: {
     '@type': 'PostalAddress',

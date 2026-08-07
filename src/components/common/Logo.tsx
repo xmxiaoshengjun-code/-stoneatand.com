@@ -1,28 +1,28 @@
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
+  priority?: boolean;
 }
 
-export function Logo({ className }: LogoProps) {
+/**
+ * TSIANFAN brand logo.
+ *
+ * Renders the official PNG logo (685×161) which contains the full
+ * TSIANFAN wordmark, 谦帆 Chinese text, DISPLAY tagline, and ® symbol.
+ * The image has its own brand-orange colouring — no `currentColor`
+ * or text-colour utility is needed.
+ */
+export function Logo({ className, priority = false }: LogoProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 220 44"
-      fill="currentColor"
-      aria-label="TSIANFAN"
-      className={cn('w-auto', className)}
-    >
-      <text
-        x="0"
-        y="34"
-        fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-        fontSize="28"
-        fontWeight="700"
-        letterSpacing="3"
-      >
-        TSIANFAN
-      </text>
-    </svg>
+    <Image
+      src="/images/logo-tsianfan.png"
+      alt="TSIANFAN"
+      width={685}
+      height={161}
+      priority={priority}
+      className={cn('h-8 w-auto', className)}
+    />
   );
 }
