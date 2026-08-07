@@ -29,7 +29,7 @@ export function SeriesNavigation() {
             <Link
               key={category.slug}
               href={lh(`/products/${category.slug}`)}
-              className="group relative block overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="group block overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 {category.heroImage ? (
@@ -45,15 +45,11 @@ export function SeriesNavigation() {
                     {category.name.charAt(0)}
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10 transition-opacity duration-300 group-hover:via-black/50" />
-                <div className="absolute bottom-0 left-0 w-full p-5 text-white">
-                  <h3 className="text-lg font-semibold leading-tight tracking-[-0.01em] text-white drop-shadow-sm md:text-xl">
-                    {category.name}
-                  </h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-white/90 drop-shadow-sm">
-                    {category.description}
-                  </p>
-                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="text-base font-medium text-gray-900">
+                  {category.name}
+                </h3>
               </div>
             </Link>
           ))}
