@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { BreadcrumbJsonLd } from '@/components/seo/BreadcrumbJsonLd';
 import { projectService } from '@/lib/services/projectService';
@@ -34,8 +35,19 @@ export default async function ProjectsPage({
     <main className="min-h-screen bg-gray-50">
       <BreadcrumbJsonLd items={breadcrumbItems} />
 
-      {/* Hero section — gradient background with centered title and description */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-600 to-brand-800">
+      {/* Hero section — showroom background with dark overlay to match homepage */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/showrooms/ai-showroom-cta.png"
+            alt="TSIANFAN display rack project showroom"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/80 to-gray-900/70" />
+        </div>
         <div className="container-custom relative z-10 py-16 text-center">
           <p className="mb-2 text-sm font-medium uppercase tracking-widest text-white/70">
             Case Studies
