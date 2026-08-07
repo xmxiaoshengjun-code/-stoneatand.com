@@ -43,7 +43,7 @@ export function HourlyTrafficChart({ data }: HourlyTrafficChartProps) {
           strokeWidth={2}
           dot={{ r: 3 }}
           activeDot={{ r: 5 }}
-          name="Page Views"
+          name="页面浏览量"
         />
       </LineChart>
     </ResponsiveContainer>

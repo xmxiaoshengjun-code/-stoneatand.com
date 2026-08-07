@@ -16,7 +16,7 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
   const { data, mutate } = useSWR(`/api/inquiries/${inquiryId}`, fetcher);
 
   if (!data) return <Skeleton className="h-96" />;
-  if (data.code !== 200) return <p className="text-red-500">Inquiry not found</p>;
+  if (data.code !== 200) return <p className="text-red-500">未找到询盘</p>;
 
   const inquiry = data.data;
 
@@ -28,7 +28,7 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
     });
     const result = await res.json();
     if (result.code === 200) {
-      toast.success('Status updated');
+      toast.success('状态已更新');
       mutate();
     }
   };
@@ -45,12 +45,12 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="NEW">New</SelectItem>
-            <SelectItem value="CONTACTED">Contacted</SelectItem>
-            <SelectItem value="QUOTED">Quoted</SelectItem>
-            <SelectItem value="NEGOTIATING">Negotiating</SelectItem>
-            <SelectItem value="WON">Won</SelectItem>
-            <SelectItem value="LOST">Lost</SelectItem>
+            <SelectItem value="NEW">新增</SelectItem>
+            <SelectItem value="CONTACTED">已联系</SelectItem>
+            <SelectItem value="QUOTED">已报价</SelectItem>
+            <SelectItem value="NEGOTIATING">协商中</SelectItem>
+            <SelectItem value="WON">已成交</SelectItem>
+            <SelectItem value="LOST">已流失</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -58,17 +58,17 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Customer Information</CardTitle>
+            <CardTitle>客户信息</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div><span className="text-gray-500">Name:</span> {inquiry.customerName}</div>
-            <div><span className="text-gray-500">Email:</span> {inquiry.email}</div>
-            {inquiry.phone && <div><span className="text-gray-500">Phone:</span> {inquiry.phone}</div>}
-            {inquiry.company && <div><span className="text-gray-500">Company:</span> {inquiry.company}</div>}
-            {inquiry.country && <div><span className="text-gray-500">Country:</span> {inquiry.country}</div>}
+            <div><span className="text-gray-500">姓名：</span> {inquiry.customerName}</div>
+            <div><span className="text-gray-500">邮箱：</span> {inquiry.email}</div>
+            {inquiry.phone && <div><span className="text-gray-500">电话：</span> {inquiry.phone}</div>}
+            {inquiry.company && <div><span className="text-gray-500">公司：</span> {inquiry.company}</div>}
+            {inquiry.country && <div><span className="text-gray-500">国家：</span> {inquiry.country}</div>}
             {inquiry.customerId && (
               <Button asChild variant="outline" size="sm" className="mt-2">
-                <Link href={`/admin/customers/${inquiry.customerId}`}>View Customer</Link>
+                <Link href={`/admin/customers/${inquiry.customerId}`}>查看客户</Link>
               </Button>
             )}
           </CardContent>
@@ -76,20 +76,20 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Inquiry Details</CardTitle>
+            <CardTitle>询盘详情</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             {inquiry.productSku && (
-              <div><span className="text-gray-500">Product SKU:</span> {inquiry.productSku}</div>
+              <div><span className="text-gray-500">产品 SKU：</span> {inquiry.productSku}</div>
             )}
             {inquiry.quantity && (
-              <div><span className="text-gray-500">Quantity:</span> {inquiry.quantity}</div>
+              <div><span className="text-gray-500">数量：</span> {inquiry.quantity}</div>
             )}
             {inquiry.source && (
-              <div><span className="text-gray-500">Source:</span> {inquiry.source}</div>
+              <div><span className="text-gray-500">来源：</span> {inquiry.source}</div>
             )}
             <div className="pt-2">
-              <span className="text-gray-500">Message:</span>
+              <span className="text-gray-500">留言内容：</span>
               <p className="mt-1 rounded-md bg-gray-50 p-3">{inquiry.message}</p>
             </div>
           </CardContent>
@@ -99,7 +99,7 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
       {inquiry.followUps && inquiry.followUps.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Follow-ups</CardTitle>
+            <CardTitle>跟进记录</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {inquiry.followUps.map((fu: Record<string, unknown>) => (

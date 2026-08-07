@@ -4,7 +4,7 @@ export default async function CustomerDetailPage({ params }: { params: { id: str
   const customerId = parseInt(params.id, 10);
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Customer Detail</h1>
+      <h1 className="mb-6 text-2xl font-bold text-gray-900">客户详情</h1>
       <CustomerDetail customerId={customerId} />
     </div>
   );

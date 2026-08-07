@@ -21,7 +21,7 @@ export function CustomerList() {
   return (
     <div className="space-y-4">
       <Input
-        placeholder="Search customers..."
+        placeholder="搜索客户..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         className="max-w-xs"
@@ -34,13 +34,13 @@ export function CustomerList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Country</TableHead>
-                <TableHead>Tag</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>名称</TableHead>
+                <TableHead>邮箱</TableHead>
+                <TableHead>公司</TableHead>
+                <TableHead>国家</TableHead>
+                <TableHead>标签</TableHead>
+                <TableHead>状态</TableHead>
+                <TableHead>创建时间</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -60,7 +60,7 @@ export function CustomerList() {
                 </TableRow>
               )) || (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-gray-500">No customers found</TableCell>
+                  <TableCell colSpan={7} className="text-center text-gray-500">暂无客户数据</TableCell>
                 </TableRow>
               )}
             </TableBody>

@@ -23,7 +23,7 @@ export function ProjectList() {
         <Button asChild variant="brand">
           <Link href="/admin/projects/new">
             <Plus className="mr-2 h-4 w-4" />
-            Add Project
+            新建项目
           </Link>
         </Button>
       </div>
@@ -31,10 +31,10 @@ export function ProjectList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>标题</TableHead>
+              <TableHead>位置</TableHead>
+              <TableHead>状态</TableHead>
+              <TableHead>操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -44,7 +44,7 @@ export function ProjectList() {
                 <TableCell>{(p.location as string) || '-'}</TableCell>
                 <TableCell>
                   <Badge variant={p.isPublished ? 'success' : 'secondary'}>
-                    {p.isPublished ? 'Published' : 'Hidden'}
+                    {p.isPublished ? '已发布' : '隐藏'}
                   </Badge>
                 </TableCell>
                 <TableCell>
@@ -57,7 +57,7 @@ export function ProjectList() {
               </TableRow>
             )) || (
               <TableRow>
-                <TableCell colSpan={4} className="text-center text-gray-500">No projects found</TableCell>
+                <TableCell colSpan={4} className="text-center text-gray-500">暂无项目</TableCell>
               </TableRow>
             )}
           </TableBody>

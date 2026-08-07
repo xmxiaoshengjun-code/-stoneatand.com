@@ -55,7 +55,7 @@ export function CountryBarChart({ data }: CountryBarChartProps) {
             fontSize: '13px',
           }}
         />
-        <Bar dataKey="count" name="Visits" radius={[0, 4, 4, 0]}>
+        <Bar dataKey="count" name="访问次数" radius={[0, 4, 4, 0]}>
           {data.map((_, index) => (
             <Cell key={`cell-${index}`} fill={BAR_COLORS[index % BAR_COLORS.length]} />
           ))}

@@ -18,7 +18,7 @@ export function AdminHeader() {
 
   return (
     <header className="flex h-16 items-center justify-between border-b bg-white px-6">
-      <h1 className="text-lg font-semibold text-gray-900">Admin Panel</h1>
+      <h1 className="text-lg font-semibold text-gray-900">管理后台</h1>
       <div className="flex items-center gap-4">
         {user && (
           <div className="text-right">

@@ -69,7 +69,7 @@ export function B2BListingManager() {
 
   const handleGenerate = useCallback(async () => {
     if (!productId) {
-      toast.error('Please select a product');
+      toast.error('请选择产品');
       return;
     }
     setGenerating(true);
@@ -81,34 +81,34 @@ export function B2BListingManager() {
       });
       const result = await res.json();
       if (result.code === 201) {
-        toast.success('B2B listing generated');
+        toast.success('B2B 铺货生成成功');
         setShowForm(false);
         setProductId('');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to generate');
+        toast.error(result.message || '生成失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setGenerating(false);
     }
   }, [productId, platformName, mutate]);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this listing?')) return;
+    if (!confirm('确认要删除此铺货信息吗？')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/b2b-listings/${id}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Listing deleted');
+        toast.success('铺货信息删除成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to delete');
+        toast.error(result.message || '删除失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -124,13 +124,13 @@ export function B2BListingManager() {
       });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Status updated');
+        toast.success('状态更新成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to update');
+        toast.error(result.message || '更新失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setUpdatingStatus(null);
     }
@@ -138,25 +138,25 @@ export function B2BListingManager() {
 
   const handleCopyContent = useCallback((content: string) => {
     navigator.clipboard.writeText(content).then(() => {
-      toast.success('Content copied to clipboard');
+      toast.success('内容已复制到剪贴板');
     }).catch(() => {
-      toast.error('Failed to copy');
+      toast.error('复制失败');
     });
   }, []);
 
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">B2B Listings</h1>
+        <h1 className="text-2xl font-bold text-gray-900">B2B 铺货</h1>
         <Button variant="brand" onClick={() => setShowForm(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          Generate Listing
+          生成铺货信息
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>All B2B Listings ({listings.length})</CardTitle>
+          <CardTitle>全部 B2B 铺货 ({listings.length})</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -166,16 +166,16 @@ export function B2BListingManager() {
               ))}
             </div>
           ) : listings.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No B2B listings yet. Click "Generate Listing" to create one.</p>
+            <p className="py-8 text-center text-gray-400">暂无 B2B 铺货信息。点击"生成铺货信息"创建一个。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Product ID</TableHead>
-                  <TableHead>Platform</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>产品 ID</TableHead>
+                  <TableHead>平台</TableHead>
+                  <TableHead>状态</TableHead>
                   <TableHead>URL</TableHead>
-                  <TableHead className="w-32 text-right">Actions</TableHead>
+                  <TableHead className="w-32 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -192,10 +192,10 @@ export function B2BListingManager() {
                         onChange={(e) => handleStatusChange(item.id, e.target.value)}
                         disabled={updatingStatus === item.id}
                       >
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                        <option value="updated">Updated</option>
-                        <option value="archived">Archived</option>
+                        <option value="draft">草稿</option>
+                        <option value="published">已发布</option>
+                        <option value="updated">已更新</option>
+                        <option value="archived">已归档</option>
                       </select>
                     </TableCell>
                     <TableCell>
@@ -210,7 +210,7 @@ export function B2BListingManager() {
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => setViewingContent(item)} title="View Content">
+                        <Button variant="ghost" size="icon" onClick={() => setViewingContent(item)} title="查看内容">
                           <Copy className="h-4 w-4" />
                         </Button>
                         <Button
@@ -218,7 +218,7 @@ export function B2BListingManager() {
                           size="icon"
                           onClick={() => handleDelete(item.id)}
                           disabled={deletingId === item.id}
-                          title="Delete"
+                          title="删除"
                           className="text-red-500 hover:text-red-600"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -237,17 +237,17 @@ export function B2BListingManager() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Generate B2B Listing</DialogTitle>
+            <DialogTitle>生成 B2B 铺货信息</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium">Product</label>
+              <label className="mb-1 block text-sm font-medium">产品</label>
               <select
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
                 value={productId}
                 onChange={(e) => setProductId(e.target.value)}
               >
-                <option value="">Select a product...</option>
+                <option value="">请选择产品...</option>
                 {products.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.sku} — {p.name}
@@ -256,7 +256,7 @@ export function B2BListingManager() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">Platform</label>
+              <label className="mb-1 block text-sm font-medium">平台</label>
               <select
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
                 value={platformName}
@@ -269,10 +269,10 @@ export function B2BListingManager() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowForm(false)}>取消</Button>
             <Button variant="brand" onClick={handleGenerate} disabled={generating}>
               {generating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              {generating ? 'Generating...' : 'Generate'}
+              {generating ? '生成中...' : '生成'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -282,7 +282,7 @@ export function B2BListingManager() {
       <Dialog open={!!viewingContent} onOpenChange={() => setViewingContent(null)}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
           <DialogHeader>
-            <DialogTitle>Generated Content</DialogTitle>
+            <DialogTitle>生成的内容</DialogTitle>
           </DialogHeader>
           <div className="flex-1 overflow-y-auto">
             <Textarea
@@ -295,7 +295,7 @@ export function B2BListingManager() {
           <DialogFooter>
             <Button variant="brand" onClick={() => viewingContent && handleCopyContent(viewingContent.generatedContent || '')}>
               <Copy className="mr-2 h-4 w-4" />
-              Copy to Clipboard
+              复制到剪贴板
             </Button>
           </DialogFooter>
         </DialogContent>

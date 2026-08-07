@@ -14,7 +14,7 @@ export function CustomerDetail({ customerId }: { customerId: number }) {
   const { data } = useSWR(`/api/admin/customers/${customerId}`, fetcher);
 
   if (!data) return <Skeleton className="h-96" />;
-  if (data.code !== 200) return <p className="text-red-500">Customer not found</p>;
+  if (data.code !== 200) return <p className="text-red-500">未找到客户</p>;
 
   const customer = data.data;
 
@@ -32,27 +32,27 @@ export function CustomerDetail({ customerId }: { customerId: number }) {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Contact Information</CardTitle></CardHeader>
+        <CardHeader><CardTitle>联系信息</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
-          {customer.phone && <div><span className="text-gray-500">Phone:</span> {customer.phone}</div>}
-          {customer.company && <div><span className="text-gray-500">Company:</span> {customer.company}</div>}
-          {customer.country && <div><span className="text-gray-500">Country:</span> {customer.country}</div>}
-          {customer.address && <div><span className="text-gray-500">Address:</span> {customer.address}</div>}
-          <div><span className="text-gray-500">Created:</span> {formatDateTime(customer.createdAt)}</div>
+          {customer.phone && <div><span className="text-gray-500">电话：</span> {customer.phone}</div>}
+          {customer.company && <div><span className="text-gray-500">公司：</span> {customer.company}</div>}
+          {customer.country && <div><span className="text-gray-500">国家：</span> {customer.country}</div>}
+          {customer.address && <div><span className="text-gray-500">地址：</span> {customer.address}</div>}
+          <div><span className="text-gray-500">创建时间：</span> {formatDateTime(customer.createdAt)}</div>
         </CardContent>
       </Card>
 
       {customer.inquiries && customer.inquiries.length > 0 && (
         <Card>
-          <CardHeader><CardTitle>Inquiry History</CardTitle></CardHeader>
+          <CardHeader><CardTitle>询盘历史</CardTitle></CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Inquiry No</TableHead>
-                  <TableHead>Product</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead>询盘编号</TableHead>
+                  <TableHead>产品</TableHead>
+                  <TableHead>状态</TableHead>
+                  <TableHead>日期</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

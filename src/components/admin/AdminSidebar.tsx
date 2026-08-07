@@ -70,7 +70,7 @@ export function AdminSidebar() {
           className="w-full justify-start text-gray-300 hover:bg-gray-800 hover:text-white"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          {!collapsed && 'Logout'}
+          {!collapsed && '退出登录'}
         </Button>
       </div>
     </aside>

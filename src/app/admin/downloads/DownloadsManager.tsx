@@ -48,7 +48,7 @@ export function DownloadsManager() {
 
     setUploading(true);
     try {
-      const title = prompt('Enter a title for this download:', file.name);
+      const title = prompt('请输入此下载文件的标题：', file.name);
       if (!title) {
         setUploading(false);
         return;
@@ -65,13 +65,13 @@ export function DownloadsManager() {
       });
       const result = await res.json();
       if (result.code === 201) {
-        toast.success('Download created');
+        toast.success('下载文件创建成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to create download');
+        toast.error(result.message || '创建下载文件失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -79,19 +79,19 @@ export function DownloadsManager() {
   }, [mutate]);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this download? The file will also be removed.')) return;
+    if (!confirm('确认要删除此下载文件吗？文件也会被一并删除。')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/downloads/${id}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Download deleted');
+        toast.success('下载文件删除成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to delete');
+        toast.error(result.message || '删除失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -112,27 +112,27 @@ export function DownloadsManager() {
       });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Download updated');
+        toast.success('下载文件更新成功');
         setEditingId(null);
         mutate();
       } else {
-        toast.error(result.message || 'Failed to update');
+        toast.error(result.message || '更新失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     }
   }, [editingId, editForm, mutate]);
 
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Downloads Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">下载中心管理</h1>
         <label>
           <input type="file" className="hidden" onChange={handleUpload} accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip" />
           <Button variant="brand" asChild disabled={uploading}>
             <span>
               {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
-              {uploading ? 'Uploading...' : 'Upload File'}
+              {uploading ? '上传中...' : '上传文件'}
             </span>
           </Button>
         </label>
@@ -140,7 +140,7 @@ export function DownloadsManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>All Downloads ({downloads.length})</CardTitle>
+          <CardTitle>全部下载文件 ({downloads.length})</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -150,16 +150,16 @@ export function DownloadsManager() {
               ))}
             </div>
           ) : downloads.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No downloads yet. Click "Upload File" to add one.</p>
+            <p className="py-8 text-center text-gray-400">暂无下载文件。点击"上传文件"添加。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead className="w-32">Category</TableHead>
-                  <TableHead className="w-24">Size</TableHead>
-                  <TableHead className="w-24">Status</TableHead>
-                  <TableHead className="w-24 text-right">Actions</TableHead>
+                  <TableHead>标题</TableHead>
+                  <TableHead className="w-32">分类</TableHead>
+                  <TableHead className="w-24">大小</TableHead>
+                  <TableHead className="w-24">状态</TableHead>
+                  <TableHead className="w-24 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -189,11 +189,11 @@ export function DownloadsManager() {
                           value={editForm.category || 'other'}
                           onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
                         >
-                          <option value="catalog">Catalog</option>
-                          <option value="specification">Specification</option>
-                          <option value="manual">Manual</option>
-                          <option value="certificate">Certificate</option>
-                          <option value="other">Other</option>
+                          <option value="catalog">产品目录</option>
+                          <option value="specification">规格说明</option>
+                          <option value="manual">使用手册</option>
+                          <option value="certificate">证书</option>
+                          <option value="other">其他</option>
                         </select>
                       ) : (
                         <Badge variant="outline">{item.category}</Badge>
@@ -202,19 +202,19 @@ export function DownloadsManager() {
                     <TableCell className="text-sm text-gray-500">{formatFileSize(item.fileSize)}</TableCell>
                     <TableCell>
                       <Badge variant={item.isPublished ? 'default' : 'secondary'}>
-                        {item.isPublished ? 'Published' : 'Hidden'}
+                        {item.isPublished ? '已发布' : '隐藏'}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-2">
                         {editingId === item.id ? (
                           <>
-                            <Button variant="brand" size="sm" onClick={handleSaveEdit}>Save</Button>
-                            <Button variant="outline" size="sm" onClick={() => setEditingId(null)}>Cancel</Button>
+                            <Button variant="brand" size="sm" onClick={handleSaveEdit}>保存</Button>
+                            <Button variant="outline" size="sm" onClick={() => setEditingId(null)}>取消</Button>
                           </>
                         ) : (
                           <>
-                            <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} title="Edit">
+                            <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} title="编辑">
                               <Pencil className="h-4 w-4" />
                             </Button>
                             <Button
@@ -222,7 +222,7 @@ export function DownloadsManager() {
                               size="icon"
                               onClick={() => handleDelete(item.id)}
                               disabled={deletingId === item.id}
-                              title="Delete"
+                              title="删除"
                               className="text-red-500 hover:text-red-600"
                             >
                               <Trash2 className="h-4 w-4" />

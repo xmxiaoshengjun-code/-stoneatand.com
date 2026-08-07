@@ -52,7 +52,7 @@ export function FaqEditor({ open, onClose, onSaved, initialData }: FaqEditorProp
 
   const handleSave = async () => {
     if (!form.category.trim() || !form.question.trim() || !form.answer.trim()) {
-      toast.error('Category, question, and answer are required');
+      toast.error('分类、问题和答案不能为空');
       return;
     }
 
@@ -76,14 +76,14 @@ export function FaqEditor({ open, onClose, onSaved, initialData }: FaqEditorProp
 
       const data = await res.json();
       if (data.code === 200 || data.code === 201) {
-        toast.success(isEdit ? 'FAQ updated' : 'FAQ created');
+        toast.success(isEdit ? 'FAQ 更新成功' : 'FAQ 创建成功');
         onSaved();
         onClose();
       } else {
-        toast.error(data.message || 'Failed to save FAQ');
+        toast.error(data.message || '保存 FAQ 失败');
       }
     } catch {
-      toast.error('Network error. Please try again.');
+      toast.error('网络错误，请重试。');
     } finally {
       setSaving(false);
     }
@@ -93,20 +93,20 @@ export function FaqEditor({ open, onClose, onSaved, initialData }: FaqEditorProp
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{form.id ? 'Edit FAQ' : 'New FAQ'}</DialogTitle>
+          <DialogTitle>{form.id ? '编辑 FAQ' : '新建 FAQ'}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Category *</Label>
+              <Label>分类 *</Label>
               <Input
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-                placeholder="e.g., Products, Shipping, Pricing"
+                placeholder="例如：产品、物流、价格"
               />
             </div>
             <div>
-              <Label>Sort Order</Label>
+              <Label>排序权重</Label>
               <Input
                 type="number"
                 value={form.sortOrder}
@@ -115,35 +115,35 @@ export function FaqEditor({ open, onClose, onSaved, initialData }: FaqEditorProp
             </div>
           </div>
           <div>
-            <Label>Question *</Label>
+            <Label>问题 *</Label>
             <Input
               value={form.question}
               onChange={(e) => setForm({ ...form, question: e.target.value })}
-              placeholder="What is the question?"
+              placeholder="请输入问题"
             />
           </div>
           <div>
-            <Label>Answer *</Label>
+            <Label>答案 *</Label>
             <Textarea
               rows={5}
               value={form.answer}
               onChange={(e) => setForm({ ...form, answer: e.target.value })}
-              placeholder="The answer to the question"
+              placeholder="请输入答案"
             />
           </div>
           <div>
-            <Label>Keywords (comma-separated, for AI chat matching)</Label>
+            <Label>关键词（逗号分隔，用于 AI 客服匹配）</Label>
             <Input
               value={form.keywords}
               onChange={(e) => setForm({ ...form, keywords: e.target.value })}
-              placeholder="e.g., shipping, delivery, freight, logistics"
+              placeholder="例如：物流、配送、运费、快递"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button variant="outline" onClick={onClose}>取消</Button>
           <Button variant="brand" onClick={handleSave} disabled={saving}>
-            {saving ? 'Saving...' : 'Save FAQ'}
+            {saving ? '保存中...' : '保存 FAQ'}
           </Button>
         </DialogFooter>
       </DialogContent>

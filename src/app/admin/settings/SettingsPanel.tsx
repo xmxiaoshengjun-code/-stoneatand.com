@@ -76,13 +76,13 @@ export function SettingsPanel() {
       });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Settings saved successfully');
+        toast.success('设置保存成功');
         setSettings(result.data);
       } else {
-        toast.error(result.message || 'Failed to save settings');
+        toast.error(result.message || '保存设置失败');
       }
     } catch {
-      toast.error('Network error. Please try again.');
+      toast.error('网络错误，请重试。');
     } finally {
       setSaving(false);
     }
@@ -90,15 +90,15 @@ export function SettingsPanel() {
 
   const handlePasswordChange = async () => {
     if (!passwordChange.currentPassword || !passwordChange.newPassword) {
-      toast.error('Please fill in all password fields');
+      toast.error('请填写所有密码字段');
       return;
     }
     if (passwordChange.newPassword !== passwordChange.confirmPassword) {
-      toast.error('New passwords do not match');
+      toast.error('两次输入的密码不一致');
       return;
     }
     if (passwordChange.newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.error('密码长度至少 6 位');
       return;
     }
 
@@ -111,13 +111,13 @@ export function SettingsPanel() {
       });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Password updated successfully');
+        toast.success('密码修改成功');
         setPasswordChange({ currentPassword: '', newPassword: '', confirmPassword: '' });
       } else {
-        toast.error(result.message || 'Failed to update password');
+        toast.error(result.message || '修改密码失败');
       }
     } catch {
-      toast.error('Network error. Please try again.');
+      toast.error('网络错误，请重试。');
     } finally {
       setSaving(false);
     }
@@ -147,33 +147,33 @@ export function SettingsPanel() {
       {/* Site Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Site Information</CardTitle>
+          <CardTitle>站点信息</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Site Name</Label>
+              <Label>站点名称</Label>
               <Input value={settings.siteName} onChange={(e) => update('siteName', e.target.value)} />
             </div>
             <div>
-              <Label>Contact Email</Label>
+              <Label>联系邮箱</Label>
               <Input type="email" value={settings.contactEmail} onChange={(e) => update('contactEmail', e.target.value)} />
             </div>
             <div>
-              <Label>Contact Phone</Label>
+              <Label>联系电话</Label>
               <Input value={settings.contactPhone} onChange={(e) => update('contactPhone', e.target.value)} />
             </div>
             <div>
-              <Label>WhatsApp Number</Label>
+              <Label>WhatsApp 号码</Label>
               <Input value={settings.whatsappNumber} onChange={(e) => update('whatsappNumber', e.target.value)} placeholder="+86xxxxxxxxxxx" />
             </div>
           </div>
           <div>
-            <Label>Contact Address</Label>
+            <Label>联系地址</Label>
             <Input value={settings.contactAddress} onChange={(e) => update('contactAddress', e.target.value)} />
           </div>
           <div>
-            <Label>Site Description</Label>
+            <Label>站点描述</Label>
             <Textarea rows={2} value={settings.siteDescription} onChange={(e) => update('siteDescription', e.target.value)} />
           </div>
         </CardContent>
@@ -182,28 +182,28 @@ export function SettingsPanel() {
       {/* Social Media Links */}
       <Card>
         <CardHeader>
-          <CardTitle>Social Media Links</CardTitle>
+          <CardTitle>社交媒体链接</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>LinkedIn URL</Label>
+              <Label>LinkedIn 链接</Label>
               <Input value={settings.linkedinUrl} onChange={(e) => update('linkedinUrl', e.target.value)} placeholder="https://www.linkedin.com/company/..." />
             </div>
             <div>
-              <Label>Facebook URL</Label>
+              <Label>Facebook 链接</Label>
               <Input value={settings.facebookUrl} onChange={(e) => update('facebookUrl', e.target.value)} placeholder="https://www.facebook.com/..." />
             </div>
             <div>
-              <Label>YouTube URL</Label>
+              <Label>YouTube 链接</Label>
               <Input value={settings.youtubeUrl} onChange={(e) => update('youtubeUrl', e.target.value)} placeholder="https://www.youtube.com/..." />
             </div>
             <div>
-              <Label>Instagram URL</Label>
+              <Label>Instagram 链接</Label>
               <Input value={settings.instagramUrl} onChange={(e) => update('instagramUrl', e.target.value)} placeholder="https://www.instagram.com/..." />
             </div>
             <div>
-              <Label>X (Twitter) URL</Label>
+              <Label>X (Twitter) 链接</Label>
               <Input value={settings.xUrl} onChange={(e) => update('xUrl', e.target.value)} placeholder="https://www.x.com/..." />
             </div>
           </div>
@@ -213,29 +213,29 @@ export function SettingsPanel() {
       {/* SMTP Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle>SMTP Configuration</CardTitle>
+          <CardTitle>SMTP 邮件配置</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>SMTP Host</Label>
+              <Label>SMTP 主机</Label>
               <Input value={settings.smtpHost} onChange={(e) => update('smtpHost', e.target.value)} placeholder="smtp.gmail.com" />
             </div>
             <div>
-              <Label>SMTP Port</Label>
+              <Label>SMTP 端口</Label>
               <Input value={settings.smtpPort} onChange={(e) => update('smtpPort', e.target.value)} placeholder="587" />
             </div>
             <div>
-              <Label>SMTP Username</Label>
+              <Label>SMTP 用户名</Label>
               <Input value={settings.smtpUsername} onChange={(e) => update('smtpUsername', e.target.value)} />
             </div>
             <div>
-              <Label>SMTP Password</Label>
-              <Input type="password" value={settings.smtpPassword} onChange={(e) => update('smtpPassword', e.target.value)} placeholder="Leave empty to keep current" />
+              <Label>SMTP 密码</Label>
+              <Input type="password" value={settings.smtpPassword} onChange={(e) => update('smtpPassword', e.target.value)} placeholder="留空则保持当前密码" />
             </div>
           </div>
           <div>
-            <Label>From Email</Label>
+            <Label>发件邮箱</Label>
             <Input type="email" value={settings.smtpFromEmail} onChange={(e) => update('smtpFromEmail', e.target.value)} placeholder="noreply@tsianfan.com" />
           </div>
         </CardContent>
@@ -244,45 +244,45 @@ export function SettingsPanel() {
       {/* AI Customer Service Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle>AI Customer Service</CardTitle>
+          <CardTitle>AI 客服配置</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>AI Provider</Label>
+              <Label>AI 服务商</Label>
               <select
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
                 value={settings.aiProvider}
                 onChange={(e) => update('aiProvider', e.target.value)}
               >
-                <option value="none">None (Rule-based FAQ)</option>
+                <option value="none">无（基于规则的 FAQ）</option>
                 <option value="openai">OpenAI</option>
               </select>
             </div>
             <div>
-              <Label>AI Model</Label>
+              <Label>AI 模型</Label>
               <Input value={settings.aiModel} onChange={(e) => update('aiModel', e.target.value)} placeholder="gpt-4o" />
             </div>
           </div>
           <div>
             <Label>API Key</Label>
-            <Input type="password" value={settings.aiApiKey} onChange={(e) => update('aiApiKey', e.target.value)} placeholder="Leave empty to keep current" />
+            <Input type="password" value={settings.aiApiKey} onChange={(e) => update('aiApiKey', e.target.value)} placeholder="留空则保持当前密钥" />
           </div>
           <div>
-            <Label>System Prompt</Label>
+            <Label>系统提示词</Label>
             <Textarea
               rows={6}
               value={settings.aiSystemPrompt || DEFAULT_AI_PROMPT}
               onChange={(e) => update('aiSystemPrompt', e.target.value)}
             />
             <p className="mt-1 text-xs text-gray-400">
-              Default prompt is used if this field is empty.
+              此字段为空时使用默认提示词。
             </p>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-gray-500">Current AI Engine:</span>
+            <span className="text-gray-500">当前 AI 引擎：</span>
             <Badge variant={settings.aiProvider === 'openai' ? 'default' : 'secondary'}>
-              {settings.aiProvider === 'openai' ? `OpenAI (${settings.aiModel})` : 'Rule-based (FAQ)'}
+              {settings.aiProvider === 'openai' ? `OpenAI (${settings.aiModel})` : '基于规则 (FAQ)'}
             </Badge>
           </div>
         </CardContent>
@@ -291,17 +291,17 @@ export function SettingsPanel() {
       {/* Favicon & Analytics Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle>Favicon & Analytics</CardTitle>
+          <CardTitle>网站图标 & 统计分析</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Favicon URL</Label>
+              <Label>网站图标 URL</Label>
               <Input value={settings.siteFavicon} onChange={(e) => update('siteFavicon', e.target.value)} placeholder="/images/favicon/favicon.ico" />
-              <p className="mt-1 text-xs text-gray-400">Path to favicon image file.</p>
+              <p className="mt-1 text-xs text-gray-400">网站图标文件路径。</p>
             </div>
             <div>
-              <Label>Google Analytics Tracking ID</Label>
+              <Label>Google Analytics 跟踪 ID</Label>
               <Input value={settings.gaTrackingId} onChange={(e) => update('gaTrackingId', e.target.value)} placeholder="G-XXXXXXXXXX" />
             </div>
           </div>
@@ -311,7 +311,7 @@ export function SettingsPanel() {
       {/* Watermark Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle>Image Watermark</CardTitle>
+          <CardTitle>图片水印</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-2">
@@ -321,55 +321,55 @@ export function SettingsPanel() {
               checked={settings.watermarkEnabled === 'true'}
               onChange={(e) => update('watermarkEnabled', e.target.checked ? 'true' : 'false')}
             />
-            <label htmlFor="watermark-enabled" className="text-sm font-medium">Enable watermark on image upload</label>
+            <label htmlFor="watermark-enabled" className="text-sm font-medium">上传图片时启用水印</label>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Watermark Type</Label>
+              <Label>水印类型</Label>
               <select
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
                 value={settings.watermarkType}
                 onChange={(e) => update('watermarkType', e.target.value)}
               >
-                <option value="text">Text</option>
-                <option value="image">Image</option>
+                <option value="text">文字</option>
+                <option value="image">图片</option>
               </select>
             </div>
             <div>
-              <Label>Position</Label>
+              <Label>位置</Label>
               <select
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
                 value={settings.watermarkPosition}
                 onChange={(e) => update('watermarkPosition', e.target.value)}
               >
-                <option value="northwest">Top Left</option>
-                <option value="north">Top Center</option>
-                <option value="northeast">Top Right</option>
-                <option value="west">Middle Left</option>
-                <option value="center">Center</option>
-                <option value="east">Middle Right</option>
-                <option value="southwest">Bottom Left</option>
-                <option value="south">Bottom Center</option>
-                <option value="southeast">Bottom Right</option>
+                <option value="northwest">左上</option>
+                <option value="north">上居中</option>
+                <option value="northeast">右上</option>
+                <option value="west">左居中</option>
+                <option value="center">居中</option>
+                <option value="east">右居中</option>
+                <option value="southwest">左下</option>
+                <option value="south">下居中</option>
+                <option value="southeast">右下</option>
               </select>
             </div>
             {settings.watermarkType === 'text' ? (
               <div>
-                <Label>Watermark Text</Label>
+                <Label>水印文字</Label>
                 <Input value={settings.watermarkText} onChange={(e) => update('watermarkText', e.target.value)} placeholder="TSIANFAN" />
               </div>
             ) : (
               <div>
-                <Label>Watermark Image URL</Label>
+                <Label>水印图片 URL</Label>
                 <Input value={settings.watermarkImage} onChange={(e) => update('watermarkImage', e.target.value)} placeholder="/images/watermark/logo.png" />
               </div>
             )}
             <div>
-              <Label>Opacity (0-100)</Label>
+              <Label>透明度 (0-100)</Label>
               <Input type="number" value={settings.watermarkOpacity} onChange={(e) => update('watermarkOpacity', e.target.value)} min="0" max="100" />
             </div>
             <div>
-              <Label>Size (% of image width)</Label>
+              <Label>大小（占图片宽度百分比）</Label>
               <Input type="number" value={settings.watermarkSize} onChange={(e) => update('watermarkSize', e.target.value)} min="5" max="100" />
             </div>
           </div>
@@ -379,7 +379,7 @@ export function SettingsPanel() {
       {/* Copy Protection & Locale Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle>Copy Protection & Languages</CardTitle>
+          <CardTitle>防复制 & 语言设置</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-2">
@@ -389,12 +389,12 @@ export function SettingsPanel() {
               checked={settings.copyProtectionEnabled === 'true'}
               onChange={(e) => update('copyProtectionEnabled', e.target.checked ? 'true' : 'false')}
             />
-            <label htmlFor="copy-protection-enabled" className="text-sm font-medium">Enable copy protection (disable right-click and text selection)</label>
+            <label htmlFor="copy-protection-enabled" className="text-sm font-medium">启用防复制（禁用右键和文字选择）</label>
           </div>
           <div>
-            <Label>Enabled Locales (comma-separated)</Label>
+            <Label>启用的语言（逗号分隔）</Label>
             <Input value={settings.enabledLocales} onChange={(e) => update('enabledLocales', e.target.value)} placeholder="en,fr,de,it,es" />
-            <p className="mt-1 text-xs text-gray-400">Controls which languages appear in the language switcher.</p>
+            <p className="mt-1 text-xs text-gray-400">控制语言切换器中显示哪些语言。</p>
           </div>
         </CardContent>
       </Card>
@@ -403,18 +403,18 @@ export function SettingsPanel() {
       <div className="flex justify-end">
         <Button variant="brand" onClick={handleSave} disabled={saving}>
           {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-          {saving ? 'Saving...' : 'Save All Settings'}
+          {saving ? '保存中...' : '保存全部设置'}
         </Button>
       </div>
 
       {/* Change Password */}
       <Card>
         <CardHeader>
-          <CardTitle>Change Password</CardTitle>
+          <CardTitle>修改密码</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label>Current Password</Label>
+            <Label>当前密码</Label>
             <Input
               type="password"
               value={passwordChange.currentPassword}
@@ -423,7 +423,7 @@ export function SettingsPanel() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>New Password</Label>
+              <Label>新密码</Label>
               <Input
                 type="password"
                 value={passwordChange.newPassword}
@@ -431,7 +431,7 @@ export function SettingsPanel() {
               />
             </div>
             <div>
-              <Label>Confirm New Password</Label>
+              <Label>确认新密码</Label>
               <Input
                 type="password"
                 value={passwordChange.confirmPassword}
@@ -440,7 +440,7 @@ export function SettingsPanel() {
             </div>
           </div>
           <Button variant="outline" onClick={handlePasswordChange} disabled={saving}>
-            Update Password
+            更新密码
           </Button>
         </CardContent>
       </Card>
@@ -448,21 +448,21 @@ export function SettingsPanel() {
       {/* System Information */}
       <Card>
         <CardHeader>
-          <CardTitle>System Information</CardTitle>
+          <CardTitle>系统信息</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-500">Version:</span>
+            <span className="text-gray-500">版本：</span>
             <Badge variant="outline">V2.0</Badge>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Database:</span>
+            <span className="text-gray-500">数据库：</span>
             <span>SQLite (dev)</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">AI Engine:</span>
+            <span className="text-gray-500">AI 引擎：</span>
             <Badge variant={settings.aiProvider === 'openai' ? 'default' : 'secondary'}>
-              {settings.aiProvider === 'openai' ? 'OpenAI' : 'Rule-based (V2.0)'}
+              {settings.aiProvider === 'openai' ? 'OpenAI' : '基于规则 (V2.0)'}
             </Badge>
           </div>
         </CardContent>

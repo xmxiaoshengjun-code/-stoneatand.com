@@ -50,19 +50,19 @@ export default function AdminFaqsPage() {
   }, []);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this FAQ?')) return;
+    if (!confirm('确认要删除此 FAQ 吗？')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/faqs/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.code === 200) {
-        toast.success('FAQ deleted');
+        toast.success('FAQ 删除成功');
         mutate();
       } else {
-        toast.error(data.message || 'Failed to delete FAQ');
+        toast.error(data.message || '删除 FAQ 失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -75,21 +75,21 @@ export default function AdminFaqsPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">FAQ Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">常见问题管理</h1>
         <Button variant="brand" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" />
-          Add FAQ
+          新建 FAQ
         </Button>
       </div>
 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>All FAQs ({filteredFaqs.length})</CardTitle>
+            <CardTitle>全部 FAQ ({filteredFaqs.length})</CardTitle>
             <div className="relative w-64">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <Input
-                placeholder="Search FAQs..."
+                placeholder="搜索 FAQ..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10"
@@ -106,17 +106,17 @@ export default function AdminFaqsPage() {
             </div>
           ) : filteredFaqs.length === 0 ? (
             <p className="py-8 text-center text-gray-400">
-              {search ? 'No FAQs match your search.' : 'No FAQs yet. Click "Add FAQ" to create one.'}
+              {search ? '未找到匹配的 FAQ。' : '暂无 FAQ。点击"新建 FAQ"创建一个。'}
             </p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-16">Order</TableHead>
-                  <TableHead>Question</TableHead>
-                  <TableHead className="w-32">Category</TableHead>
-                  <TableHead className="w-32">Keywords</TableHead>
-                  <TableHead className="w-24 text-right">Actions</TableHead>
+                  <TableHead className="w-16">排序</TableHead>
+                  <TableHead>问题</TableHead>
+                  <TableHead className="w-32">分类</TableHead>
+                  <TableHead className="w-32">关键词</TableHead>
+                  <TableHead className="w-24 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -139,7 +139,7 @@ export default function AdminFaqsPage() {
                           variant="ghost"
                           size="icon"
                           onClick={() => handleEdit(faq)}
-                          title="Edit"
+                          title="编辑"
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
@@ -148,7 +148,7 @@ export default function AdminFaqsPage() {
                           size="icon"
                           onClick={() => handleDelete(faq.id as number)}
                           disabled={deletingId === faq.id}
-                          title="Delete"
+                          title="删除"
                           className="text-red-500 hover:text-red-600"
                         >
                           <Trash2 className="h-4 w-4" />

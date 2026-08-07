@@ -35,23 +35,23 @@ export function InquiryTable() {
     <div className="space-y-4">
       <div className="flex flex-wrap gap-4">
         <Input
-          placeholder="Search inquiries..."
+          placeholder="搜索询盘..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           className="max-w-xs"
         />
         <Select value={status} onValueChange={setStatus}>
           <SelectTrigger className="w-48">
-            <SelectValue placeholder="All statuses" />
+            <SelectValue placeholder="全部状态" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="NEW">New</SelectItem>
-            <SelectItem value="CONTACTED">Contacted</SelectItem>
-            <SelectItem value="QUOTED">Quoted</SelectItem>
-            <SelectItem value="NEGOTIATING">Negotiating</SelectItem>
-            <SelectItem value="WON">Won</SelectItem>
-            <SelectItem value="LOST">Lost</SelectItem>
+            <SelectItem value="all">全部状态</SelectItem>
+            <SelectItem value="NEW">新增</SelectItem>
+            <SelectItem value="CONTACTED">已联系</SelectItem>
+            <SelectItem value="QUOTED">已报价</SelectItem>
+            <SelectItem value="NEGOTIATING">协商中</SelectItem>
+            <SelectItem value="WON">已成交</SelectItem>
+            <SelectItem value="LOST">已流失</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -63,12 +63,12 @@ export function InquiryTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Inquiry No</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Product</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>询盘编号</TableHead>
+                <TableHead>客户</TableHead>
+                <TableHead>邮箱</TableHead>
+                <TableHead>产品</TableHead>
+                <TableHead>状态</TableHead>
+                <TableHead>日期</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -94,7 +94,7 @@ export function InquiryTable() {
               )) || (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center text-gray-500">
-                    No inquiries found
+                    暂无询盘数据
                   </TableCell>
                 </TableRow>
               )}

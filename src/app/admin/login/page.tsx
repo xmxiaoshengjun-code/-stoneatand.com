@@ -34,14 +34,14 @@ export default function AdminLoginPage() {
       const result = await res.json();
 
       if (result.code === 200) {
-        toast.success('Login successful');
+        toast.success('登录成功');
         const redirect = searchParams.get('redirect') || '/admin/products';
         router.push(redirect);
       } else {
-        toast.error(result.message || 'Login failed');
+        toast.error(result.message || '登录失败');
       }
     } catch {
-      toast.error('Network error. Please try again.');
+      toast.error('网络错误，请重试。');
     } finally {
       setLoading(false);
     }
@@ -54,12 +54,12 @@ export default function AdminLoginPage() {
           <div className="mb-4 text-3xl font-bold">
             TSIAN<span className="text-brand-400">FAN</span>
           </div>
-          <CardTitle>Admin Login</CardTitle>
+          <CardTitle>管理员登录</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">邮箱</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
@@ -67,13 +67,13 @@ export default function AdminLoginPage() {
                   name="email"
                   type="email"
                   required
-                  placeholder="you@company.com"
+                  placeholder="请输入邮箱"
                   className="pl-10"
                 />
               </div>
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">密码</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
               </div>
             </div>
             <Button type="submit" variant="brand" className="w-full" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? '登录中...' : '登录'}
             </Button>
           </form>
         </CardContent>

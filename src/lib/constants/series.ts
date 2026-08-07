@@ -328,7 +328,7 @@ export const SERIES_BY_PREFIX = SERIES_INFO.reduce(
   {} as Record<string, SeriesInfo>
 );
 
-export const TOTAL_SKU_COUNT = 172;
+export const TOTAL_SKU_COUNT = 168;
 export const TOTAL_SERIES_COUNT = 17;
 
 /** Checks whether the given slug matches one of the PARENT_CATEGORIES slugs. */

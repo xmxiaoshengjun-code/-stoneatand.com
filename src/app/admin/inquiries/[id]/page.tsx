@@ -5,7 +5,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Inquiry Detail</h1>
+      <h1 className="mb-6 text-2xl font-bold text-gray-900">询盘详情</h1>
       <InquiryDetail inquiryId={inquiryId} />
     </div>
   );

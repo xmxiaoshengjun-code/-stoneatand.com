@@ -67,7 +67,7 @@ export function CategoryManager() {
 
   const handleSave = useCallback(async () => {
     if (!form.name.trim() || !form.slug.trim()) {
-      toast.error('Name and slug are required');
+      toast.error('名称和 Slug 不能为空');
       return;
     }
     setSaving(true);
@@ -90,33 +90,33 @@ export function CategoryManager() {
       });
       const result = await res.json();
       if (result.code === 200 || result.code === 201) {
-        toast.success(isEdit ? 'Category updated' : 'Category created');
+        toast.success(isEdit ? '分类更新成功' : '分类创建成功');
         setShowForm(false);
         mutate();
       } else {
-        toast.error(result.message || 'Failed to save');
+        toast.error(result.message || '保存失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setSaving(false);
     }
   }, [form, editingId, mutate]);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this category? It must have no children and no products.')) return;
+    if (!confirm('确认要删除此分类吗？该分类下不能有子分类和产品。')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Category deleted');
+        toast.success('分类删除成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to delete');
+        toast.error(result.message || '删除失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -125,10 +125,10 @@ export function CategoryManager() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
+        <h1 className="text-2xl font-bold text-gray-900">分类管理</h1>
         <Button variant="brand" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Category
+          新建分类
         </Button>
       </div>
 
@@ -137,25 +137,25 @@ export function CategoryManager() {
           <CardContent className="p-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block text-sm font-medium">Name</label>
+                <label className="mb-1 block text-sm font-medium">名称</label>
                 <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium">Slug</label>
-                <Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="e.g. wall-sliding-rack" />
+                <Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="例如 wall-sliding-rack" />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Prefix</label>
-                <Input value={form.prefix} onChange={(e) => setForm({ ...form, prefix: e.target.value })} placeholder="e.g. WS" />
+                <label className="mb-1 block text-sm font-medium">前缀</label>
+                <Input value={form.prefix} onChange={(e) => setForm({ ...form, prefix: e.target.value })} placeholder="例如 WS" />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Parent Category</label>
+                <label className="mb-1 block text-sm font-medium">父级分类</label>
                 <select
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
                   value={form.parentId}
                   onChange={(e) => setForm({ ...form, parentId: e.target.value })}
                 >
-                  <option value="">— Root Category —</option>
+                  <option value="">— 根分类 —</option>
                   {flatList.map(({ node }) => (
                     <option key={node.id} value={node.id}>{node.name}</option>
                   ))}
@@ -163,15 +163,15 @@ export function CategoryManager() {
               </div>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">Description</label>
+              <label className="mb-1 block text-sm font-medium">描述</label>
               <Textarea rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
             </div>
             <div className="flex gap-2">
               <Button variant="brand" onClick={handleSave} disabled={saving}>
                 {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? '保存中...' : '保存'}
               </Button>
-              <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowForm(false)}>取消</Button>
             </div>
           </CardContent>
         </Card>
@@ -179,7 +179,7 @@ export function CategoryManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Category Tree ({flatList.length})</CardTitle>
+          <CardTitle>分类树 ({flatList.length})</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -189,7 +189,7 @@ export function CategoryManager() {
               ))}
             </div>
           ) : flatList.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No categories yet.</p>
+            <p className="py-8 text-center text-gray-400">暂无分类。</p>
           ) : (
             <div className="space-y-1">
               {flatList.map(({ node, depth }) => (
@@ -207,7 +207,7 @@ export function CategoryManager() {
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleEdit(node)} title="Edit">
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleEdit(node)} title="编辑">
                       <Pencil className="h-3 w-3" />
                     </Button>
                     <Button
@@ -216,7 +216,7 @@ export function CategoryManager() {
                       className="h-7 w-7 text-red-500 hover:text-red-600"
                       onClick={() => handleDelete(node.id)}
                       disabled={deletingId === node.id}
-                      title="Delete"
+                      title="删除"
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>

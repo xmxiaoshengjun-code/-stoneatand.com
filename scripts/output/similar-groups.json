@@ -1,0 +1,106 @@
+[
+  [
+    {
+      "file": "vs063.jpg",
+      "sku": "VS063",
+      "name": "Minimalist Bath Stand Setup",
+      "series_slug": "bathroom-display",
+      "series_name": "Bathroom Display",
+      "url": "/images/products/vs063.jpg",
+      "size": [
+        850,
+        850
+      ]
+    },
+    {
+      "file": "vz012.jpg",
+      "sku": "VZ012",
+      "name": "Classic Look Bath Display",
+      "series_slug": "bathroom-display",
+      "series_name": "Bathroom Display",
+      "url": "/images/products/vz012.jpg",
+      "size": [
+        850,
+        850
+      ]
+    }
+  ],
+  [
+    {
+      "file": "tm049-1.jpg",
+      "sku": "TM049-1",
+      "name": "Shock-Absorbent Lightweight Stone Sample Board Display",
+      "series_slug": "mdf-board-display",
+      "series_name": "MDF Board Display",
+      "url": "/images/products/tm049-1.jpg",
+      "size": [
+        850,
+        850
+      ]
+    },
+    {
+      "file": "tm049-3.jpg",
+      "sku": "TM049-3",
+      "name": "Multi-Layered Wood Stone Sample Board Display",
+      "series_slug": "mdf-board-display",
+      "series_name": "MDF Board Display",
+      "url": "/images/products/tm049-3.jpg",
+      "size": [
+        850,
+        850
+      ]
+    }
+  ],
+  [
+    {
+      "file": "wdr002-5.jpg",
+      "sku": "WDR002-5",
+      "name": "Smooth-Surface Wood Floor Stand",
+      "series_slug": "wood-flooring-display-rack",
+      "series_name": "Wood Flooring Display Rack",
+      "url": "/images/products/wdr002-5.jpg",
+      "size": [
+        720,
+        702
+      ]
+    },
+    {
+      "file": "wdr002-3.jpg",
+      "sku": "WDR002-3",
+      "name": "Multi-Layer Storage Wood Floor Stand",
+      "series_slug": "wood-flooring-display-rack",
+      "series_name": "Wood Flooring Display Rack",
+      "url": "/images/products/wdr002-3.jpg",
+      "size": [
+        720,
+        702
+      ]
+    }
+  ],
+  [
+    {
+      "file": "wdr005-4.jpg",
+      "sku": "WDR005-4",
+      "name": "Lightweight Wood Floor Stand",
+      "series_slug": "wood-flooring-display-rack",
+      "series_name": "Wood Flooring Display Rack",
+      "url": "/images/products/wdr005-4.jpg",
+      "size": [
+        800,
+        800
+      ]
+    },
+    {
+      "file": "wdr005-5.jpg",
+      "sku": "WDR005-5",
+      "name": "Modern-Style Wood Floor Stand",
+      "series_slug": "wood-flooring-display-rack",
+      "series_name": "Wood Flooring Display Rack",
+      "url": "/images/products/wdr005-5.jpg",
+      "size": [
+        800,
+        800
+      ]
+    }
+  ]
+]

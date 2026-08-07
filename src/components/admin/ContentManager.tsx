@@ -27,9 +27,9 @@ export function ContentManager() {
   return (
     <Tabs defaultValue="banners">
       <TabsList>
-        <TabsTrigger value="banners">Banners</TabsTrigger>
-        <TabsTrigger value="pages">Pages</TabsTrigger>
-        <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
+        <TabsTrigger value="banners">横幅</TabsTrigger>
+        <TabsTrigger value="pages">页面</TabsTrigger>
+        <TabsTrigger value="testimonials">客户评价</TabsTrigger>
       </TabsList>
 
       <TabsContent value="banners">
@@ -77,20 +77,20 @@ function BannerManager() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this banner?')) return;
+    if (!confirm('确认要删除此横幅吗？')) return;
     try {
       await fetch(`/api/admin/content/banners/${id}`, { method: 'DELETE' });
-      toast.success('Banner deleted');
+      toast.success('横幅删除成功');
       mutate();
     } catch {
-      toast.error('Failed to delete banner');
+      toast.error('删除横幅失败');
     }
   };
 
   const handleSave = async () => {
     if (!editing) return;
     if (!editing.title || !editing.image) {
-      toast.error('Title and image are required');
+      toast.error('标题和图片不能为空');
       return;
     }
     const isEdit = Boolean(editing.id);
@@ -103,11 +103,11 @@ function BannerManager() {
     });
     const result = await res.json();
     if (result.code === 200 || result.code === 201) {
-      toast.success(isEdit ? 'Banner updated' : 'Banner created');
+      toast.success(isEdit ? '横幅更新成功' : '横幅创建成功');
       mutate();
       setDialogOpen(false);
     } else {
-      toast.error(result.message || 'Failed to save banner');
+      toast.error(result.message || '保存横幅失败');
     }
   };
 
@@ -116,21 +116,21 @@ function BannerManager() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />Add Banner</Button>
+        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />新建横幅</Button>
       </div>
       <Card>
         <CardContent className="p-0">
           {banners.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No banners yet.</p>
+            <p className="py-8 text-center text-gray-400">暂无横幅。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead>Published</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>图片</TableHead>
+                  <TableHead>标题</TableHead>
+                  <TableHead>排序</TableHead>
+                  <TableHead>已发布</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -146,7 +146,7 @@ function BannerManager() {
                     <TableCell>{b.sortOrder}</TableCell>
                     <TableCell>
                       <Badge variant={b.isPublished ? 'default' : 'secondary'}>
-                        {b.isPublished ? 'Yes' : 'No'}
+                        {b.isPublished ? '是' : '否'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -169,26 +169,26 @@ function BannerManager() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing?.id ? 'Edit Banner' : 'New Banner'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing?.id ? '编辑横幅' : '新建横幅'}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div><Label>Title *</Label><Input value={editing?.title || ''} onChange={(e) => setEditing({ ...editing, title: e.target.value })} /></div>
-            <div><Label>Subtitle</Label><Input value={editing?.subtitle || ''} onChange={(e) => setEditing({ ...editing, subtitle: e.target.value })} /></div>
-            <div><Label>Image URL *</Label><Input value={editing?.image || ''} onChange={(e) => setEditing({ ...editing, image: e.target.value })} /></div>
-            <div><Label>Link</Label><Input value={editing?.link || ''} onChange={(e) => setEditing({ ...editing, link: e.target.value })} /></div>
+            <div><Label>标题 *</Label><Input value={editing?.title || ''} onChange={(e) => setEditing({ ...editing, title: e.target.value })} /></div>
+            <div><Label>副标题</Label><Input value={editing?.subtitle || ''} onChange={(e) => setEditing({ ...editing, subtitle: e.target.value })} /></div>
+            <div><Label>图片 URL *</Label><Input value={editing?.image || ''} onChange={(e) => setEditing({ ...editing, image: e.target.value })} /></div>
+            <div><Label>链接</Label><Input value={editing?.link || ''} onChange={(e) => setEditing({ ...editing, link: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-4">
-              <div><Label>Sort Order</Label><Input type="number" value={editing?.sortOrder ?? 0} onChange={(e) => setEditing({ ...editing, sortOrder: Number(e.target.value) })} /></div>
+              <div><Label>排序权重</Label><Input type="number" value={editing?.sortOrder ?? 0} onChange={(e) => setEditing({ ...editing, sortOrder: Number(e.target.value) })} /></div>
               <div>
-                <Label>Published</Label>
+                <Label>已发布</Label>
                 <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" value={editing?.isPublished ? 'true' : 'false'} onChange={(e) => setEditing({ ...editing, isPublished: e.target.value === 'true' })}>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value="true">是</option>
+                  <option value="false">否</option>
                 </select>
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button variant="brand" onClick={handleSave}>Save</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>取消</Button>
+            <Button variant="brand" onClick={handleSave}>保存</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -226,20 +226,20 @@ function PageManager() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this page?')) return;
+    if (!confirm('确认要删除此页面吗？')) return;
     try {
       await fetch(`/api/admin/content/pages/${id}`, { method: 'DELETE' });
-      toast.success('Page deleted');
+      toast.success('页面删除成功');
       mutate();
     } catch {
-      toast.error('Failed to delete page');
+      toast.error('删除页面失败');
     }
   };
 
   const handleSave = async () => {
     if (!editing) return;
     if (!editing.slug || !editing.title) {
-      toast.error('Slug and title are required');
+      toast.error('Slug 和标题不能为空');
       return;
     }
     const isEdit = Boolean(editing.id);
@@ -252,11 +252,11 @@ function PageManager() {
     });
     const result = await res.json();
     if (result.code === 200 || result.code === 201) {
-      toast.success(isEdit ? 'Page updated' : 'Page created');
+      toast.success(isEdit ? '页面更新成功' : '页面创建成功');
       mutate();
       setDialogOpen(false);
     } else {
-      toast.error(result.message || 'Failed to save page');
+      toast.error(result.message || '保存页面失败');
     }
   };
 
@@ -265,21 +265,21 @@ function PageManager() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />Add Page</Button>
+        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />新建页面</Button>
       </div>
       <Card>
         <CardContent className="p-0">
           {pages.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No content pages yet.</p>
+            <p className="py-8 text-center text-gray-400">暂无内容页面。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Slug</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Meta Title</TableHead>
-                  <TableHead>Updated</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>标题</TableHead>
+                  <TableHead>SEO 标题</TableHead>
+                  <TableHead>更新时间</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -311,17 +311,17 @@ function PageManager() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl">
-          <DialogHeader><DialogTitle>{editing?.id ? 'Edit Page' : 'New Page'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing?.id ? '编辑页面' : '新建页面'}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div><Label>Slug *</Label><Input value={editing?.slug || ''} onChange={(e) => setEditing({ ...editing, slug: e.target.value })} placeholder="about, contact, etc." disabled={Boolean(editing?.id)} /></div>
-            <div><Label>Title *</Label><Input value={editing?.title || ''} onChange={(e) => setEditing({ ...editing, title: e.target.value })} /></div>
-            <div><Label>Content (HTML)</Label><Textarea rows={8} value={editing?.content || ''} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
-            <div><Label>Meta Title</Label><Input value={editing?.metaTitle || ''} onChange={(e) => setEditing({ ...editing, metaTitle: e.target.value })} /></div>
-            <div><Label>Meta Description</Label><Textarea rows={2} value={editing?.metaDescription || ''} onChange={(e) => setEditing({ ...editing, metaDescription: e.target.value })} /></div>
+            <div><Label>Slug *</Label><Input value={editing?.slug || ''} onChange={(e) => setEditing({ ...editing, slug: e.target.value })} placeholder="about, contact 等" disabled={Boolean(editing?.id)} /></div>
+            <div><Label>标题 *</Label><Input value={editing?.title || ''} onChange={(e) => setEditing({ ...editing, title: e.target.value })} /></div>
+            <div><Label>内容 (HTML)</Label><Textarea rows={8} value={editing?.content || ''} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
+            <div><Label>SEO 标题</Label><Input value={editing?.metaTitle || ''} onChange={(e) => setEditing({ ...editing, metaTitle: e.target.value })} /></div>
+            <div><Label>SEO 描述</Label><Textarea rows={2} value={editing?.metaDescription || ''} onChange={(e) => setEditing({ ...editing, metaDescription: e.target.value })} /></div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button variant="brand" onClick={handleSave}>Save</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>取消</Button>
+            <Button variant="brand" onClick={handleSave}>保存</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -360,20 +360,20 @@ function TestimonialManager() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this testimonial?')) return;
+    if (!confirm('确认要删除此评价吗？')) return;
     try {
       await fetch(`/api/admin/content/testimonials/${id}`, { method: 'DELETE' });
-      toast.success('Testimonial deleted');
+      toast.success('评价删除成功');
       mutate();
     } catch {
-      toast.error('Failed to delete testimonial');
+      toast.error('删除评价失败');
     }
   };
 
   const handleSave = async () => {
     if (!editing) return;
     if (!editing.customerName || !editing.content) {
-      toast.error('Customer name and content are required');
+      toast.error('客户姓名和内容不能为空');
       return;
     }
     const isEdit = Boolean(editing.id);
@@ -386,11 +386,11 @@ function TestimonialManager() {
     });
     const result = await res.json();
     if (result.code === 200 || result.code === 201) {
-      toast.success(isEdit ? 'Testimonial updated' : 'Testimonial created');
+      toast.success(isEdit ? '评价更新成功' : '评价创建成功');
       mutate();
       setDialogOpen(false);
     } else {
-      toast.error(result.message || 'Failed to save testimonial');
+      toast.error(result.message || '保存评价失败');
     }
   };
 
@@ -399,22 +399,22 @@ function TestimonialManager() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />Add Testimonial</Button>
+        <Button variant="brand" onClick={handleAdd}><Plus className="mr-2 h-4 w-4" />新建评价</Button>
       </div>
       <Card>
         <CardContent className="p-0">
           {testimonials.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No testimonials yet.</p>
+            <p className="py-8 text-center text-gray-400">暂无评价。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Country</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Published</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>客户</TableHead>
+                  <TableHead>公司</TableHead>
+                  <TableHead>国家</TableHead>
+                  <TableHead>评分</TableHead>
+                  <TableHead>已发布</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -429,7 +429,7 @@ function TestimonialManager() {
                     <TableCell>{'⭐'.repeat(t.rating)}</TableCell>
                     <TableCell>
                       <Badge variant={t.isPublished ? 'default' : 'secondary'}>
-                        {t.isPublished ? 'Yes' : 'No'}
+                        {t.isPublished ? '是' : '否'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -452,27 +452,27 @@ function TestimonialManager() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl">
-          <DialogHeader><DialogTitle>{editing?.id ? 'Edit Testimonial' : 'New Testimonial'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing?.id ? '编辑评价' : '新建评价'}</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div><Label>Customer Name *</Label><Input value={editing?.customerName || ''} onChange={(e) => setEditing({ ...editing, customerName: e.target.value })} /></div>
-              <div><Label>Company</Label><Input value={editing?.company || ''} onChange={(e) => setEditing({ ...editing, company: e.target.value })} /></div>
-              <div><Label>Country</Label><Input value={editing?.country || ''} onChange={(e) => setEditing({ ...editing, country: e.target.value })} /></div>
-              <div><Label>Rating (1-5)</Label><Input type="number" min={1} max={5} value={editing?.rating ?? 5} onChange={(e) => setEditing({ ...editing, rating: Number(e.target.value) })} /></div>
-              <div><Label>Sort Order</Label><Input type="number" value={editing?.sortOrder ?? 0} onChange={(e) => setEditing({ ...editing, sortOrder: Number(e.target.value) })} /></div>
+              <div><Label>客户姓名 *</Label><Input value={editing?.customerName || ''} onChange={(e) => setEditing({ ...editing, customerName: e.target.value })} /></div>
+              <div><Label>公司</Label><Input value={editing?.company || ''} onChange={(e) => setEditing({ ...editing, company: e.target.value })} /></div>
+              <div><Label>国家</Label><Input value={editing?.country || ''} onChange={(e) => setEditing({ ...editing, country: e.target.value })} /></div>
+              <div><Label>评分 (1-5)</Label><Input type="number" min={1} max={5} value={editing?.rating ?? 5} onChange={(e) => setEditing({ ...editing, rating: Number(e.target.value) })} /></div>
+              <div><Label>排序权重</Label><Input type="number" value={editing?.sortOrder ?? 0} onChange={(e) => setEditing({ ...editing, sortOrder: Number(e.target.value) })} /></div>
               <div>
-                <Label>Published</Label>
+                <Label>已发布</Label>
                 <select className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" value={editing?.isPublished ? 'true' : 'false'} onChange={(e) => setEditing({ ...editing, isPublished: e.target.value === 'true' })}>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value="true">是</option>
+                  <option value="false">否</option>
                 </select>
               </div>
             </div>
-            <div><Label>Content *</Label><Textarea rows={4} value={editing?.content || ''} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
+            <div><Label>内容 *</Label><Textarea rows={4} value={editing?.content || ''} onChange={(e) => setEditing({ ...editing, content: e.target.value })} /></div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button variant="brand" onClick={handleSave}>Save</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>取消</Button>
+            <Button variant="brand" onClick={handleSave}>保存</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

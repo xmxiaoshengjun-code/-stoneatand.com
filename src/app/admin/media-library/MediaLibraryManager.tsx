@@ -26,6 +26,16 @@ interface MediaItem {
 
 const CATEGORIES = ['all', 'product', 'banner', 'general', 'favicon', 'watermark', 'other'];
 
+const CATEGORY_LABELS: Record<string, string> = {
+  all: '全部',
+  product: '产品',
+  banner: '横幅',
+  general: '通用',
+  favicon: '图标',
+  watermark: '水印',
+  other: '其他',
+};
+
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -65,13 +75,13 @@ export function MediaLibraryManager() {
       });
       const result = await res.json();
       if (result.code === 201) {
-        toast.success('Image uploaded');
+        toast.success('图片上传成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to upload');
+        toast.error(result.message || '上传失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -79,19 +89,19 @@ export function MediaLibraryManager() {
   }, [category, mutate]);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this image?')) return;
+    if (!confirm('确认要删除此图片吗？')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/media-library/${id}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Image deleted');
+        toast.success('图片删除成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to delete');
+        toast.error(result.message || '删除失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -100,13 +110,13 @@ export function MediaLibraryManager() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Media Library</h1>
+        <h1 className="text-2xl font-bold text-gray-900">媒体库</h1>
         <label>
           <input type="file" className="hidden" onChange={handleUpload} accept="image/jpeg,image/png,image/webp,image/gif" />
           <Button variant="brand" asChild disabled={uploading}>
             <span>
               {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
-              {uploading ? 'Uploading...' : 'Upload Image'}
+              {uploading ? '上传中...' : '上传图片'}
             </span>
           </Button>
         </label>
@@ -120,14 +130,14 @@ export function MediaLibraryManager() {
             size="sm"
             onClick={() => { setCategory(cat); setPage(1); }}
           >
-            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            {CATEGORY_LABELS[cat] || cat}
           </Button>
         ))}
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>{total} Images</CardTitle>
+          <CardTitle>{total} 张图片</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -137,7 +147,7 @@ export function MediaLibraryManager() {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No images found.</p>
+            <p className="py-8 text-center text-gray-400">暂无图片。</p>
           ) : (
             <>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -170,9 +180,9 @@ export function MediaLibraryManager() {
               </div>
               {totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-center gap-2">
-                  <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
+                  <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>上一页</Button>
                   <span className="text-sm text-gray-500">{page} / {totalPages}</span>
-                  <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next</Button>
+                  <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>下一页</Button>
                 </div>
               )}
             </>

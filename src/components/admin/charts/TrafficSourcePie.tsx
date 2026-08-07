@@ -23,10 +23,10 @@ const SOURCE_COLORS: Record<string, string> = {
 const DEFAULT_COLOR = '#FFCC80';
 
 const SOURCE_LABELS: Record<string, string> = {
-  search: 'Search',
-  social: 'Social',
-  direct: 'Direct',
-  referral: 'Referral',
+  search: '搜索引擎',
+  social: '社交媒体',
+  direct: '直接访问',
+  referral: '外链引荐',
 };
 
 /**

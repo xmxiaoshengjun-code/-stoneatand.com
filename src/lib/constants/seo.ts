@@ -17,7 +17,7 @@ export const SITE_CONFIG = {
 
 export const COMPANY_STATS = [
   { label: 'Years of Experience', value: '18+' },
-  { label: 'SKU Models', value: '172' },
+  { label: 'SKU Models', value: '168' },
   { label: 'Product Series', value: '17' },
   { label: 'Countries Served', value: '80+' },
   { label: 'Export to Europe & America', value: '80%' },
@@ -31,7 +31,7 @@ export const CORE_ADVANTAGES = [
     icon: 'award',
   },
   {
-    title: '172 SKUs Across 17 Series',
+    title: '168 SKUs Across 17 Series',
     description:
       'Comprehensive product range covering every tile display need, from wall sliding racks to floor-standing displays, sample boxes and mosaic panels.',
     icon: 'package',

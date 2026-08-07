@@ -88,13 +88,13 @@ export function ProductForm({ productId }: { productId?: number }) {
 
       const result = await res.json();
       if (result.code === 200 || result.code === 201) {
-        toast.success(productId ? 'Product updated' : 'Product created');
+        toast.success(productId ? '产品更新成功' : '产品创建成功');
         router.push('/admin/products');
       } else {
-        toast.error(result.message || 'Failed to save product');
+        toast.error(result.message || '保存产品失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,7 @@ export function ProductForm({ productId }: { productId?: number }) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Basic Information</CardTitle>
+          <CardTitle>基本信息</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
@@ -112,10 +112,10 @@ export function ProductForm({ productId }: { productId?: number }) {
             <Input id="sku" name="sku" required defaultValue={product?.sku as string} placeholder="CT-001" />
           </div>
           <div>
-            <Label htmlFor="seriesId">Series *</Label>
+            <Label htmlFor="seriesId">系列 *</Label>
             <Select name="seriesId" defaultValue={String(product?.seriesId || '')}>
               <SelectTrigger>
-                <SelectValue placeholder="Select series" />
+                <SelectValue placeholder="请选择系列" />
               </SelectTrigger>
               <SelectContent>
                 {seriesList.map((s) => (
@@ -125,11 +125,11 @@ export function ProductForm({ productId }: { productId?: number }) {
             </Select>
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="name">Product Name *</Label>
+            <Label htmlFor="name">产品名称 *</Label>
             <Input id="name" name="name" required defaultValue={product?.name as string} />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">描述</Label>
             <Textarea id="description" name="description" rows={3} defaultValue={product?.description as string} />
           </div>
         </CardContent>
@@ -137,43 +137,43 @@ export function ProductForm({ productId }: { productId?: number }) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Specifications</CardTitle>
+          <CardTitle>规格参数</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <Label htmlFor="standSize">Stand Size (mm)</Label>
+            <Label htmlFor="standSize">展架尺寸 (mm)</Label>
             <Input id="standSize" name="standSize" defaultValue={product?.standSize as string} placeholder="1250×1500×2700" />
           </div>
           <div>
-            <Label htmlFor="panelSize">Panel Size</Label>
+            <Label htmlFor="panelSize">面板尺寸</Label>
             <Input id="panelSize" name="panelSize" defaultValue={product?.panelSize as string} placeholder="1200×2400" />
           </div>
           <div>
-            <Label htmlFor="panelThickness">Panel Thickness</Label>
+            <Label htmlFor="panelThickness">面板厚度</Label>
             <Input id="panelThickness" name="panelThickness" defaultValue={product?.panelThickness as string} placeholder="15mm" />
           </div>
           <div>
-            <Label htmlFor="packageSize">Package Size (mm)</Label>
+            <Label htmlFor="packageSize">包装尺寸 (mm)</Label>
             <Input id="packageSize" name="packageSize" defaultValue={product?.packageSize as string} placeholder="2750×1550×950" />
           </div>
           <div>
-            <Label htmlFor="numberOfPanel">Number of Panels</Label>
+            <Label htmlFor="numberOfPanel">面板数量</Label>
             <Input id="numberOfPanel" name="numberOfPanel" type="number" defaultValue={product?.numberOfPanel as string} />
           </div>
           <div>
-            <Label htmlFor="weight">Weight</Label>
+            <Label htmlFor="weight">重量</Label>
             <Input id="weight" name="weight" defaultValue={product?.weight as string} />
           </div>
           <div>
-            <Label htmlFor="material">Material</Label>
+            <Label htmlFor="material">材质</Label>
             <Input id="material" name="material" defaultValue={product?.material as string} />
           </div>
           <div>
-            <Label htmlFor="sortOrder">Sort Order</Label>
+            <Label htmlFor="sortOrder">排序权重</Label>
             <Input id="sortOrder" name="sortOrder" type="number" defaultValue={product?.sortOrder as string || '0'} />
           </div>
           <div className="md:col-span-2">
-            <Label htmlFor="features">Features</Label>
+            <Label htmlFor="features">特点</Label>
             <Textarea id="features" name="features" rows={2} defaultValue={product?.features as string} />
           </div>
         </CardContent>
@@ -181,26 +181,26 @@ export function ProductForm({ productId }: { productId?: number }) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Display Settings</CardTitle>
+          <CardTitle>显示设置</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-2">
             <Checkbox id="isFeatured" name="isFeatured" defaultChecked={product?.isFeatured as boolean} />
-            <Label htmlFor="isFeatured">Featured product (shown on homepage)</Label>
+            <Label htmlFor="isFeatured">精选产品（显示在首页）</Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="isPublished" name="isPublished" defaultChecked={product?.isPublished !== false} />
-            <Label htmlFor="isPublished">Published (visible on website)</Label>
+            <Label htmlFor="isPublished">已发布（在网站上可见）</Label>
           </div>
         </CardContent>
       </Card>
 
       <div className="flex gap-3">
         <Button type="submit" variant="brand" disabled={loading}>
-          {loading ? 'Saving...' : productId ? 'Update Product' : 'Create Product'}
+          {loading ? '保存中...' : productId ? '更新产品' : '创建产品'}
         </Button>
         <Button type="button" variant="outline" onClick={() => router.push('/admin/products')}>
-          Cancel
+          取消
         </Button>
       </div>
     </form>

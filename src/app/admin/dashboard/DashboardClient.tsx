@@ -18,10 +18,10 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 type TimeRange = 'today' | 'yesterday' | '7d' | '30d';
 
 const TIME_RANGE_LABELS: Record<TimeRange, string> = {
-  today: 'Today',
-  yesterday: 'Yesterday',
-  '7d': 'Last 7 Days',
-  '30d': 'Last 30 Days',
+  today: '今日',
+  yesterday: '昨日',
+  '7d': '近 7 天',
+  '30d': '近 30 天',
 };
 
 interface TrackingStats {
@@ -56,7 +56,7 @@ function formatDuration(seconds: number): string {
 
 function formatDateShort(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 }
 
 export function DashboardClient() {
@@ -85,17 +85,17 @@ export function DashboardClient() {
 
   // Inquiry stat cards
   const inquiryCards = [
-    { label: 'Total Inquiries', value: inquiries?.total || 0, color: 'bg-blue-500' },
-    { label: 'New', value: inquiries?.newCount || 0, color: 'bg-yellow-500' },
-    { label: 'Contacted', value: inquiries?.contactedCount || 0, color: 'bg-purple-500' },
-    { label: 'Won', value: inquiries?.wonCount || 0, color: 'bg-green-500' },
+    { label: '总询盘数', value: inquiries?.total || 0, color: 'bg-blue-500' },
+    { label: '新增', value: inquiries?.newCount || 0, color: 'bg-yellow-500' },
+    { label: '已联系', value: inquiries?.contactedCount || 0, color: 'bg-purple-500' },
+    { label: '已成交', value: inquiries?.wonCount || 0, color: 'bg-green-500' },
   ];
 
   // Tracking stat cards
   const trackingCards = [
-    { label: "Today's Visitors (UV)", value: tracking?.todayUV ?? 0, color: 'bg-cyan-500' },
-    { label: "Today's Page Views (PV)", value: tracking?.todayPV ?? 0, color: 'bg-indigo-500' },
-    { label: 'Avg. Page Duration', value: formatDuration(tracking?.avgDuration ?? 0), color: 'bg-teal-500' },
+    { label: "今日访客数 (UV)", value: tracking?.todayUV ?? 0, color: 'bg-cyan-500' },
+    { label: "今日页面浏览量 (PV)", value: tracking?.todayPV ?? 0, color: 'bg-indigo-500' },
+    { label: '平均页面停留时长', value: formatDuration(tracking?.avgDuration ?? 0), color: 'bg-teal-500' },
   ];
 
   // Trend chart dimensions
@@ -109,7 +109,7 @@ export function DashboardClient() {
       {/* Tracking Stats Section */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-700">Visitor Analytics</h2>
+          <h2 className="text-lg font-semibold text-gray-700">访客分析</h2>
           <div className="flex gap-1">
             {(['today', 'yesterday', '7d', '30d'] as TimeRange[]).map((tr) => (
               <Button
@@ -144,7 +144,7 @@ export function DashboardClient() {
       {trend.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>7-Day Traffic Trend</CardTitle>
+            <CardTitle>7 天流量趋势</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-end justify-between gap-2" style={{ height: '200px' }}>
@@ -171,11 +171,11 @@ export function DashboardClient() {
             <div className="mt-4 flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded bg-indigo-400" />
-                <span className="text-gray-600">Page Views (PV)</span>
+                <span className="text-gray-600">页面浏览量 (PV)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded bg-cyan-400" />
-                <span className="text-gray-600">Unique Visitors (UV)</span>
+                <span className="text-gray-600">独立访客数 (UV)</span>
               </div>
             </div>
           </CardContent>
@@ -187,7 +187,7 @@ export function DashboardClient() {
         {tracking?.hourlyTrend && tracking.hourlyTrend.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Hourly Traffic ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+              <CardTitle>每小时流量 ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
             </CardHeader>
             <CardContent>
               <HourlyTrafficChart data={tracking.hourlyTrend} />
@@ -197,7 +197,7 @@ export function DashboardClient() {
         {tracking?.trafficSources && tracking.trafficSources.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Traffic Sources ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+              <CardTitle>流量来源 ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
             </CardHeader>
             <CardContent>
               <TrafficSourcePie data={tracking.trafficSources} />
@@ -210,7 +210,7 @@ export function DashboardClient() {
       {tracking?.topCountriesTop10 && tracking.topCountriesTop10.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Top 10 Countries ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
+            <CardTitle>Top 10 国家 ({TIME_RANGE_LABELS[timeRange]})</CardTitle>
           </CardHeader>
           <CardContent>
             <CountryBarChart data={tracking.topCountriesTop10} />
@@ -223,15 +223,15 @@ export function DashboardClient() {
         {/* Top Pages */}
         <Card>
           <CardHeader>
-            <CardTitle>Top Pages (7 Days)</CardTitle>
+            <CardTitle>热门页面（7 天）</CardTitle>
           </CardHeader>
           <CardContent>
             {(tracking?.topPages?.length ?? 0) > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Page</TableHead>
-                    <TableHead className="text-right">Views</TableHead>
+                    <TableHead>页面</TableHead>
+                    <TableHead className="text-right">浏览量</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -244,7 +244,7 @@ export function DashboardClient() {
                 </TableBody>
               </Table>
             ) : (
-              <p className="py-4 text-center text-sm text-gray-400">No page view data yet</p>
+              <p className="py-4 text-center text-sm text-gray-400">暂无页面浏览数据</p>
             )}
           </CardContent>
         </Card>
@@ -252,15 +252,15 @@ export function DashboardClient() {
         {/* Top Countries */}
         <Card>
           <CardHeader>
-            <CardTitle>Top Countries (7 Days)</CardTitle>
+            <CardTitle>热门国家（7 天）</CardTitle>
           </CardHeader>
           <CardContent>
             {(tracking?.topCountries?.length ?? 0) > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Country</TableHead>
-                    <TableHead className="text-right">Visits</TableHead>
+                    <TableHead>国家</TableHead>
+                    <TableHead className="text-right">访问次数</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -276,7 +276,7 @@ export function DashboardClient() {
                 </TableBody>
               </Table>
             ) : (
-              <p className="py-4 text-center text-sm text-gray-400">No country data yet</p>
+              <p className="py-4 text-center text-sm text-gray-400">暂无国家数据</p>
             )}
           </CardContent>
         </Card>
@@ -284,7 +284,7 @@ export function DashboardClient() {
 
       {/* Inquiry Stats Section */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Inquiry Statistics</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">询盘统计</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
           {inquiryCards.map((stat) => (
             <Card key={stat.label}>
@@ -305,17 +305,17 @@ export function DashboardClient() {
       {/* Recent inquiries */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Inquiries</CardTitle>
+          <CardTitle>最近询盘</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Inquiry No</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Product</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>询盘编号</TableHead>
+                <TableHead>客户</TableHead>
+                <TableHead>产品</TableHead>
+                <TableHead>状态</TableHead>
+                <TableHead>日期</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -338,7 +338,7 @@ export function DashboardClient() {
               )) || (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center text-gray-500">
-                    No recent inquiries
+                    暂无询盘
                   </TableCell>
                 </TableRow>
               )}

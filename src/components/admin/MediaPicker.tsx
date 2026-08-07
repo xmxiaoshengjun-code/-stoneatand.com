@@ -35,7 +35,7 @@ interface MediaItem {
  * Media picker dialog component.
  * Displays the media library grid and allows selecting an image URL.
  */
-export function MediaPicker({ open, onClose, onSelect, title = 'Select Image' }: MediaPickerProps) {
+export function MediaPicker({ open, onClose, onSelect, title = '选择图片' }: MediaPickerProps) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
@@ -56,7 +56,7 @@ export function MediaPicker({ open, onClose, onSelect, title = 'Select Image' }:
 
   const handleSelect = useCallback(() => {
     if (!selectedUrl) {
-      toast.error('Please select an image first');
+      toast.error('请先选择一张图片');
       return;
     }
     onSelect(selectedUrl);
@@ -73,7 +73,7 @@ export function MediaPicker({ open, onClose, onSelect, title = 'Select Image' }:
 
         <div className="mb-3">
           <Input
-            placeholder="Search images..."
+            placeholder="搜索图片..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -87,7 +87,7 @@ export function MediaPicker({ open, onClose, onSelect, title = 'Select Image' }:
               ))}
             </div>
           ) : filteredItems.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No images found</p>
+            <p className="py-8 text-center text-gray-400">暂无图片</p>
           ) : (
             <div className="grid grid-cols-4 gap-3">
               {filteredItems.map((item) => (
@@ -114,10 +114,10 @@ export function MediaPicker({ open, onClose, onSelect, title = 'Select Image' }:
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            取消
           </Button>
           <Button variant="brand" onClick={handleSelect} disabled={!selectedUrl}>
-            Select
+            选择
           </Button>
         </DialogFooter>
       </DialogContent>

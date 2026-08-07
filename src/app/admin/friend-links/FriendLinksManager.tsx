@@ -47,7 +47,7 @@ export function FriendLinksManager() {
 
   const handleSave = useCallback(async () => {
     if (!form.name.trim() || !form.url.trim()) {
-      toast.error('Name and URL are required');
+      toast.error('名称和 URL 不能为空');
       return;
     }
     setSaving(true);
@@ -62,33 +62,33 @@ export function FriendLinksManager() {
       });
       const result = await res.json();
       if (result.code === 200 || result.code === 201) {
-        toast.success(isEdit ? 'Friend link updated' : 'Friend link created');
+        toast.success(isEdit ? '友情链接更新成功' : '友情链接创建成功');
         setShowForm(false);
         mutate();
       } else {
-        toast.error(result.message || 'Failed to save');
+        toast.error(result.message || '保存失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setSaving(false);
     }
   }, [form, editingId, mutate]);
 
   const handleDelete = useCallback(async (id: number) => {
-    if (!confirm('Are you sure you want to delete this friend link?')) return;
+    if (!confirm('确认要删除此友情链接吗？')) return;
     setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/friend-links/${id}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.code === 200) {
-        toast.success('Friend link deleted');
+        toast.success('友情链接删除成功');
         mutate();
       } else {
-        toast.error(result.message || 'Failed to delete');
+        toast.error(result.message || '删除失败');
       }
     } catch {
-      toast.error('Network error');
+      toast.error('网络错误');
     } finally {
       setDeletingId(null);
     }
@@ -97,10 +97,10 @@ export function FriendLinksManager() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Friend Links</h1>
+        <h1 className="text-2xl font-bold text-gray-900">友情链接</h1>
         <Button variant="brand" onClick={handleAdd}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Link
+          新建链接
         </Button>
       </div>
 
@@ -109,7 +109,7 @@ export function FriendLinksManager() {
           <CardContent className="p-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block text-sm font-medium">Name</label>
+                <label className="mb-1 block text-sm font-medium">名称</label>
                 <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
               </div>
               <div>
@@ -117,24 +117,24 @@ export function FriendLinksManager() {
                 <Input value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} placeholder="https://..." />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Logo URL (optional)</label>
+                <label className="mb-1 block text-sm font-medium">Logo URL（可选）</label>
                 <Input value={form.logo} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="/images/..." />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Sort Order</label>
+                <label className="mb-1 block text-sm font-medium">排序权重</label>
                 <Input type="number" value={form.sortOrder} onChange={(e) => setForm({ ...form, sortOrder: parseInt(e.target.value) || 0 })} />
               </div>
             </div>
             <div className="flex items-center gap-2">
               <input type="checkbox" id="fl-visible" checked={form.isVisible} onChange={(e) => setForm({ ...form, isVisible: e.target.checked })} />
-              <label htmlFor="fl-visible" className="text-sm">Visible</label>
+              <label htmlFor="fl-visible" className="text-sm">显示</label>
             </div>
             <div className="flex gap-2">
               <Button variant="brand" onClick={handleSave} disabled={saving}>
                 {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? '保存中...' : '保存'}
               </Button>
-              <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowForm(false)}>取消</Button>
             </div>
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ export function FriendLinksManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>All Friend Links ({links.length})</CardTitle>
+          <CardTitle>全部友情链接 ({links.length})</CardTitle>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -152,16 +152,16 @@ export function FriendLinksManager() {
               ))}
             </div>
           ) : links.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No friend links yet.</p>
+            <p className="py-8 text-center text-gray-400">暂无友情链接。</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>名称</TableHead>
                   <TableHead>URL</TableHead>
-                  <TableHead className="w-20">Order</TableHead>
-                  <TableHead className="w-24">Visible</TableHead>
-                  <TableHead className="w-24 text-right">Actions</TableHead>
+                  <TableHead className="w-20">排序</TableHead>
+                  <TableHead className="w-24">显示</TableHead>
+                  <TableHead className="w-24 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -177,12 +177,12 @@ export function FriendLinksManager() {
                     <TableCell className="text-sm text-gray-500">{item.sortOrder}</TableCell>
                     <TableCell>
                       <Badge variant={item.isVisible ? 'default' : 'secondary'}>
-                        {item.isVisible ? 'Yes' : 'No'}
+                        {item.isVisible ? '是' : '否'}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} title="Edit">
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} title="编辑">
                           <Pencil className="h-4 w-4" />
                         </Button>
                         <Button
@@ -190,7 +190,7 @@ export function FriendLinksManager() {
                           size="icon"
                           onClick={() => handleDelete(item.id)}
                           disabled={deletingId === item.id}
-                          title="Delete"
+                          title="删除"
                           className="text-red-500 hover:text-red-600"
                         >
                           <Trash2 className="h-4 w-4" />

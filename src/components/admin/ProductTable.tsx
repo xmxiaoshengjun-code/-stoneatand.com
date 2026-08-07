@@ -25,7 +25,7 @@ export function ProductTable() {
         <Button asChild variant="brand">
           <Link href="/admin/products/new">
             <Plus className="mr-2 h-4 w-4" />
-            Add Product
+            新建产品
           </Link>
         </Button>
       </div>
@@ -35,11 +35,11 @@ export function ProductTable() {
           <TableHeader>
             <TableRow>
               <TableHead>SKU</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Series</TableHead>
-              <TableHead>Panel Size</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>名称</TableHead>
+              <TableHead>系列</TableHead>
+              <TableHead>面板尺寸</TableHead>
+              <TableHead>状态</TableHead>
+              <TableHead>操作</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -53,12 +53,12 @@ export function ProductTable() {
                   {p.isPublished ? (
                     <Badge variant="success">
                       <Eye className="mr-1 h-3 w-3" />
-                      Published
+                      已发布
                     </Badge>
                   ) : (
                     <Badge variant="secondary">
                       <EyeOff className="mr-1 h-3 w-3" />
-                      Hidden
+                      隐藏
                     </Badge>
                   )}
                 </TableCell>

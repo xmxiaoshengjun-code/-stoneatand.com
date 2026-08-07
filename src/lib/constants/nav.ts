@@ -33,20 +33,20 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const ADMIN_NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', href: '/admin/dashboard' },
-  { label: 'Products', href: '/admin/products' },
-  { label: 'Categories', href: '/admin/categories' },
-  { label: 'Inquiries', href: '/admin/inquiries' },
-  { label: 'Customers', href: '/admin/customers' },
-  { label: 'Projects', href: '/admin/projects' },
-  { label: 'Content', href: '/admin/content' },
-  { label: 'FAQs', href: '/admin/faqs' },
-  { label: 'Downloads', href: '/admin/downloads' },
-  { label: 'Friend Links', href: '/admin/friend-links' },
-  { label: 'Redirects', href: '/admin/redirects' },
-  { label: 'Media Library', href: '/admin/media-library' },
-  { label: 'B2B Listings', href: '/admin/b2b-listings' },
-  { label: 'Settings', href: '/admin/settings' },
+  { label: '仪表盘', href: '/admin/dashboard' },
+  { label: '产品管理', href: '/admin/products' },
+  { label: '分类管理', href: '/admin/categories' },
+  { label: '询盘管理', href: '/admin/inquiries' },
+  { label: '客户管理', href: '/admin/customers' },
+  { label: '项目案例', href: '/admin/projects' },
+  { label: '内容管理', href: '/admin/content' },
+  { label: '常见问题', href: '/admin/faqs' },
+  { label: '下载中心', href: '/admin/downloads' },
+  { label: '友情链接', href: '/admin/friend-links' },
+  { label: '重定向规则', href: '/admin/redirects' },
+  { label: '媒体库', href: '/admin/media-library' },
+  { label: 'B2B 铺货', href: '/admin/b2b-listings' },
+  { label: '系统设置', href: '/admin/settings' },
 ];
 
 export const FOOTER_LINKS = {
