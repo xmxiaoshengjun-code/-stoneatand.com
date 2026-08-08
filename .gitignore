@@ -9,6 +9,8 @@
 # next.js
 /.next/
 /.next-dev/
+/.next_old_corrupt/
+/.next_old_broken/
 /out/
 
 # production
@@ -49,6 +51,10 @@ next-env.d.ts
 # uploaded images - include for team sharing
 /public/datasheets/*
 !/public/datasheets/.gitkeep
+
+# inquiry upload files (user-submitted, not committed)
+/public/uploads/inquiries/*
+!/public/uploads/inquiries/.gitkeep
 
 # temp build artifacts (do not commit)
 /static-site/
@@ -102,3 +108,14 @@ prisma/test-write.txt
 .next-seo/
 .next-seo2/
 scripts/resize-og.py
+
+# temp QA/build artifacts
+commit_msg.txt
+commit_output.txt
+img_size.txt
+kill_result.txt
+scripts/index_check_result.txt
+scripts/check_indexes.py
+scripts/output/
+public/images/projects.backup-*/
+qa_tmp/

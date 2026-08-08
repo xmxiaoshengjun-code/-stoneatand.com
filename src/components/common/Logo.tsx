@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, imgUrl } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
@@ -17,7 +17,7 @@ interface LogoProps {
 export function Logo({ className, priority = false }: LogoProps) {
   return (
     <Image
-      src="/images/logo-tsianfan.png"
+      src={imgUrl('/images/logo-tsianfan.png')}
       alt="TSIANFAN"
       width={685}
       height={161}
