@@ -242,8 +242,10 @@ export class TrackingService {
     );
 
     // Ensure all 24 hours are present (fill missing with 0)
+    // Note: SQLite COUNT(*) returns BigInt via $queryRawUnsafe; convert to Number
+    // to avoid "Do not know how to serialize a BigInt" JSON serialization errors.
     const result: Array<{ hour: string; pv: number }> = [];
-    const hourMap = new Map(rows.map((r) => [r.hour, r.pv]));
+    const hourMap = new Map(rows.map((r) => [r.hour, Number(r.pv)]));
     for (let h = 0; h < 24; h++) {
       const hourStr = String(h).padStart(2, '0');
       result.push({ hour: `${hourStr}:00`, pv: hourMap.get(hourStr) ?? 0 });
@@ -271,7 +273,7 @@ export class TrackingService {
 
     return rows.map((r) => ({
       source: r.sourceCategory,
-      count: r.count,
+      count: Number(r.count),
     }));
   }
 
@@ -295,7 +297,7 @@ export class TrackingService {
 
     return rows.map((r) => ({
       device: r.deviceType,
-      count: r.count,
+      count: Number(r.count),
     }));
   }
 }

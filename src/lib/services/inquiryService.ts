@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { generateInquiryNo } from '@/lib/utils';
+import { generateInquiryNo, safeJsonParse } from '@/lib/utils';
 import type { Inquiry, InquiryListResponse, InquiryStatus } from '@/types/inquiry';
+import type { Attachment } from '@/types/attachment';
 
 /**
  * Inquiry Service - handles all inquiry (RFQ) database operations.
@@ -11,6 +12,7 @@ export class InquiryService {
   /**
    * Creates a new inquiry from the website contact form.
    * Auto-generates inquiry number and upserts customer record.
+   * Stores attachments as a JSON string in the `attachments` column.
    */
   async createInquiry(data: {
     customerName: string;
@@ -23,6 +25,7 @@ export class InquiryService {
     quantity?: number;
     message: string;
     source?: string;
+    attachments?: Attachment[];
   }): Promise<Inquiry> {
     // Upsert customer by email
     const customer = await prisma.customer.upsert({
@@ -75,7 +78,21 @@ export class InquiryService {
       },
     });
 
-    return inquiry as unknown as Inquiry;
+    // Store attachments as JSON in the `attachments` column.
+    // Since prisma generate is blocked, the Prisma client doesn't know about
+    // this column, so we use $executeRawUnsafe to set it directly.
+    if (data.attachments && data.attachments.length > 0) {
+      const attachmentsJson = JSON.stringify(data.attachments);
+      await prisma.$executeRawUnsafe(
+        'UPDATE Inquiry SET attachments = ? WHERE id = ?',
+        attachmentsJson,
+        inquiry.id
+      );
+    }
+
+    const result = inquiry as unknown as Inquiry;
+    result.attachments = data.attachments && data.attachments.length > 0 ? data.attachments : [];
+    return result;
   }
 
   /**
@@ -116,6 +133,25 @@ export class InquiryService {
       prisma.inquiry.count({ where }),
     ]);
 
+    // Fetch attachments for all items in this page via raw SQL.
+    // Prisma client doesn't know about the `attachments` column, so we
+    // fetch it separately and merge into the result objects.
+    if (items.length > 0) {
+      const ids = items.map((i: { id: number }) => i.id);
+      const idList = ids.join(',');
+      const rawResults = await prisma.$queryRawUnsafe<Array<{ id: number; attachments: string | null }>>(
+        `SELECT id, attachments FROM Inquiry WHERE id IN (${idList})`
+      );
+      const attachmentsMap = new Map<number, Attachment[]>();
+      for (const row of rawResults) {
+        const parsed = safeJsonParse<Attachment[]>(row.attachments, []);
+        attachmentsMap.set(row.id, parsed);
+      }
+      for (const item of items) {
+        (item as Record<string, unknown>).attachments = attachmentsMap.get(item.id) || [];
+      }
+    }
+
     return {
       items: items as unknown as Inquiry[],
       total,
@@ -127,6 +163,7 @@ export class InquiryService {
 
   /**
    * Fetches a single inquiry by ID with all related data.
+   * Parses the `attachments` JSON column into an array.
    */
   async getInquiryById(id: number): Promise<Inquiry | null> {
     const inquiry = await prisma.inquiry.findUnique({
@@ -137,6 +174,21 @@ export class InquiryService {
         followUps: { orderBy: { createdAt: 'desc' } },
       },
     });
+
+    if (inquiry) {
+      // Fetch the `attachments` column via raw SQL since Prisma client
+      // doesn't know about this column.
+      const rawResults = await prisma.$queryRawUnsafe<Array<{ attachments: string | null }>>(
+        'SELECT attachments FROM Inquiry WHERE id = ?',
+        id
+      );
+      const attachmentsStr = rawResults[0]?.attachments ?? null;
+      (inquiry as Record<string, unknown>).attachments = safeJsonParse<Attachment[]>(
+        attachmentsStr,
+        []
+      );
+    }
+
     return inquiry as unknown as Inquiry | null;
   }
 
@@ -149,6 +201,26 @@ export class InquiryService {
       data: { status, assignedTo: assignedTo || undefined },
     });
     return inquiry as unknown as Inquiry;
+  }
+
+  /**
+   * Deletes an inquiry by ID (admin).
+   * Also deletes associated follow-ups to avoid orphaned records.
+   * Returns true if the inquiry was deleted, false if not found.
+   */
+  async deleteInquiry(id: number): Promise<boolean> {
+    // Check if inquiry exists first
+    const existing = await prisma.inquiry.findUnique({ where: { id }, select: { id: true } });
+    if (!existing) {
+      return false;
+    }
+
+    // Delete associated follow-ups (they have a foreign key to Inquiry)
+    await prisma.followUp.deleteMany({ where: { inquiryId: id } });
+
+    // Delete the inquiry
+    await prisma.inquiry.delete({ where: { id } });
+    return true;
   }
 
   /**

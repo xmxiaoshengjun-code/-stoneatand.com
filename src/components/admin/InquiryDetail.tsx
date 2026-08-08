@@ -1,24 +1,59 @@
 'use client';
 
+import { useState } from 'react';
 import useSWR from 'swr';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatDateTime } from '@/lib/utils';
+import { formatDateTime, formatFileSize } from '@/lib/utils';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { Paperclip, FileText, File, Image as ImageIcon, X, Download } from 'lucide-react';
+import type { Attachment, FileCategory } from '@/types/attachment';
+
+/** Returns the appropriate lucide-react icon for a file category. */
+function getCategoryIcon(category: FileCategory) {
+  switch (category) {
+    case 'image':
+      return ImageIcon;
+    case 'document':
+      return FileText;
+    case 'cad':
+      return File;
+    default:
+      return File;
+  }
+}
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
   const { data, mutate } = useSWR(`/api/inquiries/${inquiryId}`, fetcher);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   if (!data) return <Skeleton className="h-96" />;
   if (data.code !== 200) return <p className="text-red-500">未找到询盘</p>;
 
   const inquiry = data.data;
+
+  // Parse attachments — handle null/empty/string/array
+  const allAttachments: Attachment[] = (() => {
+    if (!inquiry.attachments) return [];
+    if (Array.isArray(inquiry.attachments)) return inquiry.attachments as Attachment[];
+    if (typeof inquiry.attachments === 'string') {
+      try {
+        const parsed = JSON.parse(inquiry.attachments);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  })();
+  const imageAttachments = allAttachments.filter((a) => a.fileCategory === 'image');
+  const nonImageAttachments = allAttachments.filter((a) => a.fileCategory !== 'image');
 
   const handleStatusChange = async (status: string) => {
     const res = await fetch(`/api/inquiries/${inquiryId}`, {
@@ -96,6 +131,70 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
         </Card>
       </div>
 
+      {allAttachments.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Paperclip className="h-5 w-5" />
+              附件 ({allAttachments.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {imageAttachments.length > 0 && (
+              <div className="mb-4 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
+                {imageAttachments.map((att: Attachment, i: number) => (
+                  <div
+                    key={i}
+                    onClick={() => setLightboxImage(att.url)}
+                    className="group relative cursor-pointer overflow-hidden rounded-lg border border-gray-200 transition-shadow hover:shadow-md"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={att.url}
+                      alt={att.fileName}
+                      className="aspect-square w-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-1.5">
+                      <p className="truncate text-xs text-white">{att.fileName}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {nonImageAttachments.length > 0 && (
+              <div className="space-y-2">
+                {nonImageAttachments.map((att: Attachment, i: number) => {
+                  const Icon = getCategoryIcon(att.fileCategory);
+                  return (
+                    <a
+                      key={i}
+                      href={att.url}
+                      download={att.fileName}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50"
+                    >
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
+                        <Icon className="h-5 w-5 text-gray-500" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-gray-700">
+                          {att.fileName}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {formatFileSize(att.fileSize)} · {att.fileType.toUpperCase()}
+                        </p>
+                      </div>
+                      <Download className="h-4 w-4 flex-shrink-0 text-gray-400" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {inquiry.followUps && inquiry.followUps.length > 0 && (
         <Card>
           <CardHeader>
@@ -113,6 +212,28 @@ export function InquiryDetail({ inquiryId }: { inquiryId: number }) {
             ))}
           </CardContent>
         </Card>
+      )}
+
+      {lightboxImage && (
+        <div
+          onClick={() => setLightboxImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+        >
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute right-4 top-4 rounded-full bg-white/20 p-2 text-white transition-colors hover:bg-white/30"
+            aria-label="Close preview"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={lightboxImage}
+            alt="Attachment preview"
+            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       )}
     </div>
   );

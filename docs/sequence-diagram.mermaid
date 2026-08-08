@@ -1,103 +1,52 @@
-%% Sequence Diagrams: Product Listing UX Optimization
-%% Source: docs/ARCH-ProductListing-UX.md
-
-%% === 1. Parent Category View Rendering ===
 sequenceDiagram
     participant User
-    participant Browser
-    participant ProductsPage as products/page.tsx (Server)
-    participant ProductListClient as ProductListClient.tsx (Client)
-    participant ParentCategoryView as ParentCategoryView.tsx
-    participant SeriesConst as series.ts (Constants)
+    participant InquiryForm as InquiryForm.tsx
+    participant FileUploadZone as FileUploadZone.tsx
+    participant UploadAPI as POST /api/uploads/inquiry
+    participant FS as File System
+    participant InquiryAPI as POST /api/inquiries
+    participant Service as inquiryService
+    participant DB as SQLite
 
-    User->>Browser: Click nav "Tile Displays Rack"
-    Browser->>ProductsPage: GET /en/products?series=tile-displays-rack
-    ProductsPage->>ProductsPage: Render breadcrumb "Home > Products > Tile Displays Rack"
-    ProductsPage->>ProductListClient: Render <ProductListClient /> (Suspense)
-
-    ProductListClient->>ProductListClient: useSearchParams() → series='tile-displays-rack'
-    ProductListClient->>SeriesConst: isParentSlug('tile-displays-rack')
-    SeriesConst-->>ProductListClient: true
-
-    ProductListClient->>ParentCategoryView: Render <ParentCategoryView parentSlug="tile-displays-rack" />
-    ParentCategoryView->>SeriesConst: getParentCategory('tile-displays-rack')
-    SeriesConst-->>ParentCategoryView: ParentCategory { name, description, heroImage }
-
-    ParentCategoryView->>SeriesConst: getChildSeries('tile-displays-rack')
-    SeriesConst-->>ParentCategoryView: SeriesInfo[] (7 sub-series)
-
-    ParentCategoryView->>Browser: Render card grid
-    Browser->>User: Show category title + description + 7 sub-series cards
-
-    User->>Browser: Click "Wall Sliding Rack" card
-    Browser->>Browser: router.push('?series=wall-sliding-rack')
-    Note over Browser: ProductListClient re-renders<br/>isParentSlug=false → show product list
-
-%% === 2. Spec-Finder Search (After Fix) ===
-sequenceDiagram
-    participant User
-    participant SpecClient as SpecFinderClient.tsx
-    participant API as /api/products/spec-finder
-    participant SpecService as specFinderService.ts
-    participant ProdService as productService.ts
-    participant Utils as utils.ts (parseDimensionRange)
-    participant DB as SQLite DB
-
-    User->>SpecClient: Enter width=600, height=1200, thickness=12
-    User->>SpecClient: Click "Find Matching Racks"
-
-    SpecClient->>API: POST { tileWidth: 600, tileHeight: 1200, tileThickness: 12 }
-    API->>API: specFinderSchema.safeParse(body)
-    API->>SpecService: findMatches({ tileWidth: 600, tileHeight: 1200, tileThickness: 12 })
-    SpecService->>ProdService: findProductsBySpec(params)
-    ProdService->>DB: prisma.product.findMany({ isPublished: true })
-    DB-->>ProdService: 172 products (with panelSize, panelThickness)
-
-    loop For each product
-        ProdService->>Utils: parseDimensionRange('60x60cm - 120x240cm')
-        Utils->>Utils: Detect 'cm' → multiply values × 10
-        Utils-->>ProdService: { minW: 600, maxW: 1200, minH: 600, maxH: 2400 }
-
-        ProdService->>ProdService: tileW=600 >= 600 && 600 <= 1200 && tileH=1200 >= 600 && 1200 <= 2400
-        Note over ProdService: ✅ Match success!<br/>push matchReason
+    Note over User,FileUploadZone: Step 1: User selects files
+    User->>FileUploadZone: Drag-drop or click to select files
+    FileUploadZone->>FileUploadZone: Client-side validation (type, size, count ≤ 5)
+    
+    alt Validation fails
+        FileUploadZone-->>User: Show error toast (e.g., "File too large")
     end
 
-    ProdService-->>SpecService: SpecFinderResult[] (matched products)
-    SpecService-->>API: results
-    API-->>SpecClient: { code: 200, data: [...] }
-    SpecClient->>User: Render result card grid
-
-%% === 3. Old Slug Redirect ===
-sequenceDiagram
-    participant Crawler as Search Engine Crawler
-    participant NextServer as Next.js Server
-    participant Redirects as next.config.mjs redirects()
-
-    Crawler->>NextServer: GET /en/products?series=tile-display
-    NextServer->>Redirects: Match { source: '/:locale/products', has: [{ query: { series: 'tile-display' } }] }
-    Redirects-->>Crawler: HTTP 301 → /en/products?series=tile-displays-rack
-    Crawler->>NextServer: GET /en/products?series=tile-displays-rack
-    NextServer-->>Crawler: 200 OK (Parent Category View)
-
-%% === 4. Projects Page Rendering (After Redesign) ===
-sequenceDiagram
-    participant User
-    participant Browser
-    participant ProjectsPage as projects/page.tsx (Server)
-    participant ProjService as projectService.ts
-    participant DB as SQLite DB
-
-    User->>Browser: Visit /en/projects
-    Browser->>ProjectsPage: GET /en/projects
-    ProjectsPage->>ProjService: getProjects(20)
-    ProjService->>DB: prisma.project.findMany({ isPublished: true })
-    DB-->>ProjService: Project[] (8 records, with images field)
-
-    loop Each project
-        ProjService->>ProjService: parseProjectImages(project.images)
-        Note over ProjService: '[]' → []<br/>'/images/projects/xxx.jpg' → ['/images/projects/xxx.jpg']
+    Note over FileUploadZone,FS: Step 2: Upload each file immediately
+    loop For each valid file
+        FileUploadZone->>UploadAPI: POST multipart/form-data { file }
+        UploadAPI->>UploadAPI: Server-side validation (MIME + ext + size ≤ 10MB)
+        alt Server validation fails
+            UploadAPI-->>FileUploadZone: 400 error { code, message }
+            FileUploadZone-->>User: Show error for this file
+        end
+        UploadAPI->>UploadAPI: generateUniqueFileName(originalName)
+        UploadAPI->>FS: mkdir -p public/uploads/inquiries/
+        UploadAPI->>FS: writeFile(buffer) to public/uploads/inquiries/{filename}
+        UploadAPI-->>FileUploadZone: 201 { url, fileName, fileSize, fileType, fileCategory }
+        FileUploadZone->>InquiryForm: onUpdate(attachments[] with new metadata)
+        FileUploadZone-->>User: Show file in list with checkmark
     end
 
-    ProjService-->>ProjectsPage: ProjectWithImages[]
-    ProjectsPage->>Browser: Render hero section + <ProjectCard> grid
-    Browser->>User: Show hero background + title + 8 project cards with images
+    Note over User,InquiryAPI: Step 3: User fills form and submits
+    User->>InquiryForm: Click "Submit Inquiry"
+    InquiryForm->>InquiryForm: Validate required fields (name, email, message)
+    InquiryForm->>InquiryAPI: POST JSON { ...formFields, attachments: [...] }
+    InquiryAPI->>InquiryAPI: Zod safeParse (includes attachments validation)
+    alt Zod validation fails
+        InquiryAPI-->>InquiryForm: 400 { code, message, details }
+        InquiryForm-->>User: Show error toast
+    end
+    InquiryAPI->>Service: createInquiry({ ...data, attachments: JSON.stringify(arr) })
+    Service->>Service: Upsert customer by email
+    Service->>Service: Generate inquiryNo (INQ-yyyyMMdd-nnn)
+    Service->>DB: INSERT INTO Inquiry (..., attachments)
+    DB-->>Service: Return inquiry record
+    Service-->>InquiryAPI: Inquiry object
+    InquiryAPI-->>InquiryForm: 201 { code: 201, data: inquiry, message }
+    InquiryForm-->>User: toast.success("Inquiry submitted successfully!")
+    InquiryForm->>User: Redirect to /inquiry/success

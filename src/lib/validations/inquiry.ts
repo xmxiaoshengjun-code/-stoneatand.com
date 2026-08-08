@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { attachmentSchema } from './upload';
 
 /**
  * Zod validation schema for inquiry submission.
@@ -14,6 +15,7 @@ export const inquiryCreateSchema = z.object({
   quantity: z.number().int().min(1).max(100000).optional(),
   message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
   source: z.string().max(200).optional().or(z.literal('')),
+  attachments: z.array(attachmentSchema).max(5, 'Maximum 5 files allowed').optional(),
 });
 
 export type InquiryCreateInput = z.infer<typeof inquiryCreateSchema>;

@@ -23,6 +23,7 @@ export interface Inquiry {
   status: InquiryStatus;
   assignedTo: string | null;
   customerId: number | null;
+  attachments?: Attachment[] | null;
   createdAt: string;
   updatedAt: string;
   product?: Product | null;
@@ -76,3 +77,4 @@ export interface CustomerListResponse {
 }
 
 import type { Product } from './product';
+import type { Attachment } from './attachment';

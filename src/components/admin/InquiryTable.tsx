@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDateTime } from '@/lib/utils';
+import { Paperclip } from 'lucide-react';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -75,9 +76,30 @@ export function InquiryTable() {
               {data?.data?.items?.map((inq: Record<string, unknown>) => (
                 <TableRow key={inq.id as number}>
                   <TableCell>
-                    <Link href={`/admin/inquiries/${inq.id}`} className="font-mono text-brand-400 hover:underline">
-                      {inq.inquiryNo as string}
-                    </Link>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/admin/inquiries/${inq.id}`} className="font-mono text-brand-400 hover:underline">
+                        {inq.inquiryNo as string}
+                      </Link>
+                      {(() => {
+                        const atts = inq.attachments;
+                        if (!atts) return null;
+                        let arr: unknown[] = [];
+                        if (Array.isArray(atts)) {
+                          arr = atts as unknown[];
+                        } else if (typeof atts === 'string') {
+                          try {
+                            const parsed = JSON.parse(atts);
+                            if (Array.isArray(parsed)) arr = parsed;
+                          } catch {
+                            // ignore
+                          }
+                        }
+                        if (arr.length === 0) return null;
+                        return (
+                          <Paperclip className="h-3.5 w-3.5 text-gray-400" />
+                        );
+                      })()}
+                    </div>
                   </TableCell>
                   <TableCell>{inq.customerName as string}</TableCell>
                   <TableCell className="text-sm text-gray-500">{inq.email as string}</TableCell>

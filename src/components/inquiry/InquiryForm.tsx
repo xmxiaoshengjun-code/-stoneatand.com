@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Send } from 'lucide-react';
 import { useTracking } from '@/hooks/useTracking';
+import { FileUploadZone } from './FileUploadZone';
+import type { Attachment } from '@/types/attachment';
 
 interface InquiryFormProps {
   productId?: number;
@@ -19,6 +21,7 @@ interface InquiryFormProps {
 export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const { trackInquirySubmit } = useTracking();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,6 +40,7 @@ export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormPro
       quantity: Number(formData.get('quantity')) || undefined,
       message: formData.get('message') as string,
       source: 'website',
+      attachments: attachments.length > 0 ? attachments : undefined,
     };
 
     try {
@@ -48,7 +52,7 @@ export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormPro
 
       const result = await res.json();
 
-      if (result.code === 201) {
+      if (result.code === 200 || result.code === 201) {
         // Track inquiry submission
         const inquiryNo = result.data?.inquiryNo || '';
         trackInquirySubmit(inquiryNo);
@@ -107,6 +111,12 @@ export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormPro
           placeholder="Tell us about your requirements, tile specifications, or any questions..."
         />
       </div>
+
+      <div>
+        <Label>Attachments</Label>
+        <FileUploadZone attachments={attachments} onChange={setAttachments} />
+      </div>
+
       <Button type="submit" variant="brand" size="lg" disabled={loading} className="w-full">
         {loading ? (
           'Submitting...'

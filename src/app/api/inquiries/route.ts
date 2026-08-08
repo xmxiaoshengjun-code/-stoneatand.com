@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { inquiryService } from '@/lib/services/inquiryService';
 import { inquiryCreateSchema } from '@/lib/validations/inquiry';
 import { successResponse, errorResponse } from '@/types/api';
+import { requireAdmin } from '@/lib/auth';
 
 /**
- * POST /api/inquiries - Creates a new inquiry from the website.
+ * POST /api/inquiries - Creates a new inquiry from the website (public).
  * GET /api/inquiries - Lists inquiries (admin only).
  */
 export async function POST(request: NextRequest) {
@@ -28,6 +29,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const { searchParams } = new URL(request.url);
     const params = {

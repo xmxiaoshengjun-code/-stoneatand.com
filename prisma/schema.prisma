@@ -92,6 +92,7 @@ model Inquiry {
   assignedTo    String?
   chatSessionId Int?
   customerId    Int?
+  attachments   String?  /// JSON array of {url, fileName, fileSize, fileType, fileCategory}
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   product       Product?  @relation(fields: [productId], references: [id])

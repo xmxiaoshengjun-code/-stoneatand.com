@@ -1,113 +1,89 @@
-%% Class Diagram: Product Listing UX Optimization
-%% Source: docs/ARCH-ProductListing-UX.md
-
 classDiagram
-    class ParentCategory {
-        +string slug
-        +string name
-        +string nameCn
-        +string description
-        +string icon
-        +string? heroImage
+    class Attachment {
+        +string url
+        +string fileName
+        +number fileSize
+        +string fileType
+        +string fileCategory
     }
 
-    class SeriesInfo {
-        +string slug
-        +string name
-        +string nameCn
-        +string prefix
-        +string description
-        +string shortDescription
-        +string icon
-        +string? heroImage
-        +string? parentSlug
-        +string? parentName
+    class UploadValidation {
+        <<constants>>
+        +MAX_FILE_SIZE 10MB
+        +MAX_FILE_COUNT 5
+        +ALLOWED_EXTENSIONS array
+        +ALLOWED_MIME_TYPES array
     }
 
-    class SeriesHelpers {
-        <<module functions>>
-        +isParentSlug(slug: string) boolean
-        +getParentCategory(slug: string) ParentCategory?
-        +getChildSeries(parentSlug: string) SeriesInfo[]
+    class FileUtil {
+        <<utility>>
+        +sanitizeFileName(originalName: string) string
+        +getFileTypeCategory(filename: string) FileCategory
+        +getFileIcon(fileType: string) string
+        +generateUniqueFileName(originalName: string) string
+        +formatFileSize(bytes: number) string
     }
 
-    class ParentCategoryViewProps {
-        +string parentSlug
-        +string locale
+    class InquiryForm {
+        -attachments: Attachment[]
+        -loading: boolean
+        -uploadingCount: number
+        +handleSubmit(e: FormEvent) void
+        +handleFileSelect(files: FileList) void
+        +handleFileRemove(index: number) void
+        +handleUploadProgress(file: File, progress: number) void
     }
 
-    class ParentCategoryView {
-        <<React Component>>
-        +ParentCategoryViewProps props
-        render() JSX.Element
+    class FileUploadZone {
+        -isDragging: boolean
+        -uploadingFiles: Map~string, number~
+        +handleDrop(e: DragEvent) void
+        +handleFileSelect(e: ChangeEvent) void
+        +handleRemove(index: number) void
     }
 
-    class ProjectCardProps {
-        +ProjectWithImages project
-        +string locale
+    class UploadRouteHandler {
+        +POST(request: NextRequest) NextResponse
+        -validateFile(file: File) ValidationResult
+        -saveFile(buffer: Buffer, filename: string) string
     }
 
-    class ProjectCard {
-        <<React Component>>
-        +ProjectCardProps props
-        render() JSX.Element
+    class InquiryService {
+        +createInquiry(data: InquiryCreateInput) Inquiry
+        +getInquiryById(id: number) Inquiry
+        +getInquiries(params) InquiryListResponse
+        -parseAttachments(raw: string|null) Attachment[]
     }
 
-    class ProjectWithImages {
-        +number id
-        +string title
-        +string slug
-        +string? description
-        +string? location
-        +string? projectDate
-        +string[] images
-        +boolean isPublished
+    class Inquiry {
+        +id: number
+        +inquiryNo: string
+        +customerName: string
+        +email: string
+        +message: string
+        +status: InquiryStatus
+        +attachments: Attachment[] | null
+        +createdAt: string
+        +updatedAt: string
     }
 
-    class SpecFinderResult {
-        +Product product
-        +number matchScore
-        +string[] matchReasons
+    class InquiryDetail {
+        -inquiry: Inquiry
+        +renderAttachments() JSX
+        +renderAttachmentItem(att: Attachment) JSX
     }
 
-    class SpecFinderParams {
-        +number tileWidth
-        +number tileHeight
-        +number? tileThickness
+    class InquiryTable {
+        -inquiries: Inquiry[]
+        +hasAttachments(inquiry: Inquiry) boolean
     }
 
-    class ProjectService {
-        -prisma: PrismaClient
-        +getProjects(limit: int) ProjectWithImages[]
-        +getProjectBySlug(slug: string) Project?
-        +getProjectById(id: int) Project?
-        -parseProjectImages(imagesStr: string?) string[]
-    }
-
-    class ProductService {
-        -prisma: PrismaClient
-        +getProducts(params: ProductFilterParams) ProductListResponse
-        +findProductsBySpec(params: SpecFinderParams) SpecFinderResult[]
-        +getProductBySku(sku: string) Product?
-        +getFeaturedProducts(limit: int) Product[]
-    }
-
-    class SpecFinderService {
-        -productService: ProductService
-        +findMatches(params: SpecFinderParams) SpecFinderResult[]
-        +getThicknessOptions() array
-        +getSizePresets() array
-    }
-
-    %% Relationships
-    ParentCategory "1" --> "0..*" SeriesInfo : parentSlug
-    SeriesHelpers --> ParentCategory : looks up
-    SeriesHelpers --> SeriesInfo : filters
-    ParentCategoryViewProps --> SeriesHelpers : uses
-    ParentCategoryView --> ParentCategoryViewProps : receives
-    ProjectCardProps --> ProjectWithImages : renders
-    ProjectCard --> ProjectCardProps : receives
-    SpecFinderResult --> SpecFinderParams : matched from
-    ProjectService --> ProjectWithImages : returns
-    ProductService --> SpecFinderResult : returns
-    SpecFinderService --> ProductService : delegates to
+    Attachment --> Inquiry : stored as JSON string in
+    FileUploadZone --> InquiryForm : embedded in
+    InquiryForm --> UploadRouteHandler : POST /api/uploads/inquiry
+    InquiryForm --> InquiryService : POST /api/inquiries
+    UploadRouteHandler --> FileUtil : uses for filename generation
+    InquiryService --> Inquiry : creates/retrieves
+    InquiryDetail --> Inquiry : displays
+    InquiryTable --> Inquiry : lists
+    InquiryDetail --> Attachment : renders
