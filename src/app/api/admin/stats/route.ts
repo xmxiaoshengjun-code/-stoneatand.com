@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { inquiryService } from '@/lib/services/inquiryService';
 import { trackingService } from '@/lib/services/trackingService';
+import { prisma } from '@/lib/prisma';
 import { successResponse, errorResponse } from '@/types/api';
 import { requireAdmin } from '@/lib/auth';
 
@@ -12,15 +13,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const [inquiryStats, trackingStats] = await Promise.all([
+    const [inquiryStats, trackingStats, publishedProductCount, totalProductCount] = await Promise.all([
       inquiryService.getDashboardStats(),
       trackingService.getStats(30),
+      prisma.product.count({ where: { isPublished: true } }),
+      prisma.product.count(),
     ]);
 
     return NextResponse.json(
       successResponse({
         inquiries: inquiryStats,
         tracking: trackingStats,
+        products: {
+          published: publishedProductCount,
+          total: totalProductCount,
+          unpublished: totalProductCount - publishedProductCount,
+        },
       })
     );
   } catch (error) {

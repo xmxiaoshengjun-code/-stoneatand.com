@@ -50,6 +50,12 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('POST /api/admin/b2b-listings error:', error);
     const message = error instanceof Error ? error.message : 'Failed to generate B2B listing';
+
+    // Map "Product not found" to 404 instead of 500.
+    if (message.includes('Product not found')) {
+      return NextResponse.json(errorResponse(404, 'Product not found'), { status: 404 });
+    }
+
     return NextResponse.json(errorResponse(500, message), { status: 500 });
   }
 }

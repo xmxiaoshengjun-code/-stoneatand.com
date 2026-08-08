@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     // Admin can see unpublished products
     const result = await productService.getProducts({
       ...params,
-      // Override to include unpublished
+      includeUnpublished: true,
     });
 
     return NextResponse.json(successResponse(result));

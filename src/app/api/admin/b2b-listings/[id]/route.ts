@@ -4,6 +4,33 @@ import { successResponse, errorResponse } from '@/types/api';
 import { requireAdmin } from '@/lib/auth';
 
 /**
+ * GET /api/admin/b2b-listings/[id] - Fetches a single B2B listing by ID.
+ */
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  if (!(await requireAdmin(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const id = parseInt(params.id, 10);
+    if (isNaN(id)) {
+      return NextResponse.json(errorResponse(400, 'Invalid listing ID'), { status: 400 });
+    }
+
+    const listing = await b2bListingService.getById(id);
+    if (!listing) {
+      return NextResponse.json(errorResponse(404, 'B2B listing not found'), { status: 404 });
+    }
+    return NextResponse.json(successResponse({ listing }));
+  } catch (error) {
+    console.error('GET /api/admin/b2b-listings/[id] error:', error);
+    return NextResponse.json(errorResponse(500, 'Failed to fetch B2B listing'), { status: 500 });
+  }
+}
+
+/**
  * PUT /api/admin/b2b-listings/[id] - Updates a B2B listing record.
  */
 export async function PUT(

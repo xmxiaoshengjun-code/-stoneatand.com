@@ -4,6 +4,33 @@ import { successResponse, errorResponse } from '@/types/api';
 import { requireAdmin } from '@/lib/auth';
 
 /**
+ * GET /api/admin/categories/[id] - Fetches a single category by ID.
+ */
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  if (!(await requireAdmin(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const id = parseInt(params.id, 10);
+    if (isNaN(id)) {
+      return NextResponse.json(errorResponse(400, 'Invalid category ID'), { status: 400 });
+    }
+
+    const category = await categoryService.getById(id);
+    if (!category) {
+      return NextResponse.json(errorResponse(404, 'Category not found'), { status: 404 });
+    }
+    return NextResponse.json(successResponse({ category }));
+  } catch (error) {
+    console.error('GET /api/admin/categories/[id] error:', error);
+    return NextResponse.json(errorResponse(500, 'Failed to fetch category'), { status: 500 });
+  }
+}
+
+/**
  * PUT /api/admin/categories/[id] - Updates a category.
  */
 export async function PUT(

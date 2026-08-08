@@ -63,6 +63,8 @@ export interface ProductFilterParams {
   page?: number;
   pageSize?: number;
   sort?: string;
+  /** When true, includes unpublished (soft-deleted) products in results. Used by admin. */
+  includeUnpublished?: boolean;
 }
 
 export interface SpecFinderParams {

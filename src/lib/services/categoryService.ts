@@ -69,6 +69,23 @@ export class CategoryService {
     return this.buildTree(flat);
   }
 
+  /** Retrieves a single category by ID. */
+  async getById(id: number): Promise<CategoryRow | null> {
+    const rows = await prisma.$queryRawUnsafe<CategoryRow[]>(
+      `SELECT id, name, nameCn, slug, prefix, description, image, parentId, sortOrder, createdAt, updatedAt
+       FROM Series WHERE id = ?`,
+      id
+    );
+    if (rows.length === 0) return null;
+    const row = rows[0];
+    return {
+      ...row,
+      id: Number(row.id),
+      parentId: row.parentId !== null ? Number(row.parentId) : null,
+      sortOrder: Number(row.sortOrder),
+    };
+  }
+
   /** Builds a tree from a flat list of categories. */
   private buildTree(flat: CategoryRow[]): CategoryNode[] {
     const nodeMap = new Map<number, CategoryNode>();

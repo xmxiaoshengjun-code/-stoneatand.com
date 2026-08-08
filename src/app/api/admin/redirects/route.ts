@@ -39,6 +39,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(createdResponse({ redirect }, 'Redirect created'), { status: 201 });
   } catch (error) {
     console.error('POST /api/admin/redirects error:', error);
-    return NextResponse.json(errorResponse(500, 'Failed to create redirect'), { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to create redirect';
+
+    // Catch unique constraint violation on sourceUrl → 409 Conflict.
+    if (
+      message.includes('UNIQUE constraint failed') ||
+      message.includes('constraint failed') ||
+      message.toLowerCase().includes('unique')
+    ) {
+      return NextResponse.json(
+        errorResponse(409, 'Redirect with this source URL already exists'),
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(errorResponse(500, message), { status: 500 });
   }
 }

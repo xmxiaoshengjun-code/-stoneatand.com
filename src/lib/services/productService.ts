@@ -10,7 +10,9 @@ import type { Product, ProductListResponse, ProductFilterParams, SpecFinderResul
  */
 export class ProductService {
   /**
-   * Fetches a paginated, filtered list of published products.
+   * Fetches a paginated, filtered list of products.
+   * By default only published products are returned. Set `includeUnpublished`
+   * to true in params to include unpublished (soft-deleted) products (admin).
    */
   async getProducts(params: ProductFilterParams): Promise<ProductListResponse> {
     const {
@@ -22,11 +24,15 @@ export class ProductService {
       page = 1,
       pageSize = 12,
       sort = 'sortOrder',
+      includeUnpublished = false,
     } = params;
 
-    const where: Record<string, unknown> = {
-      isPublished: true,
-    };
+    const where: Record<string, unknown> = {};
+
+    // Only apply the isPublished filter when unpublished products are not requested.
+    if (!includeUnpublished) {
+      where.isPublished = true;
+    }
 
     if (series) {
       // Look up the series by slug to determine if it's a parent or leaf.
@@ -305,6 +311,30 @@ export class ProductService {
       where: { id },
       data: { isPublished: false },
     });
+  }
+
+  /**
+   * Permanently deletes a product from the database.
+   * Only allowed if the product is already unpublished (soft-deleted).
+   * @throws Error if the product is still published.
+   */
+  async hardDeleteProduct(id: number): Promise<void> {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      select: { isPublished: true },
+    });
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    if (product.isPublished) {
+      throw new Error('Cannot hard-delete a published product. Unpublish it first.');
+    }
+
+    // Delete related images first to avoid foreign key constraint issues.
+    await prisma.productImage.deleteMany({ where: { productId: id } });
+    await prisma.product.delete({ where: { id } });
   }
 }
 

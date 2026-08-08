@@ -68,10 +68,28 @@ export async function DELETE(
       return NextResponse.json(errorResponse(400, 'Invalid product ID'), { status: 400 });
     }
 
+    const { searchParams } = new URL(request.url);
+    const hard = searchParams.get('hard') === 'true';
+
+    if (hard) {
+      await productService.hardDeleteProduct(id);
+      return NextResponse.json(successResponse(null, 'Product permanently deleted'));
+    }
+
     await productService.deleteProduct(id);
     return NextResponse.json(successResponse(null, 'Product deleted'));
   } catch (error) {
     console.error('DELETE /api/admin/products/[id] error:', error);
-    return NextResponse.json(errorResponse(500, 'Failed to delete product'), { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to delete product';
+
+    // Map known service errors to appropriate HTTP status codes.
+    if (message.includes('not found')) {
+      return NextResponse.json(errorResponse(404, message), { status: 404 });
+    }
+    if (message.includes('Cannot hard-delete a published product')) {
+      return NextResponse.json(errorResponse(409, message), { status: 409 });
+    }
+
+    return NextResponse.json(errorResponse(500, message), { status: 500 });
   }
 }
