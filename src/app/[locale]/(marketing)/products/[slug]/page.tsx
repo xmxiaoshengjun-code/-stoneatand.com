@@ -85,42 +85,64 @@ export default async function SeriesPage({ params }: PageProps) {
   // ── Parent category view ──────────────────────────────────────────
   if (isParentSlug(slug)) {
     const children = getChildSeries(slug);
-    if (children.length === 1) {
+
+    // Redirect to the single child series only when it has a DIFFERENT slug,
+    // to avoid an infinite self-redirect loop. Some categories (e.g.
+    // carpet-display-rack, mosaic-display-rack) exist as both a parent
+    // category and a child series with the SAME slug — redirecting to
+    // /products/{same-slug} would loop forever and render a blank page.
+    if (children.length === 1 && children[0].slug !== slug) {
       redirect(lh(`/products/${children[0].slug}`));
     }
 
     const parent = getParentCategory(slug);
     if (!parent) notFound();
 
-    const breadcrumbItems = [
-      { label: 'Home', href: lh('/') },
-      { label: 'Products', href: lh('/products') },
-      { label: parent.name },
-    ];
+    // If this slug is ALSO a leaf series (self-referential parent+child),
+    // fall through to the series product-list rendering below instead of
+    // showing a parent category index with a single self-referential card.
+    if (!SERIES_BY_SLUG[slug]) {
+      const breadcrumbItems = [
+        { label: 'Home', href: lh('/') },
+        { label: 'Products', href: lh('/products') },
+        { label: parent.name },
+      ];
 
-    return (
-      <>
-        <BreadcrumbJsonLd items={breadcrumbItems} />
-        <main className="min-h-screen bg-gray-50">
-          <div className="container-custom py-8">
-            <Breadcrumb items={breadcrumbItems} />
-            <ParentCategoryView parentSlug={slug} locale={locale} />
-          </div>
-        </main>
-        <CompareBar />
-      </>
-    );
+      return (
+        <>
+          <BreadcrumbJsonLd items={breadcrumbItems} />
+          <main className="min-h-screen bg-gray-50">
+            <div className="container-custom py-8">
+              <Breadcrumb items={breadcrumbItems} />
+              <ParentCategoryView parentSlug={slug} locale={locale} />
+            </div>
+          </main>
+          <CompareBar />
+        </>
+      );
+    }
+    // Fall through to series rendering for self-referential slugs
   }
 
   // ── Child series product list ─────────────────────────────────────
   const series = SERIES_BY_SLUG[slug];
   if (series) {
+    // Fetch initial product data server-side for instant rendering.
+    // This eliminates the client-side API round-trip on first load —
+    // the data is embedded in SSR HTML and SWR uses it as fallbackData.
+    const initialProducts = await productService.getProducts({
+      series: slug,
+      page: 1,
+      pageSize: 12,
+      sort: 'sortOrder',
+    });
+
     const breadcrumbItems: Array<{ label: string; href?: string }> = [
       { label: 'Home', href: lh('/') },
       { label: 'Products', href: lh('/products') },
     ];
 
-    if (series.parentSlug) {
+    if (series.parentSlug && series.parentSlug !== slug) {
       const parent = getParentCategory(series.parentSlug);
       if (parent) {
         breadcrumbItems.push({
@@ -160,7 +182,11 @@ export default async function SeriesPage({ params }: PageProps) {
                 </div>
               }
             >
-              <ProductListClient locale={locale} series={slug} />
+              <ProductListClient
+                locale={locale}
+                series={slug}
+                initialData={{ code: 200, data: initialProducts }}
+              />
             </Suspense>
           </div>
         </main>
