@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Send } from 'lucide-react';
 import { useTracking } from '@/hooks/useTracking';
+import { useI18n } from '@/lib/i18n/I18nProvider';
+import { localizePath } from '@/lib/i18n/config';
 import { FileUploadZone } from './FileUploadZone';
 import type { Attachment } from '@/types/attachment';
 
@@ -23,6 +25,7 @@ export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormPro
   const [loading, setLoading] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const { trackInquirySubmit } = useTracking();
+  const { locale } = useI18n();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,7 +64,7 @@ export function InquiryForm({ productId, productSku, onSuccess }: InquiryFormPro
         if (onSuccess) {
           onSuccess();
         } else {
-          router.push('/inquiry/success');
+          router.push(localizePath('/inquiry/success', locale));
         }
       } else {
         toast.error(result.message || 'Failed to submit inquiry');
