@@ -8,10 +8,24 @@ export function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setVisible(window.scrollY > 400);
+      if (ticking) return;
+      ticking = true;
+
+      // Use requestAnimationFrame to throttle: only one state check per frame.
+      // This prevents the scroll handler from firing on every pixel of scroll,
+      // which can cause excessive function calls and jank on lower-end devices.
+      requestAnimationFrame(() => {
+        setVisible(window.scrollY > 400);
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+
+    // passive: true tells the browser the handler won't call preventDefault,
+    // allowing it to scroll immediately without waiting for the handler.
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

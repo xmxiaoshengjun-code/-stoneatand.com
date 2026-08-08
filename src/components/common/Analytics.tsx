@@ -53,40 +53,63 @@ export function Analytics() {
     return 'referral';
   };
 
-  // --- Helper: send a tracking event ---
+  // --- Helper: send a tracking event (deferred to idle time) ---
   const trackEvent = useRef((eventType: string, data?: Record<string, unknown>) => {
     if (typeof window === 'undefined') return;
     const sessionId = sessionIdRef.current;
     if (!sessionId) return;
 
-    const referrer = document.referrer || '';
-    const deviceType = getDeviceType();
-    const sourceCategory = getSourceCategory(referrer);
+    const buildPayload = () => {
+      const referrer = document.referrer || '';
+      const deviceType = getDeviceType();
+      const sourceCategory = getSourceCategory(referrer);
 
-    const payload = JSON.stringify({
-      sessionId,
-      eventType,
-      pageUrl: window.location.pathname,
-      country: undefined,
-      referrer: referrer || undefined,
-      deviceType,
-      sourceCategory,
-      ...data,
-    });
-
-    // Use sendBeacon during unload for reliability, otherwise fetch
-    if (eventType === 'page_leave' && navigator.sendBeacon) {
-      const blob = new Blob([payload], { type: 'application/json' });
-      navigator.sendBeacon('/api/tracking', blob);
-    } else {
-      fetch('/api/tracking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: payload,
-        keepalive: true,
-      }).catch(() => {
-        // Silently fail - tracking is non-critical
+      return JSON.stringify({
+        sessionId,
+        eventType,
+        pageUrl: window.location.pathname,
+        country: undefined,
+        referrer: referrer || undefined,
+        deviceType,
+        sourceCategory,
+        ...data,
       });
+    };
+
+    const send = () => {
+      const payload = buildPayload();
+
+      // Use sendBeacon during unload for reliability, otherwise fetch
+      if (eventType === 'page_leave' && navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon('/api/tracking', blob);
+      } else {
+        fetch('/api/tracking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true,
+        }).catch(() => {
+          // Silently fail - tracking is non-critical
+        });
+      }
+    };
+
+    // Defer non-critical tracking to idle time so it doesn't compete with
+    // page load resources (JS bundles, images, hydration). page_leave events
+    // are sent immediately since they may happen during tab close.
+    if (eventType === 'page_leave') {
+      send();
+    } else {
+      const ric =
+        (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number })
+          .requestIdleCallback;
+
+      if (ric) {
+        ric(() => send(), { timeout: 3000 });
+      } else {
+        window.setTimeout(send, 1000);
+      }
     }
   });
 

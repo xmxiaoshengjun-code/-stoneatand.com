@@ -3,10 +3,9 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/common/WhatsAppButton';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
-import { ChatWidget } from '@/components/chat/ChatWidget';
+import { DeferredWidgets } from '@/components/common/DeferredWidgets';
 import { CookieConsent } from '@/components/common/CookieConsent';
 import { Analytics } from '@/components/common/Analytics';
-import { CopyProtection } from '@/components/common/CopyProtection';
 import { buildAbsoluteAlternates, buildCanonical } from '@/lib/i18n/config';
 
 /**
@@ -31,10 +30,9 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       <Footer />
       <WhatsAppButton />
       <ScrollToTop />
-      <ChatWidget />
+      <DeferredWidgets />
       <CookieConsent />
       <Analytics />
-      <CopyProtection />
     </>
   );
 }
