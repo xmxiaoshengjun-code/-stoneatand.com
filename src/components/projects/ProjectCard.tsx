@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, MapPin } from 'lucide-react';
 import { formatDate, imgUrl } from '@/lib/utils';
@@ -40,12 +41,12 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
         {/* Image area — 4:3 aspect ratio */}
         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
           {heroImage ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
+            <Image
               src={imgUrl(heroImage)}
               alt={project.title}
-              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-              loading="lazy"
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-gray-200">

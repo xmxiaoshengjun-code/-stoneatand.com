@@ -423,7 +423,7 @@ export default async function AboutPage({
       <section className="relative overflow-hidden py-20 text-white md:py-28">
         <div className="absolute inset-0">
           <Image
-            src="/images/showrooms/ai-showroom-cta.png"
+            src="/images/showrooms/ai-showroom-cta.webp"
             alt="Contact TSIANFAN for custom display solutions"
             fill
             className="object-cover"

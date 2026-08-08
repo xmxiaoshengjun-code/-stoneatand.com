@@ -39,7 +39,7 @@ export default async function ProjectsPage({
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/showrooms/ai-showroom-cta.png"
+            src="/images/showrooms/ai-showroom-cta.webp"
             alt="TSIANFAN display rack project showroom"
             fill
             className="object-cover"

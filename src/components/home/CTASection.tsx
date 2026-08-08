@@ -16,7 +16,7 @@ export function CTASection() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/showrooms/ai-showroom-cta.png"
+          src="/images/showrooms/ai-showroom-cta.webp"
           alt="High-end tile showroom display system"
           fill
           className="object-cover"
