@@ -222,7 +222,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
 
           {/* Related products */}
-          {related && related.length > 0 && <RelatedProducts products={related} />}
+          {related && related.length > 0 && (
+            <RelatedProducts products={related} locale={locale} />
+          )}
         </div>
       </main>
       <CompareBar />

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useCallback, useMemo, type ReactNode } from 'react';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionaries';
 
@@ -39,8 +39,13 @@ export function I18nProvider({
 }) {
   const t = useCallback((path: string) => getPath(dict, path), [dict]);
 
+  // Memoize the context value so consumers don't re-render unnecessarily.
+  // Without this, a new object is created on every provider render, causing
+  // all useI18n() consumers to re-render even when locale/dict/t are unchanged.
+  const value = useMemo(() => ({ locale, dict, t }), [locale, dict, t]);
+
   return (
-    <I18nContext.Provider value={{ locale, dict, t }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   );

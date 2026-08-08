@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDown, Search, X, LayoutGrid } from 'lucide-react';
 import {
@@ -40,6 +40,28 @@ export function FilterPanel({ series }: { series: string }) {
   const currentKeyword = searchParams.get('keyword') || '';
 
   /**
+   * Local state for the search input, synced with the URL param.
+   * Debounced so router.push only fires after the user stops typing.
+   */
+  const [searchInput, setSearchInput] = useState(currentKeyword);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Sync local search input when the URL keyword param changes externally
+  // (e.g., clearing filters or navigating from another page).
+  useEffect(() => {
+    setSearchInput(currentKeyword);
+  }, [currentKeyword]);
+
+  // Cleanup debounce timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, []);
+
+  const lh = useCallback((href: string) => localizePath(href, locale), [locale]);
+
+  /**
    * Determines which parent category should be expanded by default.
    * If the current series is a parent slug, expand it.
    * If the current series is a child series, expand its parent.
@@ -50,9 +72,9 @@ export function FilterPanel({ series }: { series: string }) {
     if (isParentSlug(currentSeries)) {
       expanded.add(currentSeries);
     } else {
-      const series = SERIES_INFO.find((s) => s.slug === currentSeries);
-      if (series?.parentSlug) {
-        expanded.add(series.parentSlug);
+      const seriesInfo = SERIES_INFO.find((s) => s.slug === currentSeries);
+      if (seriesInfo?.parentSlug) {
+        expanded.add(seriesInfo.parentSlug);
       }
     }
     return expanded;
@@ -60,12 +82,10 @@ export function FilterPanel({ series }: { series: string }) {
 
   const [expandedParents, setExpandedParents] = useState<Set<string>>(initialExpanded);
 
-  const lh = (href: string) => localizePath(href, locale);
-
   /**
    * Navigates to a series page, preserving filter query params.
    */
-  const navigateToSeries = (slug: string) => {
+  const navigateToSeries = useCallback((slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete('page');
     const qs = params.toString();
@@ -74,13 +94,13 @@ export function FilterPanel({ series }: { series: string }) {
     } else {
       router.push(lh(`/products/${slug}`));
     }
-  };
+  }, [router, searchParams, lh]);
 
   /**
    * Updates a filter parameter (panelThickness, keyword) in the URL,
    * preserving the current series path. Resets pagination to page 1.
    */
-  const updateFilter = (key: string, value: string) => {
+  const updateFilter = useCallback((key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value) {
       params.set(key, value);
@@ -94,7 +114,21 @@ export function FilterPanel({ series }: { series: string }) {
     } else {
       router.push(lh(`/products/${currentSeries}`));
     }
-  };
+  }, [router, searchParams, lh, currentSeries]);
+
+  /**
+   * Handles search input changes with a 400ms debounce.
+   * Updates local state immediately for responsive UX, but only
+   * pushes the URL change (which triggers API re-fetch) after the
+   * user stops typing.
+   */
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchInput(value);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      updateFilter('keyword', value);
+    }, 400);
+  }, [updateFilter]);
 
   /** Clears all filters and returns to the base products page. */
   const clearFilters = () => {
@@ -249,9 +283,9 @@ export function FilterPanel({ series }: { series: string }) {
           <Input
             type="text"
             placeholder={t('filters.searchPlaceholder')}
-            defaultValue={currentKeyword}
+            value={searchInput}
             className="pl-9"
-            onChange={(e) => updateFilter('keyword', e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
         </div>
       </div>

@@ -1,19 +1,41 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, Plus } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Product } from '@/types/product';
 import { CompareButton } from '@/components/product/CompareButton';
-import { useI18n } from '@/lib/i18n/I18nProvider';
 import { localizePath } from '@/lib/i18n/config';
 import { buildProductDetailPath } from '@/lib/constants/series';
 import { imgUrl } from '@/lib/utils';
+import type { Locale } from '@/lib/i18n/config';
 
-export function ProductCard({ product }: { product: Product }) {
-  const { locale } = useI18n();
-  const productHref = localizePath(buildProductDetailPath(product.sku, product.series?.slug), locale);
+/**
+ * Product card for the product listing grid.
+ *
+ * Memoized to prevent unnecessary re-renders when the parent
+ * ProductGrid / ProductListClient re-renders due to unrelated state
+ * changes (e.g., search params updates). The `product` prop is
+ * compared by reference — SWR returns stable references for
+ * unchanged data, so only cards whose product data actually changed
+ * will re-render.
+ *
+ * @param product - The product data to display.
+ * @param locale  - The current locale for URL building.
+ */
+function ProductCardComponent({
+  product,
+  locale,
+}: {
+  product: Product;
+  locale: Locale;
+}) {
+  const productHref = localizePath(
+    buildProductDetailPath(product.sku, product.series?.slug),
+    locale,
+  );
   const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
 
   return (
@@ -66,3 +88,5 @@ export function ProductCard({ product }: { product: Product }) {
     </div>
   );
 }
+
+export const ProductCard = memo(ProductCardComponent);

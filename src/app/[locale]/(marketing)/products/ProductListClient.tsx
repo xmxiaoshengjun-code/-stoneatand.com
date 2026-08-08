@@ -16,6 +16,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { useI18n } from '@/lib/i18n/I18nProvider';
 import { type Locale } from '@/lib/i18n/config';
+import type { ProductListResponse } from '@/types/product';
 
 /**
  * Client component for the product listing page.
@@ -25,7 +26,15 @@ import { type Locale } from '@/lib/i18n/config';
  * which renders ParentCategoryView directly, so this component only receives
  * child series slugs or no series at all.
  */
-export function ProductListClient({ locale, series }: { locale: Locale; series: string }) {
+export function ProductListClient({
+  locale,
+  series,
+  initialData,
+}: {
+  locale: Locale;
+  series: string;
+  initialData?: { code: number; data: ProductListResponse };
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { t } = useI18n();
@@ -40,7 +49,7 @@ export function ProductListClient({ locale, series }: { locale: Locale; series: 
     sort: searchParams.get('sort') || 'sortOrder',
   };
 
-  const { products, total, totalPages, isLoading } = useProducts(params);
+  const { products, total, totalPages, isLoading } = useProducts(params, initialData);
 
   // Clamp current page to valid range [1, totalPages] to prevent
   // out-of-bounds page values from showing Prev/Next incorrectly.
@@ -94,7 +103,7 @@ export function ProductListClient({ locale, series }: { locale: Locale; series: 
             ))}
           </div>
         ) : (
-          <ProductGrid products={products} />
+          <ProductGrid products={products} locale={locale} />
         )}
 
         {/* Pagination */}
